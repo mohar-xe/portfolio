@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   description:
     "Portfolio of Mohar Das - AI Engineer & Researcher building intelligent systems that reason, retrieve and act.",
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/logo.svg",
   },
 };
 

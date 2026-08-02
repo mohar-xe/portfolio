@@ -20,11 +20,11 @@ import {
   Bot,
   BarChart3,
   Building2,
-  Sparkles,
   BookOpen,
-  GitFork,
   ExternalLink,
   Calendar,
+  GitPullRequest,
+  CircleDot,
 } from "lucide-react";
 
 type TabKey = "projects" | "experience" | "education" | "opensource";
@@ -48,75 +48,72 @@ const tabs: { key: TabKey; label: string; icon: React.ReactNode }[] = [
 
 const projectsData: CardData[] = [
   {
-    title: "Hybrid Graph RAG (HGR)",
+    title: "Hybrid Graph RAG",
     description:
-      "Graph-enhanced RAG system with hierarchical chunking, entity linking and hybrid retrieval (Dense + Sparse + Graph) with RRF fusion.",
-    tags: ["Python", "PGVector", "KuzuDB", "FastAPI", "RRF"],
+      "8-stage hybrid retrieval pipeline fusing dense HNSW, BM25 and knowledge-graph traversal with Reciprocal Rank Fusion + cross-encoder reranking. HotpotQA ablation: KG traversal lifted Exact Match 29% → 52%; full pipeline at 66% F1, 80% answer recall, 82% Hit@5, 90% answer-in-context.",
+    tags: ["Python", "PostgreSQL/pgvector", "KuzuDB", "FastAPI", "Docker"],
     icon: <Network className="w-5 h-5" />,
     badge: "FEATURED",
     color: "emerald",
     footer: (
       <>
         <span className="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 cursor-pointer">
-          View Project <ArrowRight className="w-3.5 h-3.5" />
+          <a href="https://github.com/mohar-xe/Hybrid-RAG" target="_blank" rel="noopener noreferrer">View Project <ArrowRight className="w-3.5 h-3.5" /></a>
         </span>
         <span className="flex items-center gap-1 text-gray-400">
-          <Star className="w-3.5 h-3.5" /> 120
+          <a href="https://hybrid-rag-6fnb.onrender.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-emerald-400 transition-colors">Live Demo</a>
         </span>
       </>
     ),
   },
   {
-    title: "Grey – Research Intelligence Agent",
+    title: "Knowledge Graph Extraction Pipeline",
     description:
-      "Personalized AI research assistant that plans, retrieves, connects ideas and generates insights using multi-agent architecture.",
-    tags: ["LangGraph", "Qwen3", "Tavily", "Supabase", "MCP"],
+      "End-to-end pipeline: 3,350 instruction-tuning samples across 20 relation types (MinHash dedup, hard negatives, curriculum ordering) + Qwen3-0.6B fine-tune with 4-bit LoRA → 100% schema adherence, 0.6850 composite on multi-axis eval.",
+    tags: ["Qwen3", "LoRA", "Unsloth", "Hugging Face"],
     icon: <BrainCircuit className="w-5 h-5" />,
     badge: "FEATURED",
     color: "purple",
     footer: (
       <>
         <span className="flex items-center gap-1.5 text-purple-400 hover:text-purple-300 cursor-pointer">
-          View Project <ArrowRight className="w-3.5 h-3.5" />
+          <a href="https://github.com/mohar-xe/HGR_dataset_pipeline" target="_blank" rel="noopener noreferrer">3 Repos <ExternalLink className="w-3.5 h-3.5" /></a>
         </span>
         <span className="flex items-center gap-1 text-gray-400">
-          <Star className="w-3.5 h-3.5" /> 98
+          <span>Dataset · Fine-tune · Eval</span>
         </span>
       </>
     ),
   },
   {
-    title: "Argus – Agent Orchestrator",
+    title: "Grey – Agentic Research Framework",
     description:
-      "Unified multimodal agent orchestrator with Live Mode (fast actions) and Deep Mode (reasoning + tool use + memory).",
-    tags: ["Python", "LangChain", "Groq", "FastAPI", "WebSocket"],
+      "Agentic research system based on bisociation. 9-agent LangGraph pipeline with qualifier-driven routing and automated critique loops; persistent workflow state, per-node error boundaries, and a metrics-first evaluation suite.",
+    tags: ["Python", "LangGraph", "FastAPI", "Anthropic", "Groq", "Tavily"],
     icon: <Bot className="w-5 h-5" />,
     color: "amber",
     footer: (
       <>
         <span className="flex items-center gap-1.5 text-amber-400 hover:text-amber-300 cursor-pointer">
-          View Project <ArrowRight className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Star className="w-3.5 h-3.5" /> 86
+          <a href="https://github.com/mohar-xe/Grey" target="_blank" rel="noopener noreferrer">View Project <ArrowRight className="w-3.5 h-3.5" /></a>
         </span>
       </>
     ),
   },
   {
-    title: "ReviewSage – Local SaaS",
+    title: "BIS Standard Recommendation Engine",
     description:
-      "AI-powered review analytics platform for local businesses. Extracts insights from reviews and delivers actionable feedback.",
-    tags: ["Go", "TF-IDF", "PostgreSQL", "Docker", "VPS"],
+      "Recommendation engine for Bureau of Indian Standards (BIS). Most-starred public project with eval script, inference, and presentation. Built with a focus on clean, reproducible evaluation.",
+    tags: ["Python", "Recommendation", "Evaluation"],
     icon: <BarChart3 className="w-5 h-5" />,
     color: "pink",
     footer: (
       <>
         <span className="flex items-center gap-1.5 text-pink-400 hover:text-pink-300 cursor-pointer">
-          View Project <ArrowRight className="w-3.5 h-3.5" />
+          <a href="https://github.com/mohar-xe/bis-re" target="_blank" rel="noopener noreferrer">View Project <ArrowRight className="w-3.5 h-3.5" /></a>
         </span>
         <span className="flex items-center gap-1 text-gray-400">
-          <Star className="w-3.5 h-3.5" /> 64
+          <Star className="w-3.5 h-3.5" /> 2
         </span>
       </>
     ),
@@ -125,74 +122,18 @@ const projectsData: CardData[] = [
 
 const experienceData: CardData[] = [
   {
-    title: "AI Research Engineer",
+    title: "AI Research Intern – Azmth Lab",
     description:
-      "Leading R&D on Graph RAG architectures and multi-agent systems. Published 2 papers on retrieval-augmented generation and knowledge graphs.",
-    tags: ["LLMs", "GraphRAG", "Research", "Publications"],
+      "Research and develop proprietary neuro-symbolic AI architectures for advanced reasoning systems. Prototype, implement and evaluate novel architectures from SOTA research; review and synthesize AI literature; contribute to architecture design and research-driven engineering.",
+    tags: ["Neuro-symbolic AI", "Research", "LLMs", "Prototyping"],
     icon: <Building2 className="w-5 h-5" />,
     color: "emerald",
     footer: (
       <>
         <span className="flex items-center gap-1.5 text-emerald-400">
-          View Details <ArrowRight className="w-3.5 h-3.5" />
+          <Calendar className="w-3.5 h-3.5" /> July 2026 – Present
         </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Calendar className="w-3.5 h-3.5" /> 2024 – Present
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "ML Engineer – Agentic Systems",
-    description:
-      "Built and deployed production-grade AI agents with tool-use capabilities. Designed orchestration pipelines serving 10K+ daily users.",
-    tags: ["LangGraph", "MCP", "FastAPI", "Agents"],
-    icon: <Sparkles className="w-5 h-5" />,
-    color: "purple",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-purple-400">
-          View Details <ArrowRight className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Calendar className="w-3.5 h-3.5" /> 2023 – 2024
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "Backend Developer – AI Products",
-    description:
-      "Developed scalable APIs and microservices for AI-driven SaaS products. Implemented real-time WebSocket pipelines for agent communication.",
-    tags: ["Python", "Go", "Docker", "PostgreSQL"],
-    icon: <Bot className="w-5 h-5" />,
-    color: "amber",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-amber-400">
-          View Details <ArrowRight className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Calendar className="w-3.5 h-3.5" /> 2022 – 2023
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "Data Science Intern",
-    description:
-      "Built NLP pipelines for sentiment analysis and entity extraction. Automated data preprocessing workflows reducing pipeline time by 60%.",
-    tags: ["NLP", "Python", "Pandas", "Scikit-learn"],
-    icon: <BarChart3 className="w-5 h-5" />,
-    color: "pink",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-pink-400">
-          View Details <ArrowRight className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Calendar className="w-3.5 h-3.5" /> 2021 – 2022
-        </span>
+        <span className="flex items-center gap-1 text-gray-400">India</span>
       </>
     ),
   },
@@ -200,162 +141,71 @@ const experienceData: CardData[] = [
 
 const educationData: CardData[] = [
   {
-    title: "M.Tech in AI & ML",
+    title: "IIT Madras – B.S. Data Science",
     description:
-      "Specialized in deep learning, NLP, and knowledge representation. Thesis on Graph-augmented Retrieval Augmented Generation systems.",
-    tags: ["Deep Learning", "NLP", "Knowledge Graphs", "Research"],
+      "B.S. in Data Science and Applications (online, self-paced, designed for concurrent full-time employment). Coursework: ML Foundations, Deep Learning, Computer Vision, DBMS, Data Structures & Algorithms, Operating Systems, Software Engineering, Business Analytics.",
+    tags: ["Machine Learning", "Deep Learning", "DBMS", "DSA"],
     icon: <GraduationCap className="w-5 h-5" />,
-    badge: "CURRENT",
-    color: "emerald",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-emerald-400">
-          View Details <ArrowRight className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Calendar className="w-3.5 h-3.5" /> 2023 – 2025
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "B.Tech in Computer Science",
-    description:
-      "Core coursework in algorithms, distributed systems, and machine learning. Dean’s List recipient for 4 consecutive semesters.",
-    tags: ["Algorithms", "Distributed Systems", "ML"],
-    icon: <BookOpen className="w-5 h-5" />,
     color: "purple",
     footer: (
       <>
         <span className="flex items-center gap-1.5 text-purple-400">
-          View Details <ArrowRight className="w-3.5 h-3.5" />
+          <Calendar className="w-3.5 h-3.5" /> 2025 – Expected 2029
         </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Calendar className="w-3.5 h-3.5" /> 2019 – 2023
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "AI Safety Research Fellowship",
-    description:
-      "Intensive 6-month program focused on alignment, interpretability, and safe deployment of large language models in production systems.",
-    tags: ["AI Safety", "Alignment", "Interpretability"],
-    icon: <Sparkles className="w-5 h-5" />,
-    color: "amber",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-amber-400">
-          View Details <ArrowRight className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Calendar className="w-3.5 h-3.5" /> 2024
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "Deep Learning Specialization",
-    description:
-      "Completed Andrew Ng’s 5-course specialization covering neural networks, optimization, CNNs, sequence models, and Transformers.",
-    tags: ["Coursera", "CNNs", "Transformers", "PyTorch"],
-    icon: <BrainCircuit className="w-5 h-5" />,
-    color: "pink",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-pink-400">
-          View Details <ArrowRight className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Calendar className="w-3.5 h-3.5" /> 2022
-        </span>
+        <span className="flex items-center gap-1 text-gray-400">IIT Madras</span>
       </>
     ),
   },
 ];
 
-const opensourceData: CardData[] = [
-  {
-    title: "langchain-kuzu",
-    description:
-      "Official KuzuDB integration for LangChain. Enables graph-based retrieval and knowledge graph construction in LLM pipelines.",
-    tags: ["LangChain", "KuzuDB", "Python", "GraphDB"],
-    icon: <GitFork className="w-5 h-5" />,
-    badge: "MAINTAINER",
-    color: "emerald",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 cursor-pointer">
-          View Repo <ExternalLink className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Star className="w-3.5 h-3.5" /> 340
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "rag-fusion-py",
-    description:
-      "A lightweight library implementing Reciprocal Rank Fusion for combining multiple retrieval signals in RAG systems.",
-    tags: ["RAG", "RRF", "Python", "Library"],
-    icon: <Network className="w-5 h-5" />,
-    badge: "AUTHOR",
-    color: "purple",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-purple-400 hover:text-purple-300 cursor-pointer">
-          View Repo <ExternalLink className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Star className="w-3.5 h-3.5" /> 215
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "graph-chunker",
-    description:
-      "Hierarchical document chunking library that preserves semantic relationships. Used by 50+ projects for knowledge graph construction.",
-    tags: ["Chunking", "NLP", "Graph", "Python"],
-    icon: <Bot className="w-5 h-5" />,
-    color: "amber",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-amber-400 hover:text-amber-300 cursor-pointer">
-          View Repo <ExternalLink className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Star className="w-3.5 h-3.5" /> 178
-        </span>
-      </>
-    ),
-  },
-  {
-    title: "Contributor – LlamaIndex",
-    description:
-      "Active contributor to LlamaIndex core. Added graph store integrations, improved query engine performance, and fixed 20+ issues.",
-    tags: ["LlamaIndex", "TypeScript", "Core"],
-    icon: <Sparkles className="w-5 h-5" />,
-    color: "pink",
-    footer: (
-      <>
-        <span className="flex items-center gap-1.5 text-pink-400 hover:text-pink-300 cursor-pointer">
-          View Contributions <ExternalLink className="w-3.5 h-3.5" />
-        </span>
-        <span className="flex items-center gap-1 text-gray-400">
-          <Star className="w-3.5 h-3.5" /> 15 PRs
-        </span>
-      </>
-    ),
-  },
-];
+const openSourceData = {
+  metrics: [
+    { label: "Pull Requests", value: "2", icon: <GitPullRequest className="w-4 h-4" /> },
+    { label: "Issues Opened", value: "3", icon: <CircleDot className="w-4 h-4" /> },
+    { label: "Repos", value: "17", icon: <Github className="w-4 h-4" /> },
+    { label: "Followers", value: "14", icon: <Star className="w-4 h-4" /> },
+  ],
+  prs: [
+    {
+      repo: "khoj-ai/khoj",
+      title: "Fix GPT-5 temperature incompatibility in all 4 API paths",
+      url: "https://github.com/khoj-ai/khoj/pull/1385",
+      state: "Open",
+    },
+    {
+      repo: "kubeflow/sdk",
+      title: "fix(trainer): validate LoraConfig params and correctly pass falsy-but-valid values",
+      url: "https://github.com/kubeflow/sdk/pull/588",
+      state: "Open",
+    },
+  ],
+  issues: [
+    {
+      repo: "kubeflow/sdk",
+      title: "LoraConfig/TorchTuneConfig accept invalid PEFT hyperparameters, and valid 0/[] values are silently dropped",
+      url: "https://github.com/kubeflow/sdk/issues/579",
+      state: "Open",
+    },
+    {
+      repo: "adrida/tracer",
+      title: "bug: Router.predict() raises IndexError on scalar embedding input instead of a descriptive ValueError",
+      url: "https://github.com/adrida/tracer/issues/69",
+      state: "Open",
+    },
+    {
+      repo: "mohar-xe/csv_cleaner",
+      title: "No output file is saved",
+      url: "https://github.com/mohar-xe/csv_cleaner/issues/1",
+      state: "Closed",
+    },
+  ],
+};
 
 const cardDataMap: Record<TabKey, CardData[]> = {
   projects: projectsData,
   experience: experienceData,
   education: educationData,
-  opensource: opensourceData,
+  opensource: [],
 };
 
 const colorClasses: Record<string, { iconBg: string; iconText: string; tagBg: string; tagText: string; badgeBg: string; badgeText: string }> = {
@@ -394,12 +244,12 @@ const colorClasses: Record<string, { iconBg: string; iconText: string; tagBg: st
 };
 
 const contactItems = [
-  { icon: <Mail className="w-4 h-4" />, label: "mohardas19@gmail.com", href: "mailto:mohardas19@gmail.com" },
-  { icon: <Phone className="w-4 h-4" />, label: "+91 98042 45845", href: "tel:+919804245845" },
+  { icon: <Mail className="w-4 h-4" />, label: "official.mohar.d@gmail.com", href: "mailto:official.mohar.d@gmail.com" },
+  { icon: <Phone className="w-4 h-4" />, label: "+91 97752 11066", href: "tel:+919775211066" },
   { icon: <Github className="w-4 h-4" />, label: "github.com/mohar-xe", href: "https://github.com/mohar-xe" },
-  { icon: <Linkedin className="w-4 h-4" />, label: "linkedin.com/in/mohar-das", href: "https://linkedin.com/in/mohar-das" },
+  { icon: <Linkedin className="w-4 h-4" />, label: "linkedin.com/in/mohardas", href: "https://linkedin.com/in/mohardas" },
+  { icon: <Globe className="w-4 h-4" />, label: "huggingface.co/mohar07", href: "https://huggingface.co/mohar07" },
   { icon: <MapPin className="w-4 h-4" />, label: "Kolkata, India" },
-  { icon: <Globe className="w-4 h-4" />, label: "mohar.dev", href: "https://mohar.dev" },
 ];
 
 function ContentCard({ card }: { card: CardData }) {
@@ -428,7 +278,7 @@ function ContentCard({ card }: { card: CardData }) {
       </div>
 
       {/* Description */}
-      <p className="text-gray-400 text-[13px] leading-relaxed line-clamp-3">
+      <p className="text-gray-400 text-[13px] leading-relaxed line-clamp-4">
         {card.description}
       </p>
 
@@ -457,14 +307,116 @@ function ContentCard({ card }: { card: CardData }) {
   );
 }
 
+function OpenSourceView() {
+  return (
+    <div className="flex flex-col gap-6 h-full">
+      {/* GitHub metrics row */}
+      <div className="grid grid-cols-4 gap-4">
+        {openSourceData.metrics.map((m) => (
+          <div
+            key={m.label}
+            className="bg-[#1a2235] border border-white/[0.06] rounded-xl px-4 py-4 flex flex-col gap-1.5"
+          >
+            <span className="text-emerald-400">{m.icon}</span>
+            <span className="text-white font-semibold text-2xl">{m.value}</span>
+            <span className="text-gray-400 text-xs">{m.label}</span>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 flex-1">
+        {/* Pull Requests */}
+        <div className="flex flex-col bg-[#1a2235] border border-white/[0.06] rounded-xl p-5 gap-3 min-h-0">
+          <div className="flex items-center gap-2">
+            <GitPullRequest className="w-4 h-4 text-purple-400" />
+            <h3 className="text-white font-semibold text-sm">Pull Requests</h3>
+            <a
+              href="https://github.com/pulls?q=is%3Apr+author%3Amohar-xe"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-auto text-[11px] text-purple-400 hover:text-purple-300 flex items-center gap-1"
+            >
+              View all <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+          <div className="flex flex-col gap-3 overflow-y-auto">
+            {openSourceData.prs.map((pr) => (
+              <a
+                key={pr.url}
+                href={pr.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block rounded-lg border border-white/[0.06] p-3 hover:border-purple-400/40 transition-colors"
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-purple-400/10 text-purple-400">
+                    {pr.state}
+                  </span>
+                  <span className="text-[11px] text-gray-500 truncate">{pr.repo}</span>
+                </div>
+                <p className="text-[13px] text-gray-300 group-hover:text-purple-300 transition-colors leading-snug">
+                  {pr.title}
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Issues */}
+        <div className="flex flex-col bg-[#1a2235] border border-white/[0.06] rounded-xl p-5 gap-3 min-h-0">
+          <div className="flex items-center gap-2">
+            <CircleDot className="w-4 h-4 text-emerald-400" />
+            <h3 className="text-white font-semibold text-sm">Issues Opened</h3>
+            <a
+              href="https://github.com/issues?q=is%3Aissue+author%3Amohar-xe"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-auto text-[11px] text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+            >
+              View all <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+          <div className="flex flex-col gap-3 overflow-y-auto">
+            {openSourceData.issues.map((issue) => (
+              <a
+                key={issue.url}
+                href={issue.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group block rounded-lg border border-white/[0.06] p-3 hover:border-emerald-400/40 transition-colors"
+              >
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span
+                    className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${
+                      issue.state === "Open"
+                        ? "bg-emerald-400/10 text-emerald-400"
+                        : "bg-gray-400/10 text-gray-400"
+                    }`}
+                  >
+                    {issue.state}
+                  </span>
+                  <span className="text-[11px] text-gray-500 truncate">{issue.repo}</span>
+                </div>
+                <p className="text-[13px] text-gray-300 group-hover:text-emerald-300 transition-colors leading-snug">
+                  {issue.title}
+                </p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState<TabKey>("projects");
   const cards = cardDataMap[activeTab];
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex bg-[#0B1120]">
+    <div className="min-h-screen w-screen overflow-hidden flex bg-[#0B1120]">
       {/* ===== LEFT SIDEBAR ===== */}
-      <aside className="w-[38%] max-w-[440px] min-w-[300px] h-screen flex flex-col justify-between border-r border-white/[0.06] px-8 py-10 bg-[#0B1120]">
+      <aside className="w-[38%] max-w-[440px] min-w-[300px] min-h-screen flex flex-col justify-between border-r border-white/[0.06] px-8 py-10 bg-[#0B1120]">
         <div>
           {/* Name */}
           <h1 className="text-3xl font-bold tracking-tight">
@@ -482,9 +434,9 @@ export default function Home() {
 
           {/* Bio */}
           <p className="text-gray-400 text-[14px] leading-relaxed">
-            I build intelligent systems that reason, retrieve and act. Currently
-            focused on LLMs, Agentic Systems, Graph RAG and real-world AI
-            products.
+            Self-taught AI/ML engineer focused on Retrieval Systems & Agentic
+            AI. Currently researching neuro-symbolic architectures at Azmth
+            Lab. Available full-time, immediate start — open to remote roles.
           </p>
 
           {/* Divider */}
@@ -520,7 +472,7 @@ export default function Home() {
       </aside>
 
       {/* ===== RIGHT CONTENT ===== */}
-      <main className="flex-1 h-screen flex flex-col bg-[#0f172a]">
+      <main className="flex-1 min-h-screen flex flex-col bg-[#0f172a]">
         {/* Tab Navigation */}
         <nav className="flex items-center gap-1.5 px-8 pt-8 pb-5">
           {tabs.map((tab) => (
@@ -539,13 +491,17 @@ export default function Home() {
           ))}
         </nav>
 
-        {/* Card Grid */}
+        {/* Card Grid / Open Source */}
         <div className="flex-1 px-8 pb-8">
-          <div className="grid grid-cols-2 gap-4 h-full">
-            {cards.map((card, i) => (
-              <ContentCard key={`${activeTab}-${i}`} card={card} />
-            ))}
-          </div>
+          {activeTab === "opensource" ? (
+            <OpenSourceView />
+          ) : (
+            <div className="grid grid-cols-2 gap-4 h-full">
+              {cards.map((card, i) => (
+                <ContentCard key={`${activeTab}-${i}`} card={card} />
+              ))}
+            </div>
+          )}
         </div>
       </main>
     </div>

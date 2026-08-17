@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 
 const links = [
   { id: "top", num: "00", name: "me" },
@@ -8,17 +9,23 @@ const links = [
   { id: "experience", num: "02", name: "experience" },
   { id: "education", num: "03", name: "education" },
   { id: "opensource", num: "04", name: "open source" },
+  { id: "blog", num: "05", name: "blog", page: true },
 ];
 
 export default function NavBar() {
-  const [active, setActive] = useState("projects");
+  const pathname = usePathname();
+  const [active, setActive] = useState(
+    pathname === "/blog" ? "blog" : links[0].id
+  );
 
   useEffect(() => {
+    if (pathname !== "/") return;
     let raf = 0;
     const update = () => {
       const line = window.innerHeight * 0.4;
       let current = links[0].id;
       for (const { id } of links) {
+        if (id === "blog") continue;
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= line) current = id;
       }
@@ -36,7 +43,7 @@ export default function NavBar() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <nav
@@ -52,7 +59,7 @@ export default function NavBar() {
               </span>
             )}
             <a
-              href={`#${link.id}`}
+              href={link.page ? "/blog" : `${pathname === "/blog" ? "/" : ""}#${link.id}`}
               aria-label={link.name}
               aria-current={active === link.id ? "true" : undefined}
               className={`rounded-full px-2 py-1 font-mono text-[0.65rem] uppercase tracking-widest transition-colors duration-150 sm:px-2.5 sm:text-[0.7rem] ${

@@ -60,7 +60,7 @@ export default function NavBar() {
               </span>
             )}
             <a
-              href={link.page ? "/blog" : `${pathname === "/blog" ? "/" : ""}#${link.id}`}
+              href={link.page ? "/blog" : `${pathname === "/" ? "" : "/"}#${link.id}`}
               aria-label={link.name}
               aria-current={active === link.id ? "true" : undefined}
               className={`rounded-full px-2 py-1 font-mono text-[0.65rem] uppercase tracking-widest transition-colors duration-150 sm:px-2.5 sm:text-[0.7rem] ${

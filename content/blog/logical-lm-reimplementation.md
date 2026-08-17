@@ -2,12 +2,12 @@
 title: Logical-LM: A Complete Reimplementation of Logic Programming with LLMs
 date: 2026-08-17
 readTime: 6 min read
-excerpt: A from-scratch reimplementation of Logic-LM (EMNLP 2023) that translates natural language reasoning into symbolic logic, executes programs with deterministic solvers, and iteratively refines failures. This post covers what works, what doesn't, and how it compares to the original paper.
+excerpt: A from-scratch reimplementation of Logic-LM (EMNLP 2023) that translates natural language reasoning into symbolic logic, executes programs with deterministic solvers, and iteratively refines failures. My notes on what works, what doesn't, and how it compares to the original paper.
 ---
 
 ## Project Overview
 
-Python reimplementation of the Logic-LM paper (arXiv:2305.12295). The LLM translates natural-language reasoning problems into symbolic logic programs. Deterministic solvers execute programs and return letter answers. A self-refinement loop revises failed programs from solver error messages, up to 3 rounds. Core dependencies are z3-solver and pyarrow; LLM backends are optional.
+I reimplemented the Logic-LM paper (arXiv:2305.12295) from scratch in Python. In my pipeline, the LLM translates natural-language reasoning problems into symbolic logic programs. Deterministic solvers execute those programs and return letter answers. A self-refinement loop revises failed programs from solver error messages, up to 3 rounds. Core dependencies are z3-solver and pyarrow; LLM backends are optional.
 
 ## What Makes This Implementation Different
 
@@ -19,7 +19,7 @@ Python reimplementation of the Logic-LM paper (arXiv:2305.12295). The LLM transl
 
 ## Pipeline Architecture
 
-Input is a natural language problem; the LLM generates a logic program; the solver executes it. On failure, the error message is returned to the LLM for program revision, repeated up to 3 times. Backup strategies are random (uniform from answer space) or LLM (precomputed CoT). Metrics are three numbers from the paper: overall accuracy, executable rate, exec-accuracy.
+Input is a natural language problem; the LLM generates a logic program; the solver executes it. On failure, the error message is returned to the LLM for program revision, repeated up to 3 times. I kept the metrics to the three numbers from the paper: overall accuracy, executable rate, exec-accuracy.
 
 ## Dataset Support & Handling
 
@@ -39,7 +39,7 @@ Input is a natural language problem; the LLM generates a logic program; the solv
 
 ## LLM Integration
 
-Adapters for OpenAI (gpt-4o-mini), Anthropic (claude-sonnet-4-5), and Ollama (OpenAI-compatible). MockClient enables offline testing: substring keyed, longest match wins. A factory maps aliases: mock/offline, openai/gpt, claude/anthropic, ollama/local. PromptLibrary reads from prompts/ with [[PLACEHOLDER]] filling (PROBLEM, QUESTION, CHOICES, PROGRAM, ERROR MESSAGE).
+I wrote adapters for OpenAI (gpt-4o-mini), Anthropic (claude-sonnet-4-5), and Ollama (OpenAI-compatible). MockClient enables offline testing: substring keyed, longest match wins. A factory maps aliases: mock/offline, openai/gpt, claude/anthropic, ollama/local. PromptLibrary reads from prompts/ with [[PLACEHOLDER]] filling (PROBLEM, QUESTION, CHOICES, PROGRAM, ERROR MESSAGE).
 
 ## Refinement System
 
@@ -65,7 +65,7 @@ FOLIO "unknown" is a logical verdict, not a solver failure: a three-way split wh
 ## How This Compares to the Original Paper
 
 - Built from scratch (not a fork of teacherpeterpan/logic-llm): Python ≥3.13, uv, z3-solver, five dataset-specific solvers
-- Deliberately diverges from the original paper in places, updated to modern standards rather than a strict reproduction
+- I deliberately diverged from the original paper in places, updated to modern standards rather than a strict reproduction
 - Solver stack: replaced Prover9 binary with hand-written FOL→Z3; Pyke backward-chaining with custom forward-chaining; OR-tools CP-SAT with hand-rolled CSP; AR-LSAT exec subprocess with in-process Z3 (no exec anywhere)
 - FOLIO semantics: fresh uninterpreted sort per example; Z3 unknown treated as execution error with --strict-unknown (the paper had no such guard)
 - Data sources: fetches live from current public sources (BIG-bench, FOLIO GitHub, AR-LSAT GitHub, HF parquet) rather than bundled preprocessed datasets
@@ -74,11 +74,11 @@ FOLIO "unknown" is a logical verdict, not a solver failure: a three-way split wh
 - LLMs: 2023-era GPT-4/OpenAI API → modern defaults (gpt-4o-mini, claude-sonnet-4-5, local Ollama), plus deterministic MockClient
 - Robustness: Unicode-tolerant lexing (∀/∧/¬/⟹ canonicalized); structured SolverError types safe for refinement prompts
 
-## Critical Weaknesses & Gaps
+## Known Weaknesses & Gaps
 
 ## Generation Stage
 
-The fundamental silent failure: the pipeline cannot distinguish semantically correct programs from syntactically valid but wrong ones. No retry on API failures: transient 429 kills the whole run. generate_many exists but is unused; no parallel generation, sequential only. No output caching: regenerating on re-runs costs API money.
+My fundamental silent failure: the pipeline cannot distinguish semantically correct programs from syntactically valid but wrong ones. I added no retry on API failures: a transient 429 kills the whole run. generate_many exists but is unused; generation is sequential only. No output caching: regenerating on re-runs costs API money.
 
 ## Inference Stage: Solver Failure Nodes
 
@@ -112,7 +112,7 @@ Random backup over the full letter space, not per-question options: for 3-object
 - test_strict_unknown_escalates never actually triggers z3 unknown
 - No test for datalog timeout (the most likely hang risk)
 
-## Most Impactful Weaknesses
+## The Weaknesses That Matter Most
 
 - Silent semantic failures (CSP dropped constraints, DSL wrong-sort constants) — solver succeeds on wrong program, no signal
 - FOLIO fidelity gap: Z3 unknown vs Prover9 completeness
@@ -139,18 +139,8 @@ Random backup over the full letter space, not per-question options: for 3-object
 - Download datasets: logiclm download-data
 - Run the full pipeline (requires API key or mock mode): logiclm run --dataset prontoqa --llm mock --output outputs/
 
-## Motivation & Roadmap
-
-The project is not a terminal artifact; it is evidence. The plan is to use the finished project in a professor outreach strategy for a research internship, with applications going out to hundreds of professors once the project is polished — betting on quality and volume together.
-
-The top ~50 professors get highly personalized emails referencing 2-3 of their recent papers and explaining how the project aligns with their work; everyone else gets a scaled, minimally-customized template. The strategy prioritizes evidence of research ability — a public implementation, experiments, ablations, documentation, reproducible code — over cold-emailing with only stated interest.
-
-The framing leads with competency and potential: "if I were the professor, what would I look for" rather than optimizing for the volume of yeses.
-
-Next milestones are to increase dataset size, add KL divergence, and evaluate on a 100-example benchmark.
-
 ## Conclusion
 
-This compact (~2.5K LOC core) reimplementation demonstrates that LLM-based logic programming can be reliable, testable, and reproducible. The deliberate design decisions (no exec, honest unknown handling, fresh sorts, data-level negation) are documented and enforced throughout the codebase. The gaps documented above are known, honest, and tracked as roadmap work rather than blockers. It's a self-contained research system that can reproduce the paper's pipeline end-to-end offline via bundled samples, and against real datasets once an API key is provided. But treat its numbers with care, especially for ProntoQA and ProofWriter.
+I built this compact (~2.5K LOC core) reimplementation to demonstrate that LLM-based logic programming can be reliable, testable, and reproducible. My deliberate design decisions (no exec, honest unknown handling, fresh sorts, data-level negation) are documented and enforced throughout the codebase. The gaps above are known, honest, and tracked as roadmap work rather than blockers. The result is a self-contained research system that reproduces the paper's pipeline end-to-end offline via bundled samples, and against real datasets once an API key is provided. But treat its numbers with care, especially for ProntoQA and ProofWriter.
 
-The full codebase lives at github.com/mohar-xe/Logical-LM.
+The full codebase lives at [github.com/mohar-xe/Logical-LM](https://github.com/mohar-xe/Logical-LM).

@@ -4,7 +4,7 @@ import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
   title: "blog | mohar@portfolio",
-  description: "Notes on retrieval systems, neuro-symbolic AI, and agentic frameworks.",
+  description: "Research notes/blogs and reimplementation details",
 };
 
 const ink =
@@ -22,8 +22,8 @@ export default function BlogPage() {
           blog<span className="text-foreground">.</span>
         </h1>
         <p className="text-lg sm:text-xl leading-[1.65] mt-5 text-foreground/80">
-          Notes on retrieval systems, neuro-symbolic AI, and agentic
-          frameworks.
+          Research notes/blogs and reimplementation
+          details.
         </p>
 
         {posts.length === 0 ? (

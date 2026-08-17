@@ -23,6 +23,22 @@ export async function generateMetadata({
 const ink =
   "underline decoration-1 underline-offset-4 transition-colors duration-150 hover:bg-foreground hover:text-background";
 
+function renderInline(text: string) {
+  const parts = text.split(/\[([^\]]+)\]\(([^)]+)\)/g);
+  return parts.map((part, i) => {
+    if (i % 3 === 0) return part;
+    if (i % 3 === 1) {
+      const href = parts[i + 1];
+      return (
+        <a key={i} href={href} target="_blank" rel="noreferrer" className={ink}>
+          {part}
+        </a>
+      );
+    }
+    return null;
+  });
+}
+
 export default async function PostPage({
   params,
 }: {
@@ -60,7 +76,7 @@ export default async function PostPage({
                   key={i}
                   className="text-[1.4rem] sm:text-[1.5rem] font-black leading-tight mt-12 mb-2"
                 >
-                  {block.text}
+{block.text}
                 </h2>
               );
             }
@@ -71,7 +87,7 @@ export default async function PostPage({
                   className="list-disc pl-6 mt-5 space-y-2 text-lg sm:text-xl leading-[1.65] text-foreground/90"
                 >
                   {block.items.map((item) => (
-                    <li key={item}>{item}</li>
+                    <li key={item}>{renderInline(item)}</li>
                   ))}
                 </ul>
               );
@@ -81,7 +97,7 @@ export default async function PostPage({
                 key={i}
                 className="mt-5 text-lg sm:text-xl leading-[1.65] text-foreground/90 first:mt-0"
               >
-                {block.text}
+                {renderInline(block.text)}
               </p>
             );
           })}

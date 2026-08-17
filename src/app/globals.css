@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -8,11 +10,17 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* Brutalist / motherfuckingwebsite.com tokens — light only */
+/* Brutalist / motherfuckingwebsite.com tokens */
 :root {
   --background: #F5F3EF;
   --foreground: #111111;
   --border: #D4D0C8;
+}
+
+.dark {
+  --background: #141311;
+  --foreground: #F5F3EF;
+  --border: #3A3834;
 }
 
 @media (prefers-reduced-motion: no-preference) {

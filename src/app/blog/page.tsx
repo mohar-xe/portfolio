@@ -26,7 +26,12 @@ export default function BlogPage() {
           frameworks.
         </p>
 
-        {posts.map((post) => (
+        {posts.length === 0 ? (
+          <p className="mt-14 text-lg sm:text-xl leading-[1.65] text-foreground/70">
+            no posts yet — check back soon.
+          </p>
+        ) : (
+          posts.map((post) => (
           <article className="mt-14" key={post.slug}>
             <h2 className="text-[1.2rem] sm:text-[1.3rem] font-bold leading-snug">
               <a href={`/blog/${post.slug}`} className={ink}>
@@ -40,7 +45,8 @@ export default function BlogPage() {
               {post.excerpt}
             </p>
           </article>
-        ))}
+          ))
+        )}
       </main>
 
       <footer className="w-full border-t border-foreground/10 mt-auto pb-24 sm:pb-28">

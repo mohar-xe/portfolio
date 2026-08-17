@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import ThemeToggle from "./ThemeToggle";
 
 const links = [
   { id: "top", num: "00", name: "me" },
@@ -73,6 +74,12 @@ export default function NavBar() {
             </a>
           </li>
         ))}
+        <li className="ml-1.5 flex items-center sm:ml-2.5">
+          <span aria-hidden className="mx-0.5 text-background/30 sm:mx-1">
+            /
+          </span>
+          <ThemeToggle />
+        </li>
       </ul>
     </nav>
   );

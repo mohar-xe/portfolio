@@ -1,5 +1,5 @@
 ---
-title: "Grading Knowledge-Graph Triplets: An Evaluator for a Fine-Tuned Qwen3-0.6B"
+title: Grading Knowledge-Graph Triplets: An Evaluator for a Fine-Tuned Qwen3-0.6B
 date: 2026-05-21
 readTime: 8 min read
 excerpt: An offline-first evaluation harness that scores predicted knowledge-graph triplets against a gold reference set — and what scoring 700 prompts reveals about a fine-tuned Qwen3-0.6B: well-formed output, low fidelity.

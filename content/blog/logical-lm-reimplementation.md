@@ -1,5 +1,5 @@
 ---
-title: "Logical-LM: A Complete Reimplementation of Logic Programming with LLMs"
+title: Logical-LM: A Complete Reimplementation of Logic Programming with LLMs
 date: 2026-08-17
 readTime: 6 min read
 excerpt: A from-scratch reimplementation of Logic-LM (EMNLP 2023) that translates natural language reasoning into symbolic logic, executes programs with deterministic solvers, and iteratively refines failures. This post covers what works, what doesn't, and how it compares to the original paper.

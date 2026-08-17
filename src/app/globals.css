@@ -15,12 +15,14 @@
   --background: #F5F3EF;
   --foreground: #111111;
   --border: #D4D0C8;
+  color-scheme: light;
 }
 
 .dark {
   --background: #141311;
   --foreground: #F5F3EF;
   --border: #3A3834;
+  color-scheme: dark;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -36,5 +38,12 @@
   body {
     @apply bg-background text-foreground;
     font-family: Georgia, 'Times New Roman', Times, serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--foreground);
+    color: var(--background);
   }
 }

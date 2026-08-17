@@ -1,6 +1,6 @@
 ---
 title: Grey: A Research Architecture for Auditable Scientific Discovery
-date: 2026-08-17
+date: 2026-07-26
 readTime: 12 min read
 excerpt: An examination of the Grey research architecture — its strengths as a provenance-preserving hypothesis system, the epistemic gaps in its measurement pillars, and a path toward scientific validation.
 ---

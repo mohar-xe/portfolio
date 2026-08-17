@@ -18,7 +18,7 @@ export interface Post {
 const CONTENT_DIR = path.join(process.cwd(), "content/blog");
 
 function parseFrontmatter(raw: string): { meta: Record<string, string>; body: string } {
-  const match = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/.exec(raw);
+  const match = /^\s*---\n([\s\S]*?)\n---\n?([\s\S]*)$/.exec(raw);
   if (!match) throw new Error("post is missing frontmatter (--- title/date/readTime/excerpt ---)");
   const meta: Record<string, string> = {};
   for (const line of match[1].split("\n")) {
@@ -77,7 +77,10 @@ function loadPost(slug: string): Post | undefined {
 export const posts: Post[] = readdirSync(CONTENT_DIR)
   .filter((f) => f.endsWith(".md") && !f.startsWith("_"))
   .map((f) => loadPost(f.slice(0, -3))!)
-  .sort((a, b) => b.date.localeCompare(a.date));
+  .sort((a, b) => {
+    const diff = new Date(b.date).getTime() - new Date(a.date).getTime();
+    return diff !== 0 ? diff : a.slug.localeCompare(b.slug);
+  });
 
 export function getPost(slug: string): Post | undefined {
   return posts.find((p) => p.slug === slug);

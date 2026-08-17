@@ -119,15 +119,19 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    title: "AI Research Intern",
-    company: "Azmth Lab Pvt. Ltd.",
-    location: "India",
-    period: "July 2026 – Present",
+    title: "AI/ML Research Intern",
+    company: "Azmth Lab Private Limited",
+    location: "Remote",
+    period: "Jul 2026 – Present",
     description:
       "Research and develop proprietary neuro-symbolic AI architectures for advanced reasoning systems.",
     points: [
-      "Prototype, implement and evaluate novel AI architectures by translating SOTA research into experimental code and benchmarking their performance.",
-      "Review and synthesize cutting-edge AI literature and contribute to architecture design and research-driven engineering decisions.",
+      "Investigated recent research in neuro-symbolic AI, compact language models, and edge AI, translating findings into experimental directions for the team's proprietary architecture.",
+      "Prototyped and evaluated research-driven techniques for resource-constrained language models, designing experiments and evaluation protocols to assess architectural trade-offs for edge deployment.",
+      "Productionized a voice-recognition prototype by implementing leveled logging across 7 modules, environment-driven configuration, and hardened SQLite storage with WAL mode and context managers for CI/headless compatibility and concurrent access.",
+      "Reworked heuristic emotion classification and acoustic feature estimation, improving observed real-world accuracy from 64% to 89% through recalibrated arousal/valence gates and revised pitch and speaking-rate algorithms.",
+      "Engineered a multi-format audio ingestion pipeline supporting WAV, FLAC, OGG, and M4A at 16 kHz mono, alongside an 8-scenario synthetic test harness and CLI packaging.",
+      "Collaborated with the founder and core research team on literature review, architecture exploration, hypothesis development, and research-driven engineering decisions.",
     ],
   },
 ];
@@ -140,26 +144,22 @@ export interface Education {
   title: string;
   school: string;
   period: string;
-  description: string;
   coursework: string[];
 }
 
 export const education: Education[] = [
   {
-    title: "B.S. in Data Science",
+    title: "B.S. in Data Science and Applications",
     school: "Indian Institute of Technology Madras",
     period: "2025 – Expected 2029",
-    description:
-      "Online, self-paced program designed for concurrent full-time employment.",
     coursework: [
-      "ML Foundations",
+      "Machine Learning",
       "Deep Learning",
-      "Computer Vision",
-      "DBMS",
+      "Reinforcement Learning",
+      "LLMs",
       "Data Structures & Algorithms",
-      "Operating Systems",
-      "Software Engineering",
-      "Business Analytics",
+      "Databases",
+      "Computer Vision",
     ],
   },
 ];
@@ -208,11 +208,6 @@ export const openSource = {
       title:
         "bug: Router.predict() raises IndexError on scalar embedding input instead of a descriptive ValueError",
       url: "https://github.com/adrida/tracer/issues/69",
-    },
-    {
-      repo: "mohar-xe/csv_cleaner",
-      title: "No output file is saved",
-      url: "https://github.com/mohar-xe/csv_cleaner/issues/1",
     },
   ] as OpenItem[],
 };

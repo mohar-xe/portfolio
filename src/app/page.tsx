@@ -7,6 +7,7 @@ import {
 } from "@/lib/portfolio-data";
 import NavBar from "@/components/NavBar";
 import ContactLinks from "@/components/ContactLinks";
+import { posts } from "@/lib/blog-data";
 
 /* Shared ink-link treatment: underline that inverts on hover */
 const ink =
@@ -28,16 +29,41 @@ export default function Home() {
         <h1 className="text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] font-black leading-[1.1] tracking-[-0.01em] mb-6">
           Mohar Das<span className="text-foreground">.</span>
         </h1>
-        <p className="text-lg sm:text-xl leading-relaxed text-foreground/80">
-          AI Engineer &amp; Researcher — Retrieval Systems &amp; Agentic AI.
-        </p>
         <p className="text-lg sm:text-xl leading-[1.65] mt-5 text-foreground/90">
-          Researching <em>neuro-symbolic</em> architectures at Azmth Lab.
-          Available full-time, immediate start — open to remote roles.
+          I build and investigate AI systems at the intersection of engineering
+          and research, with a focus on LLM reasoning, retrieval, knowledge
+          representation, and reliable AI. I enjoy taking ideas from research
+          papers, implementing them from scratch, stress-testing their
+          assumptions, and turning what I learn into practical systems and
+          experiments.
         </p>
 
         {/* Contact — first thing visitors see */}
         <ContactLinks items={contactItems} />
+
+        {/* Blog preview */}
+        <div className="mt-14">
+          <p className="font-mono text-sm uppercase tracking-widest text-foreground/60">
+            blog
+          </p>
+          <ul className="mt-3 space-y-2 text-lg sm:text-xl leading-[1.65]">
+            {posts.slice(0, 3).map((post) => (
+              <li key={post.slug} className="flex flex-col gap-y-0.5">
+                <a href={`/blog/${post.slug}`} className={ink}>
+                  {post.title}
+                </a>
+                <span className="font-mono text-sm sm:text-base text-foreground/50">
+                  ↳ {post.date}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4">
+            <a href="/blog" className={ink}>
+              all posts ↗
+            </a>
+          </p>
+        </div>
 
         {/* 01. Projects */}
         <h2 id="projects" className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mt-16 sm:mt-24">
@@ -112,9 +138,6 @@ export default function Home() {
             </h3>
             <p className="font-mono text-sm sm:text-base text-foreground/60 mt-1">
               {edu.period} ⏵ {edu.school}
-            </p>
-            <p className="mt-3 text-lg sm:text-xl leading-[1.65] text-foreground/90">
-              {edu.description}
             </p>
             <p className="mt-3 font-mono text-sm sm:text-base text-foreground/60">
               {edu.coursework.join(" · ")}

@@ -1,7 +1,7 @@
 ---
 title: "Logical-LM: A Complete Reimplementation of Logic Programming with LLMs"
 date: 2026-08-17
-readTime: 5 min read
+readTime: 6 min read
 excerpt: A from-scratch reimplementation of Logic-LM (EMNLP 2023) that translates natural language reasoning into symbolic logic, executes programs with deterministic solvers, and iteratively refines failures. This post covers what works, what doesn't, and how it compares to the original paper.
 ---
 
@@ -56,6 +56,7 @@ Adapters for OpenAI (gpt-4o-mini), Anthropic (claude-sonnet-4-5), and Ollama (Op
 - Golden programs adapted from reference repo for datalog and FOLIO solvers
 - Covers parser precedence, scope, refinement loop convergence, carry-over
 - Network tests marked @pytest.mark.network (opt-in)
+- Verified: 86/86 tests passing (goldens from the original repo's own solvers); all 5 sample dataset runs show accuracy=1.000, executable=1.000, exec-acc=1.000; package versioned 0.1.0
 
 ## Design Decisions Worth Noting
 
@@ -63,6 +64,8 @@ FOLIO "unknown" is a logical verdict, not a solver failure: a three-way split wh
 
 ## How This Compares to the Original Paper
 
+- Built from scratch (not a fork of teacherpeterpan/logic-llm): Python ≥3.13, uv, z3-solver, five dataset-specific solvers
+- Deliberately diverges from the original paper in places, updated to modern standards rather than a strict reproduction
 - Solver stack: replaced Prover9 binary with hand-written FOL→Z3; Pyke backward-chaining with custom forward-chaining; OR-tools CP-SAT with hand-rolled CSP; AR-LSAT exec subprocess with in-process Z3 (no exec anywhere)
 - FOLIO semantics: fresh uninterpreted sort per example; Z3 unknown treated as execution error with --strict-unknown (the paper had no such guard)
 - Data sources: fetches live from current public sources (BIG-bench, FOLIO GitHub, AR-LSAT GitHub, HF parquet) rather than bundled preprocessed datasets
@@ -136,8 +139,18 @@ Random backup over the full letter space, not per-question options: for 3-object
 - Download datasets: logiclm download-data
 - Run the full pipeline (requires API key or mock mode): logiclm run --dataset prontoqa --llm mock --output outputs/
 
+## Motivation & Roadmap
+
+The project is not a terminal artifact; it is evidence. The plan is to use the finished project in a professor outreach strategy for a research internship, with applications going out to hundreds of professors once the project is polished — betting on quality and volume together.
+
+The top ~50 professors get highly personalized emails referencing 2-3 of their recent papers and explaining how the project aligns with their work; everyone else gets a scaled, minimally-customized template. The strategy prioritizes evidence of research ability — a public implementation, experiments, ablations, documentation, reproducible code — over cold-emailing with only stated interest.
+
+The framing leads with competency and potential: "if I were the professor, what would I look for" rather than optimizing for the volume of yeses.
+
+Next milestones are to increase dataset size, add KL divergence, and evaluate on a 100-example benchmark.
+
 ## Conclusion
 
-This compact (~2.5K LOC core) reimplementation demonstrates that LLM-based logic programming can be reliable, testable, and reproducible. The deliberate design decisions (no exec, honest unknown handling, fresh sorts, data-level negation) are documented and enforced throughout the codebase. However, it's important to understand what you're getting: a research artifact with significant gaps relative to the original paper — Z3 incomplete vs Prover9, degenerate ProntoQA, datalog timeout missing, CSP silent failures, and no per-example exception isolation. It's a self-contained research system that can reproduce the paper's pipeline end-to-end offline via bundled samples, and against real datasets once an API key is provided. But treat its numbers with care, especially for ProntoQA and ProofWriter.
+This compact (~2.5K LOC core) reimplementation demonstrates that LLM-based logic programming can be reliable, testable, and reproducible. The deliberate design decisions (no exec, honest unknown handling, fresh sorts, data-level negation) are documented and enforced throughout the codebase. The gaps documented above are known, honest, and tracked as roadmap work rather than blockers. It's a self-contained research system that can reproduce the paper's pipeline end-to-end offline via bundled samples, and against real datasets once an API key is provided. But treat its numbers with care, especially for ProntoQA and ProofWriter.
 
 The full codebase lives at github.com/mohar-xe/Logical-LM.

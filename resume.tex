@@ -1,0 +1,155 @@
+\documentclass[letterpaper,11pt]{article}
+
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\setlength{\multicolsep}{-3.0pt}
+\setlength{\columnsep}{-1pt}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\addtolength{\oddsidemargin}{-0.6in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1.19in}
+\addtolength{\topmargin}{-.7in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% --- FIXED SECTION HEADERS ---
+\titleformat{\section}{
+  \scshape\raggedright\large
+}{}{0em}{}[\titlerule]
+\titlespacing*{\section}{0pt}{5pt}{5pt} 
+
+% --- FIXED PADDING FOR MACROS ---
+\newcommand{\resumeItem}[1]{
+  \item\small{#1}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & \textbf{\small #2} \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & \textbf{\small #2}\\
+    \end{tabular*}
+}
+
+\newcommand{\resumeSubItem}[1]{\resumeItem{#1}}
+
+\renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+% --- FIXED PADDING FOR LISTS ---
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}, itemsep=2pt, parsep=0pt, topsep=2pt]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[itemsep=1pt, parsep=0pt, topsep=2pt]}
+\newcommand{\resumeItemListEnd}{\end{itemize}}
+
+\begin{document}
+
+\begin{center}
+    {\Huge \scshape Mohar Das} \\ \vspace{2pt}
+    Kolkata, India $|$ \small +91-9775211066 $|$ \href{mailto:official.mohar.d@gmail.com}{\underline{official.mohar.d@gmail.com}} \\ \vspace{2pt}
+    \href{https://linkedin.com/in/mohardas}{\underline{linkedin.com/in/mohardas}} $|$
+    \href{https://github.com/mohar-xe}{\underline{github.com/mohar-xe}} $|$
+    \href{https://huggingface.co/mohar07}{\underline{huggingface.co/mohar07}}
+\end{center}
+
+\vspace{3pt}
+\textit{\small Self-taught AI/ML engineer --- Retrieval Systems \& Agentic AI. Available full-time, immediate start. Open to remote roles.}
+
+%-----------EXPERIENCE-----------
+\section{Experience}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {AI Research Intern}{July 2026 -- Present}
+      {Azmth Lab Pvt. Ltd.}{India}
+      \resumeItemListStart
+        \resumeItem{Collaborate directly with the founder and core AI team to research and develop proprietary neuro-symbolic AI architectures for advanced reasoning systems.}
+        \resumeItem{Prototype, implement, and evaluate novel AI architectures by translating state-of-the-art research ideas into experimental code and benchmarking their performance.}
+        \resumeItem{Review and synthesize cutting-edge AI literature, document technical findings, and contribute to architecture design and research-driven engineering decisions.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------PROJECTS-----------
+\section{Projects}
+\resumeSubHeadingListStart
+
+    \resumeProjectHeading
+        {\textbf{Hybrid Graph RAG} $|$ \emph{Python, PostgreSQL, pgvector, KuzuDB, FastAPI, Docker}}{\href{https://github.com/mohar-xe/Hybrid-RAG}{GitHub} $|$ \href{https://hybrid-rag-6fnb.onrender.com}{Live Demo}}
+        \resumeItemListStart
+            \resumeItem{Built 8-stage hybrid retrieval pipeline (dense HNSW, BM25, knowledge-graph traversal, Reciprocal Rank Fusion, cross-encoder reranking); HotpotQA ablation (100 queries) showed KG traversal improving Exact Match from 29\% to 52\%, full pipeline reaching \textbf{66\% F1, 80\% answer recall, 82\% Hit@5, 90\% answer-in-context}.}
+            \resumeItem{Developed reproducible evaluation harness (F1, EM, Hit@k, recall, answer-in-context, latency percentiles) with ANN-based entity deduplication; deployed as fully API-only production service with clean error propagation.}
+        \resumeItemListEnd
+
+    \resumeProjectHeading
+        {\textbf{Knowledge Graph Extraction Pipeline} $|$ \emph{Qwen3, LoRA, Unsloth, Hugging Face}}{\href{https://github.com/mohar-xe/HGR_dataset_pipeline}{Dataset} $|$ \href{https://github.com/mohar-xe/finetuning_qwen3}{Fine-tune} $|$ \href{https://github.com/mohar-xe/HGR-finetuned-model-evaluation-pipeline}{Eval}}
+        \resumeItemListStart
+            \resumeItem{Created end-to-end dataset pipeline generating 3,350 instruction-tuning samples across 20 relation types (schema validation, MinHash deduplication, curriculum ordering, hard negatives); fine-tuned Qwen3-0.6B with 4-bit LoRA achieving \textbf{100\% schema adherence and 0.6850 composite score} on multi-axis eval (base model failed structured output entirely).}
+            \resumeItem{Built pure-Python evaluation pipeline with pluggable embedding backends (fastembed, sentence-transformers, lexical fallback) and graceful degradation; exported GGUF models for offline graph population via Ollama.}
+        \resumeItemListEnd
+
+    \resumeProjectHeading
+        {\textbf{Grey --- Agentic Research Framework} $|$ \emph{Python, LangGraph, FastAPI, Anthropic, Groq, Tavily}}{\href{https://github.com/mohar-xe/Grey}{GitHub}}
+        \resumeItemListStart
+            \resumeItem{Architected a 9-agent LangGraph pipeline with qualifier-driven routing and automated critique loops for structured research generation; built metrics-first evaluation suite covering 9 structural scenarios with deterministic synthetic inputs (no LLM calls required).}
+            \resumeItem{Implemented persistent workflow state with error boundaries per node and structured argument validation.}
+        \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------EDUCATION-----------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Indian Institute of Technology Madras}{2025 -- Expected 2029}
+      {B.S. in Data Science and Applications (Online, Self-Paced, No Live Classes)}{India}
+      \resumeItemListStart
+        \resumeItem{Self-paced online program designed for concurrent full-time employment; no on-campus residency requirement.}
+        \resumeItem{Relevant Coursework: Machine Learning Foundations, Deep Learning, Computer Vision, Database Management Systems, Data Structures \& Algorithms, Operating Systems, Software Engineering, Business Analytics}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+%-----------SKILLS-----------
+\section{Technical Skills}
+ \begin{itemize}[leftmargin=0.15in, label={}, parsep=0pt, itemsep=2pt, topsep=2pt]
+    \small{\item{
+     \textbf{Languages:}{ Python, Go, SQL} \\
+     \textbf{Machine Learning:}{ PyTorch, Hugging Face, Unsloth, LoRA/QLoRA, LLM Fine-tuning, Knowledge Graphs, RAG, LangGraph} \\
+     \textbf{Retrieval \& AI:}{ pgvector, BM25, HNSW, Reciprocal Rank Fusion, Cross-encoder Reranking, Agentic AI, Structured Reasoning} \\
+     \textbf{Infrastructure:}{ PostgreSQL, KuzuDB, FastAPI, Docker, Supabase, Ollama} \\
+     \textbf{Libraries \& Tools:}{ sentence-transformers, NumPy, SciPy, Tavily, Typer, Gradio, Streamlit}
+    }}
+ \end{itemize}
+
+\end{document}

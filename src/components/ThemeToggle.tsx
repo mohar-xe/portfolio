@@ -46,7 +46,7 @@ export default function ThemeToggle() {
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="flex items-center gap-1.5 rounded-full border border-background/30 px-2.5 py-1.5 font-mono text-[0.7rem] font-bold uppercase tracking-widest transition-colors duration-150 hover:bg-background hover:text-foreground"
     >
-      <span aria-hidden className="text-sm leading-none">
+      <span aria-hidden className="inline-flex w-4 justify-center text-sm leading-none">
         {isDark ? "☾" : "☀"}
       </span>
       {isDark ? "dark" : "light"}

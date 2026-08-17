@@ -16,7 +16,7 @@ const links = [
 export default function NavBar() {
   const pathname = usePathname();
   const [active, setActive] = useState(
-    pathname === "/blog" ? "blog" : links[0].id
+    pathname.startsWith("/blog") ? "blog" : links[0].id
   );
 
   useEffect(() => {

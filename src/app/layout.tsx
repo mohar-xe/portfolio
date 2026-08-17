@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "mohar@portfolio",
-  description: "A motherfucking website.",
+  description: "Portfolio of Mohar.",
   icons: {
     icon: "/logo.svg",
   },

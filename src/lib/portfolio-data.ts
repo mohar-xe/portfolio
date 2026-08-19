@@ -18,6 +18,20 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Inference Router",
+    description:
+      "Production-grade LLM inference router in Go, sitting between apps and OpenAI-compatible/Anthropic backends. Adaptive routing (EWMA latency / weighted / priority), sliding-window circuit breaking with a zero-allocation hot path (4.8 ns/op), health-gated failover with backoff, multi-dimension token-bucket rate limiting, TTL response caching, SSE streaming that never hangs, config hot-reload preserving breaker state, and dependency-free Prometheus metrics — ~5k stdlib lines, one external dependency (yaml.v3).",
+    tags: ["Go", "Circuit Breaking", "Rate Limiting", "Streaming", "Prometheus"],
+    badge: "FEATURED",
+    links: [
+      {
+        label: "View Project",
+        href: "https://github.com/mohar-xe/inference-router",
+        external: true,
+      },
+    ],
+  },
+  {
     title: "Hybrid Graph RAG",
     description:
       "8-stage hybrid retrieval pipeline fusing dense HNSW, BM25 and knowledge-graph traversal with Reciprocal Rank Fusion + cross-encoder reranking. HotpotQA ablation: KG traversal lifted Exact Match 29% → 52%; full pipeline at 66% F1, 80% answer recall, 82% Hit@5, 90% answer-in-context.",

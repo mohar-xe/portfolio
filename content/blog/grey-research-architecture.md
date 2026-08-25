@@ -19,6 +19,14 @@ Two-tier knowledge retrieval maintains a curated, human-seeded knowledge graph f
 
 The unifying ambition is auditable research output where every claim traces to a source, a measurement, or a simulation.
 
+```mermaid
+flowchart TB
+    P1["Geometric bisociation<br/>cross-domain connections from embedding space"] --> G
+    P2["Simulation-as-judge<br/>warrants tested in minimal formal models"] --> G
+    P3["Two-tier knowledge retrieval<br/>curated KG + flagged web fallback"] --> G
+    G["Auditable research output:<br/>every claim traces to a source,<br/>a measurement, or a simulation"]
+```
+
 ## What I Think Works
 
 I started this project because existing research agents share a central weakness: they let the LLM generate hypotheses, justify them, and assign its own confidence. Grey shifts toward externally inspectable signals.
@@ -37,11 +45,11 @@ The PDF-to-knowledge-graph ingestion pipeline with Obsidian-compatible OKF forma
 
 Writing this up, I found a structural weakness that runs through both new pillars.
 
-I replaced an unvalidated LLM opinion with an unvalidated composite of measurements and called the composite validated. Auditable numbers are not the same as valid numbers. The chain of unvalidated assumptions is now longer, just distributed across more components.
+I replaced an unvalidated LLM opinion with an unvalidated composite of measurements and called the composite validated. **Auditable numbers are not the same as valid numbers.** The chain of unvalidated assumptions is now longer, just distributed across more components.
 
 ## Pillar One: Geometric Bisociation
 
-My load-bearing assumption is that linear interpolation between two concept embeddings corresponds to a semantically meaningful region. I stated this as a geometric fact rather than an opinion — and rereading it, I'm no longer comfortable with that framing.
+My **load-bearing assumption** is that linear interpolation between two concept embeddings corresponds to a semantically meaningful region. I stated this as a geometric fact rather than an opinion — and rereading it, I'm no longer comfortable with that framing.
 
 Embedding distance gives a property of a representation learned by a particular encoder. It does not directly give a property of underlying concepts. Semantic embedding spaces are not guaranteed to be globally Euclidean semantic manifolds.
 
@@ -83,11 +91,11 @@ My own trust hierarchy does not apply to half the evidence feeding the measured 
 
 ## The Epistemic Problems
 
-Simulation results are presented as qualifiers. But simulation can only tell you what a particular model with particular assumptions and parameters produces. It cannot automatically tell you that the original real-world warrant is true. Those are radically different claims.
+Simulation results are presented as qualifiers. But simulation can only tell you what a particular model with particular assumptions and parameters produces. It cannot automatically tell you that the original real-world warrant is true. Those are **radically different claims**.
 
 The qualifier remains a single number. I moved from "LLM confidence equals 0.82" to "geometry plus evidence plus novelty plus simulation equals 0.82". But the second number is not automatically more meaningful. Arbitrary weights have transformed subjective confidence into unvalidated scoring.
 
-Tier 1 is trusted provenance, not truth. A curated graph can contain incorrect papers, outdated results, flawed experiments, correlation mistaken for causation, or retracted claims. Provenance level is not epistemic truth level.
+Tier 1 is trusted provenance, not truth. A curated graph can contain incorrect papers, outdated results, flawed experiments, correlation mistaken for causation, or retracted claims. **Provenance level is not epistemic truth level.**
 
 The formalizer is not just prompt engineering. Translating prose into formal models introduces a huge model-selection bottleneck. I validate the LLM's interpretation of the warrant, not the warrant itself, while believing I validated the warrant.
 
@@ -155,7 +163,7 @@ The path is clear. Ship the safe components now. Falsify Pillar 1 with known-bri
 
 ## Closing
 
-Grey is close to a genuinely interesting research project. Some of its measurements are currently dressed-up heuristics. The strongest path is not to add more agents or more simulation templates. It is to make Grey experimentally answer one hard question.
+Grey is quite a interesting research project. Some of its measurements are currently dressed-up heuristics. The strongest path is not to add more agents or more simulation templates. It is to make Grey experimentally answer one hard question.
 
 When Grey proposes a cross-domain connection, can I demonstrate that its mechanism is more novel, better grounded, more testable, and more likely to survive future evidence than hypotheses produced by existing LLM research agents?
 

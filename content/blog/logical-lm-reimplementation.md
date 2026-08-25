@@ -7,7 +7,7 @@ excerpt: A from-scratch reimplementation of Logic-LM (EMNLP 2023) that translate
 
 ## Project Overview
 
-I reimplemented the Logic-LM paper (arXiv:2305.12295) from scratch in Python. In my pipeline, the LLM translates natural-language reasoning problems into symbolic logic programs. Deterministic solvers execute those programs and return letter answers. A self-refinement loop revises failed programs from solver error messages, up to 3 rounds. Core dependencies are z3-solver and pyarrow; LLM backends are optional.
+I reimplemented the Logic-LM paper (arXiv:2305.12295) from scratch in Python. In my pipeline, the LLM translates natural-language reasoning problems into symbolic logic programs. Deterministic solvers execute those programs and return letter answers. A **self-refinement loop** revises failed programs from solver error messages, up to 3 rounds. Core dependencies are z3-solver and pyarrow; LLM backends are optional.
 
 ## What Makes This Implementation Different
 
@@ -20,6 +20,16 @@ I reimplemented the Logic-LM paper (arXiv:2305.12295) from scratch in Python. In
 ## Pipeline Architecture
 
 Input is a natural language problem; the LLM generates a logic program; the solver executes it. On failure, the error message is returned to the LLM for program revision, repeated up to 3 times. I kept the metrics to the three numbers from the paper: overall accuracy, executable rate, exec-accuracy.
+
+```mermaid
+flowchart LR
+    NL["Natural-language problem"] --> LLM["LLM"]
+    LLM --> LP["Logic program"]
+    LP --> SOLV{"Solver"}
+    SOLV -- "success" --> ANS["Letter answer"]
+    SOLV -- "error" --> ERR["Error message"]
+    ERR -- "revise (up to 3 rounds)" --> LLM
+```
 
 ## Dataset Support & Handling
 
@@ -56,11 +66,11 @@ I wrote adapters for OpenAI (gpt-4o-mini), Anthropic (claude-sonnet-4-5), and Ol
 - Golden programs adapted from reference repo for datalog and FOLIO solvers
 - Covers parser precedence, scope, refinement loop convergence, carry-over
 - Network tests marked @pytest.mark.network (opt-in)
-- Verified: 86/86 tests passing (goldens from the original repo's own solvers); all 5 sample dataset runs show accuracy=1.000, executable=1.000, exec-acc=1.000; package versioned 0.1.0
+- Verified: **86/86 tests passing** (goldens from the original repo's own solvers); all 5 sample dataset runs show accuracy=1.000, executable=1.000, exec-acc=1.000; package versioned 0.1.0
 
 ## Design Decisions Worth Noting
 
-FOLIO "unknown" is a logical verdict, not a solver failure: a three-way split where prove P ∧ ¬C unsat → True (A); P ∧ C unsat → False (B); else Unknown (C). AR-LSAT requires exactly one winner; 0 winners means "no option was entailed/satisfiable"; more than 1 means "ambiguous". The CSP timeout is hardcoded to 20s internally, a minor inconsistency with the CLI's 10s default. refine.py runs the solver twice per failed example, once for collection and once for the error message: harmless redundancy. AR-LSAT repairs Function([...] -> [bool]) work; is_exception wrappers in prompts are not parsed, intentionally.
+FOLIO "unknown" is a **logical verdict, not a solver failure**: a three-way split where prove P ∧ ¬C unsat → True (A); P ∧ C unsat → False (B); else Unknown (C). AR-LSAT requires exactly one winner; 0 winners means "no option was entailed/satisfiable"; more than 1 means "ambiguous". The CSP timeout is hardcoded to 20s internally, a minor inconsistency with the CLI's 10s default. refine.py runs the solver twice per failed example, once for collection and once for the error message: harmless redundancy. AR-LSAT repairs Function([...] -> [bool]) work; is_exception wrappers in prompts are not parsed, intentionally.
 
 ## How This Compares to the Original Paper
 
@@ -114,7 +124,7 @@ Random backup over the full letter space, not per-question options: for 3-object
 
 ## The Weaknesses That Matter Most
 
-- Silent semantic failures (CSP dropped constraints, DSL wrong-sort constants) — solver succeeds on wrong program, no signal
+- **Silent semantic failures** (CSP dropped constraints, DSL wrong-sort constants) — solver succeeds on wrong program, no signal
 - FOLIO fidelity gap: Z3 unknown vs Prover9 completeness
 - Random-backup letter-space mismatch (1/7 vs 1/3 for 3-object LogicalDeduction)
 - No per-example exception isolation — one unexpected solver exception kills entire run

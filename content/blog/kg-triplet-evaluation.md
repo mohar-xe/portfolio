@@ -13,6 +13,15 @@ I kept the whole thing deliberately small: a single evaluator script of roughly 
 
 ## The Pipeline, in Six Stages
 
+```mermaid
+flowchart TD
+    A["validate_schema"] --> B["normalize_triplets"]
+    B --> C["hungarian_algorithm<br/>O(n³) assignment, no SciPy"]
+    C --> D["embedding_matching<br/>exact first, fuzzy gated fallback"]
+    D --> E["final_hallucination_check"]
+    E --> F["scoring<br/>5-axis composite"]
+```
+
 - validate_schema — per-triplet validation: source and target must have string titles and types, the relation must be non-empty, and the weight must live in [0, 1] (bools are explicitly rejected as weights). An empty list is valid; a malformed one is not.
 - normalize_triplets — canonicalize everything before matching: underscores become spaces, whitespace collapses, company/legal suffixes (Ltd, Inc, Corp, GmbH, "., Ltd") are stripped, surrounding punctuation removed. Originals are preserved under `_raw` so nothing is lost.
 - hungarian_algorithm — a self-contained O(n³) Kuhn–Munkres implementation with Jonker–Volgenant potentials, no SciPy dependency. It builds a square cost matrix with dummies and maximizes `align_sim = 0.45·src + 0.45·tgt + 0.10·rel`; pairs below the acceptance threshold (0.50) are rejected outright.
@@ -51,7 +60,7 @@ On the finetuned predictions (string matching, no embeddings):
 
 The story these numbers tell me: the model outputs perfectly valid triplets (schema 1.0, grounding 0.969, hallucination rate 3.3%) but gets the content wrong most of the time. Precision sits at roughly 0.12–0.18, with only ~578 exact full-triplet hits out of 4,278 gold triplets, and entity recall around 0.20 means the model frequently misses entities entirely.
 
-This is the classic well-formed-but-low-fidelity small-model profile: the fine-tune taught the model the shape of a triplet, not the content. It is exactly the case I built the evaluator to catch — a model that looks compliant on the surface and fails on substance.
+This is the classic **well-formed-but-low-fidelity** small-model profile: the fine-tune taught the model **the shape of a triplet, not the content**. It is exactly the case I built the evaluator to catch — a model that looks compliant on the surface and fails on substance.
 
 ## Lessons and Warts
 
@@ -62,4 +71,4 @@ This is the classic well-formed-but-low-fidelity small-model profile: the fine-t
 
 ## Closing
 
-The repo is small, and my main takeaways are simple: the evaluator runs correctly end-to-end, degrades to offline operation as documented, and produced a defensible verdict on my fine-tuned model. The headline finding — that fine-tuning a 0.6B model buys you syntactic compliance without semantic fidelity — is a useful reminder that evaluation harnesses are worth building before, not after, the model lands in production.
+The repo is small, and my main takeaways are simple: the evaluator runs correctly end-to-end, degrades to offline operation as documented, and produced a defensible verdict on my fine-tuned model. The headline finding — that fine-tuning a 0.6B model buys you **syntactic compliance without semantic fidelity** — is a useful reminder that evaluation harnesses are worth building before, not after, the model lands in production.

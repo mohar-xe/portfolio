@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
+import { isValidElement } from "react";
 import { notFound } from "next/navigation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { getPost, posts } from "@/lib/blog-data";
+import Mermaid from "@/components/Mermaid";
 import NavBar from "@/components/NavBar";
 
 export function generateStaticParams() {
@@ -23,21 +27,19 @@ export async function generateMetadata({
 const ink =
   "underline decoration-1 underline-offset-4 transition-colors duration-150 hover:bg-foreground hover:text-background";
 
-function renderInline(text: string) {
-  const parts = text.split(/\[([^\]]+)\]\(([^)]+)\)/g);
-  return parts.map((part, i) => {
-    if (i % 3 === 0) return part;
-    if (i % 3 === 1) {
-      const href = parts[i + 1];
-      return (
-        <a key={i} href={href} target="_blank" rel="noreferrer" className={ink}>
-          {part}
-        </a>
-      );
-    }
-    return null;
-  });
-}
+const prose = {
+  p: "mt-5 text-lg sm:text-xl leading-[1.65] text-foreground/90 first:mt-0",
+  h2: "text-[1.4rem] sm:text-[1.5rem] font-black leading-tight mt-12 mb-2",
+  h3: "text-[1.15rem] sm:text-[1.25rem] font-black leading-tight mt-8 mb-1",
+  ul: "list-disc pl-6 mt-5 space-y-2 text-lg sm:text-xl leading-[1.65] text-foreground/90",
+  ol: "list-decimal pl-6 mt-5 space-y-2 text-lg sm:text-xl leading-[1.65] text-foreground/90",
+  li: "marker:text-foreground/50",
+  blockquote: "border-l-2 border-foreground/30 pl-4 italic text-foreground/80 mt-5",
+  pre: "overflow-x-auto border border-foreground/15 bg-foreground/[0.04] p-4 mt-5 font-mono text-sm sm:text-base leading-relaxed [&_code]:bg-transparent [&_code]:p-0 [&_code]:text-inherit",
+  code: "font-mono text-[0.9em] bg-foreground/10 px-1 py-0.5",
+  img: "max-w-full mt-5",
+  hr: "border-foreground/15 mt-10",
+} as const;
 
 export default async function PostPage({
   params,
@@ -69,38 +71,58 @@ export default async function PostPage({
         </p>
 
         <div className="mt-10">
-          {post.content.map((block, i) => {
-            if (block.type === "h2") {
-              return (
-                <h2
-                  key={i}
-                  className="text-[1.4rem] sm:text-[1.5rem] font-black leading-tight mt-12 mb-2"
-                >
-{block.text}
-                </h2>
-              );
-            }
-            if (block.type === "ul") {
-              return (
-                <ul
-                  key={i}
-                  className="list-disc pl-6 mt-5 space-y-2 text-lg sm:text-xl leading-[1.65] text-foreground/90"
-                >
-                  {block.items.map((item) => (
-                    <li key={item}>{renderInline(item)}</li>
-                  ))}
-                </ul>
-              );
-            }
-            return (
-              <p
-                key={i}
-                className="mt-5 text-lg sm:text-xl leading-[1.65] text-foreground/90 first:mt-0"
-              >
-                {renderInline(block.text)}
-              </p>
-            );
-          })}
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm]}
+            components={{
+              p: ({ children }) => <p className={prose.p}>{children}</p>,
+              h2: ({ children }) => <h2 className={prose.h2}>{children}</h2>,
+              h3: ({ children }) => <h3 className={prose.h3}>{children}</h3>,
+              ul: ({ children }) => <ul className={prose.ul}>{children}</ul>,
+              ol: ({ children }) => <ol className={prose.ol}>{children}</ol>,
+              li: ({ children }) => <li className={prose.li}>{children}</li>,
+              blockquote: ({ children }) => (
+                <blockquote className={prose.blockquote}>{children}</blockquote>
+              ),
+              pre: ({ children }) => {
+                const child = Array.isArray(children) ? children[0] : children;
+                if (
+                  isValidElement<{ className?: string }>(child) &&
+                  child.props.className === "language-mermaid"
+                ) {
+                  return <>{children}</>;
+                }
+                return <pre className={prose.pre}>{children}</pre>;
+              },
+              code: ({ className, children }) =>
+                className === "language-mermaid" ? (
+                  <Mermaid chart={String(children).replace(/\n$/, "")} />
+                ) : (
+                  <code className={prose.code}>{children}</code>
+                ),
+              img: (props) => <img {...props} alt={props.alt ?? ""} className={prose.img} />,
+              hr: () => <hr className={prose.hr} />,
+              a: ({ children, href }) => (
+                <a href={href} target="_blank" rel="noreferrer" className={ink}>
+                  {children}
+                </a>
+              ),
+              table: ({ children }) => (
+                <div className="overflow-x-auto mt-5">
+                  <table className="w-full text-left border-collapse font-mono text-sm sm:text-base">
+                    {children}
+                  </table>
+                </div>
+              ),
+              th: ({ children }) => (
+                <th className="border-b border-foreground/30 px-2 py-1 font-black">{children}</th>
+              ),
+              td: ({ children }) => (
+                <td className="border-b border-foreground/10 px-2 py-1 align-top">{children}</td>
+              ),
+            }}
+          >
+            {post.content}
+          </ReactMarkdown>
         </div>
       </main>
 

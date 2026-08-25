@@ -1,18 +1,13 @@
 import { readdirSync, readFileSync } from "fs";
 import path from "path";
 
-export type PostBlock =
-  | { type: "p"; text: string }
-  | { type: "h2"; text: string }
-  | { type: "ul"; items: string[] };
-
 export interface Post {
   slug: string;
   title: string;
   date: string;
   readTime: string;
   excerpt: string;
-  content: PostBlock[];
+  content: string;
 }
 
 const CONTENT_DIR = path.join(process.cwd(), "content/blog");
@@ -27,32 +22,6 @@ function parseFrontmatter(raw: string): { meta: Record<string, string>; body: st
     meta[line.slice(0, i).trim()] = line.slice(i + 1).trim();
   }
   return { meta, body: match[2].trim() };
-}
-
-function parseBlocks(body: string): PostBlock[] {
-  const blocks: PostBlock[] = [];
-  let list: string[] | null = null;
-  const flush = () => {
-    if (list) {
-      blocks.push({ type: "ul", items: list });
-      list = null;
-    }
-  };
-  for (const line of body.split("\n")) {
-    if (line.startsWith("## ")) {
-      flush();
-      blocks.push({ type: "h2", text: line.slice(3).trim() });
-    } else if (line.startsWith("- ")) {
-      (list ??= []).push(line.slice(2).trim());
-    } else if (line.trim() === "") {
-      flush();
-    } else {
-      flush();
-      blocks.push({ type: "p", text: line.trim() });
-    }
-  }
-  flush();
-  return blocks;
 }
 
 function loadPost(slug: string): Post | undefined {
@@ -70,7 +39,7 @@ function loadPost(slug: string): Post | undefined {
     date: meta.date ?? "",
     readTime: meta.readTime ?? "",
     excerpt: meta.excerpt ?? "",
-    content: parseBlocks(body),
+    content: body,
   };
 }
 

@@ -17,4 +17,15 @@ Everything that is not a heading or a list item is rendered as a paragraph.
 
 ## Keep it brutalist
 
-No bold, no links, no code fences — the renderer only supports paragraphs, subheadings, and lists. That keeps the whole site in one voice.
+Standard markdown is supported (GFM): paragraphs, subheadings, bullet/numbered lists, **bold**, *italics*, `inline code`, fenced code blocks, blockquotes, images, tables, and [links](https://example.com). Use emphasis sparingly — only where a phrase genuinely carries the argument.
+
+## Diagrams
+
+Fenced blocks tagged ```mermaid render as diagrams:
+
+```mermaid
+flowchart LR
+    A["One thing"] --> B["Another thing"]
+```
+
+Not every post needs one. Add a diagram only when it clarifies structure that prose can't.

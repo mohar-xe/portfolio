@@ -21,7 +21,6 @@ export interface SampleHighlights {
 }
 
 export const highlights: SampleHighlights[] = [
-  // ── Sample_1 ──
   {
     sampleId: "Sample_1",
     methods: {
@@ -39,10 +38,10 @@ export const highlights: SampleHighlights[] = [
         { text: "एडिशनल डिस्ट्रिक्ट जज", category: "terminology" },
       ],
       cot: [
-        { text: "सकेत कोर्ट", category: "hallucinations" },
         { text: "वाइटर", category: "hallucinations" },
         { text: "सैक्युलर", category: "hallucinations" },
         { text: "रिसाव", category: "hallucinations" },
+        { text: "रेस्पॉन्डेंट", category: "terminology" },
         { text: "डिवीजन बेंच", category: "wrongLegal" },
         { text: "रिसाव करने वाले", category: "hallucinations" },
       ],
@@ -56,7 +55,6 @@ export const highlights: SampleHighlights[] = [
       { text: "परिपत्र दिनांक 20.06.2020", methods: ["zero", "few", "cot"] },
     ],
   },
-  // ── Sample_2 ──
   {
     sampleId: "Sample_2",
     methods: {
@@ -88,12 +86,12 @@ export const highlights: SampleHighlights[] = [
       { text: "क्रोमाइट अयस्क", methods: ["zero", "few", "cot"] },
     ],
   },
-  // ── Sample_3 ──
   {
     sampleId: "Sample_3",
     methods: {
       zero: [
         { text: "महाराष्ट्र हाईकोर्ट", category: "hallucinations" },
+        { text: "'M' v. 'R'", category: "hallucinations" },
       ],
       few: [
         { text: "महाराष्ट्र हाई कोर्ट", category: "hallucinations" },
@@ -107,7 +105,6 @@ export const highlights: SampleHighlights[] = [
       { text: "अनुच्छेद 21", methods: ["zero", "few", "cot"] },
     ],
   },
-  // ── Sample_4 ──
   {
     sampleId: "Sample_4",
     methods: {
@@ -126,12 +123,11 @@ export const highlights: SampleHighlights[] = [
       ],
     },
     referenceOmissions: [
-      { text: "जस्टिस भारती डांगरे", methods: ["zero", "few", "cot"] },
       { text: "2017", methods: ["zero", "few", "cot"] },
+      { text: "जस्टिस भारती डांगरे", methods: ["zero", "few", "cot"] },
       { text: "ऑक्सफोर्ड डिक्शनरी", methods: ["zero", "few"] },
     ],
   },
-  // ── Sample_5 ──
   {
     sampleId: "Sample_5",
     methods: {
@@ -143,13 +139,15 @@ export const highlights: SampleHighlights[] = [
       ],
       cot: [
         { text: "由被告", category: "hallucinations" },
+        { text: "निष्पादन समझौते", category: "hallucinations" },
       ],
     },
     referenceOmissions: [
       { text: "जस्टिस ज्योति सिंह", methods: ["zero", "few", "cot"] },
+      { text: "आदेश XIII-A", methods: ["zero", "few", "cot"] },
+      { text: "प्रारंभिक रुचि भ्रम", methods: ["zero", "few", "cot"] },
     ],
   },
-  // ── Sample_6 ──
   {
     sampleId: "Sample_6",
     methods: {
@@ -164,6 +162,7 @@ export const highlights: SampleHighlights[] = [
         { text: "हर्पिरीत सिंह", category: "hallucinations" },
         { text: "रविंद्र कौर", category: "hallucinations" },
         { text: "आठ लाख", category: "hallucinations" },
+        { text: "पक्षी", category: "terminology" },
       ],
       cot: [
         { text: "हिमाचल प्रदेश", category: "hallucinations" },
@@ -180,7 +179,6 @@ export const highlights: SampleHighlights[] = [
       { text: "23 लाख", methods: ["few", "cot"] },
     ],
   },
-  // ── Sample_7 ──
   {
     sampleId: "Sample_7",
     methods: {
@@ -208,7 +206,6 @@ export const highlights: SampleHighlights[] = [
       { text: "बेईमान वादियों", methods: ["zero", "few", "cot"] },
     ],
   },
-  // ── Sample_8 ──
   {
     sampleId: "Sample_8",
     methods: {
@@ -237,11 +234,11 @@ export const highlights: SampleHighlights[] = [
       { text: "स्टैंडिंग ऑर्डर 1/88", methods: ["few"] },
     ],
   },
-  // ── Sample_9 ──
   {
     sampleId: "Sample_9",
     methods: {
       zero: [
+        { text: "संयुक्त न्याय के सिद्धांत", category: "hallucinations" },
         { text: "अभियुत", category: "hallucinations" },
       ],
       few: [
@@ -265,7 +262,6 @@ export const highlights: SampleHighlights[] = [
       { text: "जस्टिस दिनेश कुमार शर्मा", methods: ["zero", "few", "cot"] },
     ],
   },
-  // ── Sample_10 ──
   {
     sampleId: "Sample_10",
     methods: {

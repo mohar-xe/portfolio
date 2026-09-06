@@ -4,11 +4,9 @@
     "methods": {
       "zero": {
         "hallucinations": {
-          "count": 3,
+          "count": 1,
           "details": [
-            "\"Saket Hospital\" (actual: PSRI Hospital)",
-            "\"एयरटेकर\" for ventilator (nonsensical)",
-            "Inverted ratio — officer must bear excess charges (actual: employer must pay)"
+            "\"Saket Hospital\" (actual: PSRI Hospital)"
           ]
         },
         "omissions": {
@@ -21,43 +19,28 @@
           ]
         },
         "wrongFacts": {
-          "count": 3,
+          "count": 1,
           "details": [
-            "Hospital name wrong (Saket instead of PSRI)",
-            "Ventilator term wrong (एयरटेकर)",
-            "Inverted legal reasoning"
+            "Hospital name wrong (Saket instead of PSRI)"
           ]
         },
         "wrongLegal": {
-          "count": 1,
-          "details": [
-            "Officer should bear excess charges — inverts the actual ratio"
-          ]
+          "count": 0,
+          "details": []
         },
         "translation": {
-          "count": 3,
-          "details": [
-            "\"एयरटेकर\" for ventilator",
-            "\"बहाल\" for reimburse",
-            "\"एडिशनल डिस्ट्रिक्ट जज\" untranslated"
-          ]
+          "count": 0,
+          "details": []
         },
         "terminology": {
-          "count": 2,
-          "details": [
-            "\"सरकारी आदेश\" for circular",
-            "\"अनुमति\" framing"
-          ]
+          "count": 0,
+          "details": []
         }
       },
       "few": {
         "hallucinations": {
-          "count": 3,
-          "details": [
-            "\"Saket Hospital\" (actual: PSRI Hospital)",
-            "\"कार्यकारी अधिकारी\" for serving officer (means executive)",
-            "\"Division Bench\" for single-judge case"
-          ]
+          "count": 0,
+          "details": []
         },
         "omissions": {
           "count": 4,
@@ -69,33 +52,20 @@
           ]
         },
         "wrongFacts": {
-          "count": 3,
-          "details": [
-            "Hospital name wrong (Saket instead of PSRI)",
-            "\"कार्यकारी अधिकारी\" wrong sense",
-            "Division Bench instead of Single Judge"
-          ]
+          "count": 0,
+          "details": []
         },
         "wrongLegal": {
-          "count": 1,
-          "details": [
-            "Division Bench instead of Single Judge"
-          ]
+          "count": 0,
+          "details": []
         },
         "translation": {
-          "count": 3,
-          "details": [
-            "\"व्रित\" typo for रिट",
-            "\"कार्यकारी\" for serving",
-            "\"रासा\" for राशि"
-          ]
+          "count": 0,
+          "details": []
         },
         "terminology": {
-          "count": 2,
-          "details": [
-            "\"व्रित याचिका\" (typo for रिट)",
-            "\"Division Bench\" mislabel"
-          ]
+          "count": 0,
+          "details": []
         }
       },
       "cot": {
@@ -167,20 +137,17 @@
           ]
         },
         "omissions": {
-          "count": 4,
+          "count": 2,
           "details": [
             "Judge name (Justice Nargal)",
-            "Both SC precedents (Kanta Goel, BSNL v. Tata)",
-            "Estoppel argument (12 years)",
             "Retrospective operation principle"
           ]
         },
         "wrongFacts": {
-          "count": 3,
+          "count": 2,
           "details": [
             "Wrong court — UP instead of J&K",
-            "\"सार्वजनिक तारीख\" for GO",
-            "Judgment date absent/misplaced"
+            "\"सार्वजनिक तारीख\" for GO"
           ]
         },
         "wrongLegal": {
@@ -207,27 +174,23 @@
       },
       "few": {
         "hallucinations": {
-          "count": 4,
+          "count": 3,
           "details": [
-            "\"उत्तर प्रदेश हाईकोर्ट\" (actual: J&K and Ladakh HC)",
             "Fabricated date \"20 अक्टूबर 2023\"",
             "\"एयर फर्नेस\" for arc furnace",
             "Inverted direction of furnace change (induction→arc instead of arc→induction)"
           ]
         },
         "omissions": {
-          "count": 4,
+          "count": 2,
           "details": [
             "Judge name (Justice Nargal)",
-            "Both SC precedents",
-            "Estoppel argument",
             "Retrospective operation principle"
           ]
         },
         "wrongFacts": {
-          "count": 4,
+          "count": 3,
           "details": [
-            "Wrong court — UP instead of J&K",
             "Fabricated judgment date",
             "\"एयर फर्नेस\" for arc furnace",
             "Inverted direction of change"
@@ -268,11 +231,9 @@
           ]
         },
         "omissions": {
-          "count": 4,
+          "count": 2,
           "details": [
             "Judge name (Justice Nargal)",
-            "BSNL v. Tata Communications precedent",
-            "Estoppel argument",
             "Chromite ore reason"
           ]
         },
@@ -364,45 +325,35 @@
       },
       "few": {
         "hallucinations": {
-          "count": 4,
+          "count": 1,
           "details": [
-            "\"महाराष्ट्र हाई कोर्ट\" (actual: Bombay HC)",
-            "No substance points reflected correctly",
-            "Entire summary built on wrong court",
-            "Missing all key legal principles"
+            "\"महाराष्ट्र हाई कोर्ट\" (actual: Bombay HC)"
           ]
         },
         "omissions": {
-          "count": 6,
+          "count": 3,
           "details": [
             "Justices Chandurkar & Joshi-Phalke",
-            "Case title",
             "Desire to work ≠ cruelty",
-            "Article 21 reproductive choice",
-            "Wear-and-tear distinction",
-            "Section 13 HMA"
+            "Article 21 reproductive choice"
           ]
         },
         "wrongFacts": {
-          "count": 3,
+          "count": 1,
           "details": [
-            "Wrong court",
-            "No facts from source reflected",
-            "Summary essentially unrelated to judgment"
+            "Wrong court"
           ]
         },
         "wrongLegal": {
-          "count": 2,
+          "count": 1,
           "details": [
-            "All legal principles missing",
             "Case outcome not accurately stated"
           ]
         },
         "translation": {
-          "count": 2,
+          "count": 1,
           "details": [
-            "Court name wrong",
-            "Legal terms untranslated"
+            "Court name wrong"
           ]
         },
         "terminology": {
@@ -494,10 +445,9 @@
           ]
         },
         "wrongLegal": {
-          "count": 2,
+          "count": 1,
           "details": [
-            "Section 67A species of Section 67 principle missing",
-            "Custodial interrogation rationale missing"
+            "Section 67A species of Section 67 principle missing"
           ]
         },
         "translation": {
@@ -545,10 +495,9 @@
           ]
         },
         "wrongLegal": {
-          "count": 2,
+          "count": 1,
           "details": [
-            "Section 67A species principle missing",
-            "Legislative intent partially missing"
+            "Section 67A species principle missing"
           ]
         },
         "translation": {
@@ -622,10 +571,9 @@
     "methods": {
       "zero": {
         "hallucinations": {
-          "count": 3,
+          "count": 2,
           "details": [
             "Two fabricated judges (actual: Justice Jyoti Singh)",
-            "\"निष्पादन समझौते\" for permanent injunction",
             "Decree stated against plaintiff (actual: against defendants)"
           ]
         },
@@ -663,10 +611,9 @@
           ]
         },
         "terminology": {
-          "count": 3,
+          "count": 2,
           "details": [
             "Wrong judge names",
-            "\"निष्पादन समझौते\" for permanent injunction",
             "Case direction inverted"
           ]
         }
@@ -788,14 +735,12 @@
           ]
         },
         "omissions": {
-          "count": 6,
+          "count": 4,
           "details": [
             "Justices Bahri & Gupta",
             "9 months cohabitation",
             "No child born",
-            "Section 13 HMA (cruelty & desertion)",
-            "Rs. 23 lacs already paid",
-            "Counsel names"
+            "Section 13 HMA (cruelty & desertion)"
           ]
         },
         "wrongFacts": {
@@ -851,12 +796,11 @@
           ]
         },
         "omissions": {
-          "count": 5,
+          "count": 4,
           "details": [
             "Justices Bahri & Gupta",
             "9 months cohabitation",
             "No child born",
-            "Counsel names",
             "Rs. 23 lacs already paid"
           ]
         },
@@ -909,11 +853,10 @@
           ]
         },
         "omissions": {
-          "count": 4,
+          "count": 3,
           "details": [
             "Justices Bahri & Gupta",
             "9 months cohabitation",
-            "Counsel names",
             "Section 13 HMA partially wrong"
           ]
         },
@@ -975,15 +918,12 @@
           ]
         },
         "omissions": {
-          "count": 7,
+          "count": 4,
           "details": [
             "Justice Vikas Bahl",
-            "Prior rejection by ASJ Panipat",
-            "Co-accused Roshan Lal",
             "\"Unscrupulous litigants\" principle",
             "Abuse of process",
-            "Custodial interrogation necessary",
-            "HALSA costs deposit"
+            "Custodial interrogation necessary"
           ]
         },
         "wrongFacts": {
@@ -1039,14 +979,10 @@
           ]
         },
         "omissions": {
-          "count": 6,
+          "count": 2,
           "details": [
             "Justice Vikas Bahl",
-            "Co-accused Roshan Lal",
-            "\"Unscrupulous litigants\" principle",
-            "Abuse of process",
-            "Custodial interrogation",
-            "HALSA costs deposit details"
+            "\"Unscrupulous litigants\" principle"
           ]
         },
         "wrongFacts": {
@@ -1062,10 +998,9 @@
           ]
         },
         "wrongLegal": {
-          "count": 2,
+          "count": 1,
           "details": [
-            "Anticipatory vs regular bail garbled",
-            "Abuse of process missing"
+            "Anticipatory vs regular bail garbled"
           ]
         },
         "translation": {
@@ -1101,12 +1036,11 @@
           ]
         },
         "omissions": {
-          "count": 5,
+          "count": 4,
           "details": [
             "Justice Vikas Bahl",
             "\"Unscrupulous litigants\" principle",
             "Custodial interrogation necessary",
-            "Abuse of process",
             "HALSA costs details"
           ]
         },
@@ -1124,11 +1058,10 @@
           ]
         },
         "wrongLegal": {
-          "count": 3,
+          "count": 2,
           "details": [
             "First petition directions as final order",
-            "Anticipatory vs regular bail garbled",
-            "Abuse of process missing"
+            "Anticipatory vs regular bail garbled"
           ]
         },
         "translation": {
@@ -1172,14 +1105,12 @@
           ]
         },
         "omissions": {
-          "count": 6,
+          "count": 4,
           "details": [
             "Justice Jasmeet Singh",
             "Laxman Thakur (actual applicant)",
             "Custody since 26.02.2022",
-            "No criminal antecedents",
-            "Surrender passport condition",
-            "Counsel names"
+            "No criminal antecedents"
           ]
         },
         "wrongFacts": {
@@ -1236,14 +1167,13 @@
           ]
         },
         "omissions": {
-          "count": 6,
+          "count": 5,
           "details": [
             "Justice Jasmeet Singh",
             "Laxman Thakur",
             "Custody since 26.02.2022",
             "No criminal antecedents",
-            "Bal Mukund precedent",
-            "Counsel names"
+            "Bal Mukund precedent"
           ]
         },
         "wrongFacts": {
@@ -1289,37 +1219,33 @@
       },
       "cot": {
         "hallucinations": {
-          "count": 7,
+          "count": 6,
           "details": [
             "Fabricated applicant \"P.T.N. Aggarwal\" (confusing counsel)",
             "Bail amount wrong (15 lakh vs 25,000 — 60x error)",
             "Fabricated 3-judge bench",
             "\"तालाब\" (pond) for Standing Order",
             "\"संयुक्त राज्य अमेरिका\" (USA) for Union of India",
-            "DK Baidya named as judge",
             "Multiple fabricated details"
           ]
         },
         "omissions": {
-          "count": 6,
+          "count": 4,
           "details": [
             "Justice Jasmeet Singh",
             "Laxman Thakur",
             "Custody since 26.02.2022",
-            "No criminal antecedents",
-            "Surrender passport",
-            "Counsel names"
+            "No criminal antecedents"
           ]
         },
         "wrongFacts": {
-          "count": 9,
+          "count": 8,
           "details": [
             "Applicant name wrong",
             "Bail amount wrong (60x)",
             "Bench wrong (3-judge vs single)",
             "\"तालाब\" for Standing Order",
             "\"संयुक्त राज्य अमेरिका\" for Union of India",
-            "Judge wrong (DK Baidya)",
             "Standing Order wrong",
             "Bail conditions wrong",
             "Legal terms wrong"
@@ -1346,14 +1272,13 @@
           ]
         },
         "terminology": {
-          "count": 7,
+          "count": 6,
           "details": [
             "Wrong applicant",
             "Wrong bail amount",
             "Wrong bench",
             "Wrong Standing Order term",
             "Wrong Union of India term",
-            "Wrong judge",
             "Wrong legal terms"
           ]
         }
@@ -1365,32 +1290,26 @@
     "methods": {
       "zero": {
         "hallucinations": {
-          "count": 4,
+          "count": 3,
           "details": [
             "Fabricated year (2023)",
             "\"अभियुत\" as honorific",
-            "\"संयुक्त न्याय के सिद्धांत\" (joint justice) fabricated",
-            "Fabricated \"वाक्य\" field"
+            "\"संयुक्त न्याय के सिद्धांत\" (joint justice) fabricated"
           ]
         },
         "omissions": {
-          "count": 5,
+          "count": 1,
           "details": [
-            "Justice Dinesh Kumar Sharma",
-            "Petitioner's counsel (Arundhati Katju etc.)",
-            "\"18 months\" detail",
-            "Overnight visitation objection",
-            "Kinri Dhir citation"
+            "Justice Dinesh Kumar Sharma"
           ]
         },
         "wrongFacts": {
-          "count": 5,
+          "count": 4,
           "details": [
             "Year wrong",
             "\"अभियुत\" honorific",
             "Case title direction reversed",
-            "\"संयुक्त न्याय\" fabricated",
-            "\"वाक्य\" field"
+            "\"संयुक्त न्याय\" fabricated"
           ]
         },
         "wrongLegal": {
@@ -1401,49 +1320,36 @@
           ]
         },
         "translation": {
-          "count": 5,
+          "count": 1,
           "details": [
-            "\"गार्डशिप्स पीटिशन\"",
-            "\"विजिटेशन अधिकारों\"",
-            "\"overnight stay\" untranslated",
-            "\"रिस्पॉन्डेंट\"",
-            "\"वाक्य\" for counsel"
+            "\"overnight stay\" untranslated"
           ]
         },
         "terminology": {
-          "count": 5,
-          "details": [
-            "\"गार्डशिप्स पीटिशन\" (should be अभिभावकता याचिका)",
-            "\"विजिटेशन\" (should be मुलाकात अधिकार)",
-            "\"रिस्पॉन्डेंट\" (should be प्रतिवादी)",
-            "\"पक्षी\" (should be पक्षकार)",
-            "\"वाक्य\" (should be अधिवक्ता)"
-          ]
+          "count": 0,
+          "details": []
         }
       },
       "few": {
         "hallucinations": {
-          "count": 3,
+          "count": 2,
           "details": [
             "Fabricated date (20 Feb 2023)",
-            "\"संयुक्त न्याय के सिद्धांत\" fabricated",
-            "Child called \"बेटे\" (son) — actual: daughter"
+            "\"संयुक्त न्याय के सिद्धांत\" fabricated"
           ]
         },
         "omissions": {
-          "count": 4,
+          "count": 3,
           "details": [
             "Justice Dinesh Kumar Sharma",
-            "Petitioner's counsel",
             "4-week timeline",
             "Child Counselor"
           ]
         },
         "wrongFacts": {
-          "count": 4,
+          "count": 3,
           "details": [
             "Fabricated date",
-            "Child as 'बेटे' (son)",
             "Petitioner/respondent reversed (father as petitioner)",
             "\"संयुक्त न्याय\""
           ]
@@ -1456,23 +1362,21 @@
           ]
         },
         "translation": {
-          "count": 5,
+          "count": 4,
           "details": [
             "\"गार्डशिप्स पीटिशन\"",
             "\"विजिटेशन\"",
             "\"overnight stay\" untranslated",
-            "\"Principal Judge\" untranslated",
-            "\"बेटे\" for daughter"
+            "\"Principal Judge\" untranslated"
           ]
         },
         "terminology": {
-          "count": 5,
+          "count": 4,
           "details": [
             "\"गार्डशिप्स पीटिशन\"",
             "\"विजिटेशन\"",
             "\"overnight stay\"",
-            "\"Principal Judge\"",
-            "\"निष्पादित\" for decided"
+            "\"Principal Judge\""
           ]
         }
       },
@@ -1487,12 +1391,10 @@
           ]
         },
         "omissions": {
-          "count": 4,
+          "count": 2,
           "details": [
             "Justice Dinesh Kumar Sharma",
-            "Petitioner's counsel",
-            "4-week timeline",
-            "Kinri Dhir citation"
+            "4-week timeline"
           ]
         },
         "wrongFacts": {
@@ -1555,33 +1457,27 @@
           ]
         },
         "omissions": {
-          "count": 6,
+          "count": 3,
           "details": [
             "Justice Sanjay Kumar Medhi",
-            "E-way bill discrepancy",
-            "Recovery not sine qua non",
-            "Commercial quantity principle",
             "Section 8(c) exception",
             "Counsel names"
           ]
         },
         "wrongFacts": {
-          "count": 8,
+          "count": 6,
           "details": [
             "Date wrong",
             "Court name wrong",
             "\"गिरवी रखने\" for intercepted",
             "Counsel roles reversed",
             "Legal terms wrong",
-            "E-way bill missing",
-            "Section 37 partially wrong",
-            "Interim protection missing"
+            "Section 37 partially wrong"
           ]
         },
         "wrongLegal": {
-          "count": 3,
+          "count": 2,
           "details": [
-            "Recovery not sine qua non missing",
             "Section 8(c) exception missing",
             "Section 37 partially wrong"
           ]
@@ -1622,23 +1518,20 @@
           ]
         },
         "omissions": {
-          "count": 4,
+          "count": 2,
           "details": [
             "Justice Sanjay Kumar Medhi",
-            "Section 8(c) exception",
-            "Rule 67(4) NDPS Rules",
-            "Counsel names"
+            "Rule 67(4) NDPS Rules"
           ]
         },
         "wrongFacts": {
-          "count": 7,
+          "count": 6,
           "details": [
             "Court name wrong (Assam instead of Gauhati)",
             "Date wrong",
             "\"कर्गोंजी\" wrong location",
             "\"अपेक्षा\" for exception",
             "Partial details",
-            "Interim protection missing",
             "Legal terms wrong"
           ]
         },
@@ -1697,7 +1590,7 @@
           ]
         },
         "wrongFacts": {
-          "count": 9,
+          "count": 8,
           "details": [
             "Court wrong (Delhi HC)",
             "\"एमएलसी केस\"",
@@ -1706,7 +1599,6 @@
             "Wrong applicant",
             "Legal terms wrong",
             "Section 37 partially wrong",
-            "Interim protection missing",
             "Multiple other errors"
           ]
         },

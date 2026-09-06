@@ -6,12 +6,6 @@ export type ErrorCategory =
   | "translation"
   | "terminology";
 
-export type SubstanceStatus =
-  | "reflected"
-  | "distorted"
-  | "missing"
-  | "hallucinated";
-
 export interface ErrorDetail {
   count: number;
   details: string[];
@@ -26,18 +20,9 @@ export interface MethodErrors {
   terminology: ErrorDetail;
 }
 
-export interface SubstancePoint {
-  id: string;
-  label: string;
-  zero: SubstanceStatus;
-  few: SubstanceStatus;
-  cot: SubstanceStatus;
-}
-
 export interface SampleErrors {
   sampleId: string;
   methods: { zero: MethodErrors; few: MethodErrors; cot: MethodErrors };
-  substance: SubstancePoint[];
 }
 
 export const errorLabels: Record<ErrorCategory, string> = {
@@ -56,20 +41,6 @@ export const errorColors: Record<ErrorCategory, string> = {
   wrongLegal: "#A855F7",
   translation: "#3B82F6",
   terminology: "#14B8A6",
-};
-
-export const statusColors: Record<SubstanceStatus, string> = {
-  reflected: "#22C55E",
-  distorted: "#F59E0B",
-  missing: "#EF4444",
-  hallucinated: "#991B1B",
-};
-
-export const statusLabels: Record<SubstanceStatus, string> = {
-  reflected: "Reflected",
-  distorted: "Distorted",
-  missing: "Missing",
-  hallucinated: "Hallucinated",
 };
 
 export const errors: SampleErrors[] = [
@@ -228,28 +199,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Delhi High Court", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S2", label: "Justice Rekha Palli", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S3", label: "ADJ Dinesh Kumar", zero: "distorted", few: "distorted", cot: "distorted" },
-      { id: "S4", label: "PSRI Hospital", zero: "hallucinated", few: "hallucinated", cot: "distorted" },
-      { id: "S5", label: "COVID-19, Apr 22 – Jun 7, 2021", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S6", label: "Ventilator 3 weeks", zero: "hallucinated", few: "reflected", cot: "hallucinated" },
-      { id: "S7", label: "Rs. 24,02,380 total bill", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S8", label: "Rs. 7,08,500 reimbursed", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S9", label: "Rs. 16,93,880 balance", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S10", label: "Circular dated 20.06.2020", zero: "distorted", few: "distorted", cot: "hallucinated" },
-      { id: "S11", label: "Pay within 4 weeks", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S12", label: "May recover from hospital", zero: "distorted", few: "reflected", cot: "reflected" },
-      { id: "S13", label: "Court declined circular validity", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S14", label: "Court rejected hospital refund submission", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S15", label: "Randeep Kumar Rana precedent", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S16", label: "Employer must pay, recover from hospital", zero: "hallucinated", few: "reflected", cot: "hallucinated" },
-      { id: "S17", label: "Penal action/recovery left to authorities", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S18", label: "Counsel names", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S19", label: "No beds in empanelled hospitals", zero: "distorted", few: "missing", cot: "missing" },
-      { id: "S20", label: "Hard-earned savings", zero: "missing", few: "missing", cot: "missing" },
-    ],
   },
 
   // ── Sample 2: Industrial Power Connection ──
@@ -409,25 +358,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "J&K and Ladakh HC", zero: "hallucinated", few: "hallucinated", cot: "hallucinated" },
-      { id: "S2", label: "Justice Nargal", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S3", label: "M/s Shree Guru Kripa Alloys", zero: "distorted", few: "reflected", cot: "hallucinated" },
-      { id: "S4", label: "Bari Brahmana, Jammu", zero: "distorted", few: "reflected", cot: "distorted" },
-      { id: "S5", label: "2250 KVA (GO 18.10.1995)", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S6", label: "Ban GO 72-PDD of 2010", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S7", label: "Chromite ore from Orissa", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S8", label: "Permission 2012", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S9", label: "~Rs. 4.5 crores investment", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S10", label: "Withdrawal 28.12.2015", zero: "distorted", few: "reflected", cot: "reflected" },
-      { id: "S11", label: "Ban lifted GO 57-PDD 2022", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S12", label: "Counsel names", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S13", label: "Retrospective operation not permitted", zero: "missing", few: "missing", cot: "hallucinated" },
-      { id: "S14", label: "Executive order, not legislation", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S15", label: "Estoppel (12 years)", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S16", label: "Arc→induction = new connection", zero: "reflected", few: "hallucinated", cot: "reflected" },
-      { id: "S17", label: "Petition dismissed", zero: "reflected", few: "reflected", cot: "reflected" },
-    ],
   },
 
   // ── Sample 3: Wife's Desire to Work ≠ Cruelty ──
@@ -581,21 +511,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Bombay HC", zero: "hallucinated", few: "hallucinated", cot: "hallucinated" },
-      { id: "S2", label: "Justices Chandurkar & Joshi-Phalke", zero: "missing", few: "missing", cot: "hallucinated" },
-      { id: "S3", label: "Case title", zero: "hallucinated", few: "missing", cot: "missing" },
-      { id: "S4", label: "Desire to work ≠ cruelty", zero: "distorted", few: "missing", cot: "distorted" },
-      { id: "S5", label: "Wear-and-tear principle", zero: "missing", few: "missing", cot: "distorted" },
-      { id: "S6", label: "Article 21 reproductive choice", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S7", label: "Cannot be forced to give birth", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S8", label: "Wife's character suspicion defense", zero: "missing", few: "missing", cot: "reflected" },
-      { id: "S9", label: "Wife's reason more probable", zero: "missing", few: "missing", cot: "reflected" },
-      { id: "S10", label: "Desertion not proved", zero: "distorted", few: "missing", cot: "distorted" },
-      { id: "S11", label: "No rude/arrogant behavior", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S12", label: "Appeals dismissed", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S13", label: "Section 13 HMA", zero: "reflected", few: "missing", cot: "distorted" },
-    ],
   },
 
   // ── Sample 4: Nude Video / Section 67A IT Act ──
@@ -753,28 +668,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Bombay HC", zero: "hallucinated", few: "hallucinated", cot: "hallucinated" },
-      { id: "S2", label: "Justice Dangre", zero: "hallucinated", few: "missing", cot: "missing" },
-      { id: "S3", label: "Esrar Nazrul Ahemad", zero: "hallucinated", few: "hallucinated", cot: "hallucinated" },
-      { id: "S4", label: "Anticipatory bail rejected", zero: "hallucinated", few: "distorted", cot: "distorted" },
-      { id: "S5", label: "FIR details", zero: "distorted", few: "reflected", cot: "reflected" },
-      { id: "S6", label: "Section 67A + 354 IPC", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S7", label: "44-year-old, married, two children", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S8", label: "Husband's friend, married", zero: "reflected", few: "distorted", cot: "reflected" },
-      { id: "S9", label: "Consensual relationship → nude video", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S10", label: "Shared on assurance of deletion", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S11", label: "2017 confrontation", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S12", label: "Severed ties", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S13", label: "~3 years later re-contact", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S14", label: "Video circulated", zero: "distorted", few: "reflected", cot: "reflected" },
-      { id: "S15", label: "'Sexually explicit' includes nude video", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S16", label: "Section 67A species of Section 67", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S17", label: "Oxford Dictionary cited", zero: "missing", few: "missing", cot: "reflected" },
-      { id: "S18", label: "Legislative intent: prevent exploitation", zero: "distorted", few: "reflected", cot: "reflected" },
-      { id: "S19", label: "Custodial interrogation necessary", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S20", label: "Counsel names", zero: "missing", few: "missing", cot: "missing" },
-    ],
   },
 
   // ── Sample 5: RAJNIGANDHA Trademark ──
@@ -935,28 +828,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Delhi HC", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S2", label: "Justice Jyoti Singh", zero: "hallucinated", few: "missing", cot: "missing" },
-      { id: "S3", label: "DS Group", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S4", label: "Defendants (Mehio, Mya International)", zero: "distorted", few: "distorted", cot: "distorted" },
-      { id: "S5", label: "RAJNI (1980), RAJNIGANDHA (1983)", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S6", label: "RAJNIPAAN impugned mark", zero: "distorted", few: "distorted", cot: "distorted" },
-      { id: "S7", label: "Well-known mark", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S8", label: "Deceptive similarity; dishonest adoption", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S9", label: "'GANDHA' → 'PAAN'", zero: "missing", few: "missing", cot: "reflected" },
-      { id: "S10", label: "Order XIII-A CPC", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S11", label: "Defendants ex parte", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S12", label: "Infringement + passing off", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S13", label: "Kaviraj Pandit Durga Dutt Sharma", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S14", label: "Initial interest confusion", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S15", label: "Triple identity test", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S16", label: "Allied/cognate goods", zero: "missing", few: "missing", cot: "reflected" },
-      { id: "S17", label: "Rs. 3 lakhs damages", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S18", label: "Actual costs", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S19", label: "Decree against Defendants 1-4", zero: "hallucinated", few: "distorted", cot: "distorted" },
-      { id: "S20", label: "Permanent injunction", zero: "hallucinated", few: "hallucinated", cot: "distorted" },
-    ],
   },
 
   // ── Sample 6: Divorce — Cruelty & Desertion ──
@@ -1145,22 +1016,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Punjab and Haryana HC", zero: "hallucinated", few: "hallucinated", cot: "hallucinated" },
-      { id: "S2", label: "Justices Bahri & Gupta", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S3", label: "Case title / FAO-M-182/2017", zero: "hallucinated", few: "hallucinated", cot: "hallucinated" },
-      { id: "S4", label: "Nov 2012 marriage", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S5", label: "9 months cohabitation; no child", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S6", label: "Section 13 HMA; cruelty & desertion", zero: "distorted", few: "missing", cot: "distorted" },
-      { id: "S7", label: "ADJ Patiala dismissed May 2017", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S8", label: "False allegations against father-in-law", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S9", label: "False, not challaned", zero: "distorted", few: "missing", cot: "missing" },
-      { id: "S10", label: "Numerous false complaints", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S11", label: "Appeal allowed; divorce 13(ia)+(ib)", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S12", label: "Rs. 18,00,000 alimony", zero: "reflected", few: "hallucinated", cot: "hallucinated" },
-      { id: "S13", label: "Rs. 23 lacs already paid", zero: "reflected", few: "missing", cot: "reflected" },
-      { id: "S14", label: "Counsel names", zero: "missing", few: "missing", cot: "missing" },
-    ],
   },
 
   // ── Sample 7: Successive Anticipatory Bail ──
@@ -1359,25 +1214,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Punjab and Haryana HC", zero: "hallucinated", few: "hallucinated", cot: "hallucinated" },
-      { id: "S2", label: "Justice Vikas Bahl", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S3", label: "Bhunesh v State", zero: "distorted", few: "distorted", cot: "distorted" },
-      { id: "S4", label: "FIR details", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S5", label: "First petition withdrawn", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S6", label: "10-day surrender promise", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S7", label: "ASJ Panipat rejection", zero: "missing", few: "reflected", cot: "missing" },
-      { id: "S8", label: "Second petition after 10 days", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S9", label: "Co-accused Roshan Lal", zero: "missing", few: "missing", cot: "reflected" },
-      { id: "S10", label: "Forged affidavit", zero: "reflected", few: "distorted", cot: "reflected" },
-      { id: "S11", label: "Anticipatory ≠ regular bail", zero: "reflected", few: "reflected", cot: "distorted" },
-      { id: "S12", label: '"Unscrupulous litigants"', zero: "missing", few: "missing", cot: "missing" },
-      { id: "S13", label: "Abuse of process", zero: "distorted", few: "distorted", cot: "distorted" },
-      { id: "S14", label: "Dismissed + Rs. 50,000 costs", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S15", label: "Custodial interrogation necessary", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S16", label: "HALSA", zero: "reflected", few: "distorted", cot: "reflected" },
-      { id: "S17", label: "Petitioner = main accused", zero: "reflected", few: "reflected", cot: "reflected" },
-    ],
   },
 
   // ── Sample 8: NDPS Bail / Faulty Sample ──
@@ -1583,24 +1419,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Delhi HC", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S2", label: "Justice Jasmeet Singh", zero: "hallucinated", few: "missing", cot: "missing" },
-      { id: "S3", label: "Laxman Thakur", zero: "hallucinated", few: "missing", cot: "hallucinated" },
-      { id: "S4", label: "FIR 0021/2022, NDPS", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S5", label: "Ganja quantities", zero: "distorted", few: "distorted", cot: "distorted" },
-      { id: "S6", label: "Contents mixed", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S7", label: "Standing Order 1/88", zero: "reflected", few: "reflected", cot: "hallucinated" },
-      { id: "S8", label: "Bal Mukund precedent", zero: "distorted", few: "missing", cot: "hallucinated" },
-      { id: "S9", label: "Section 37 not applicable", zero: "reflected", few: "reflected", cot: "distorted" },
-      { id: "S10", label: "Bail granted", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S11", label: "Custody since 26.02.2022", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S12", label: "No criminal antecedents", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S13", label: "Bail conditions", zero: "distorted", few: "reflected", cot: "distorted" },
-      { id: "S14", label: "Report to PS first Monday", zero: "hallucinated", few: "reflected", cot: "missing" },
-      { id: "S15", label: "Surrender passport", zero: "missing", few: "reflected", cot: "missing" },
-      { id: "S16", label: "Counsel names", zero: "missing", few: "missing", cot: "missing" },
-    ],
   },
 
   // ── Sample 9: Family Court Bias / Transfer ──
@@ -1782,31 +1600,6 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Delhi HC", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S2", label: "Justice Dinesh Kumar Sharma", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S3", label: "Aditi Bakht v. Abhishek Ahuja", zero: "distorted", few: "distorted", cot: "reflected" },
-      { id: "S4", label: "Petitioner = mother", zero: "reflected", few: "hallucinated", cot: "reflected" },
-      { id: "S5", label: "Respondent = father", zero: "reflected", few: "hallucinated", cot: "reflected" },
-      { id: "S6", label: "Minor child (daughter)", zero: "reflected", few: "hallucinated", cot: "hallucinated" },
-      { id: "S7", label: "Family Court Judge Sanjeev Kumar Singh", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S8", label: "Guardianship Petition No. 8/2021", zero: "missing", few: "reflected", cot: "distorted" },
-      { id: "S9", label: "Three impugned order dates", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S10", label: "Judge shared personal mobile", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S11", label: "Judge met respondent in chamber", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S12", label: '"Justice must appear to have been done"', zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S13", label: "Mere apprehension of bias suffices", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S14", label: "Mere adverse orders not sufficient", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S15", label: "Child with mother 18 months", zero: "missing", few: "reflected", cot: "reflected" },
-      { id: "S16", label: "Overnight separation harmful", zero: "distorted", few: "reflected", cot: "reflected" },
-      { id: "S17", label: "All orders set aside", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S18", label: "Transferred to Principal Judge", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S19", label: "Decide within 4 weeks", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S20", label: "Child Counselor", zero: "reflected", few: "missing", cot: "hallucinated" },
-      { id: "S21", label: "Mother travel June 2022", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S22", label: "Passport deferred", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S23", label: "Counsel names", zero: "distorted", few: "distorted", cot: "distorted" },
-    ],
   },
 
   // ── Sample 10: NDPS Bail / Organized Crime ──
@@ -2015,28 +1808,5 @@ export const errors: SampleErrors[] = [
         },
       },
     },
-    substance: [
-      { id: "S1", label: "Gauhati HC", zero: "distorted", few: "hallucinated", cot: "hallucinated" },
-      { id: "S2", label: "Justice Sanjay Kumar Medhi", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S3", label: "Amal Das v. State of Assam", zero: "distorted", few: "distorted", cot: "hallucinated" },
-      { id: "S4", label: "Amal Das / ANM / Hematech PoA", zero: "distorted", few: "reflected", cot: "hallucinated" },
-      { id: "S5", label: "NDPS Sections 21(c)/29", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S6", label: "44,160 bottles, 276 cartons", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S7", label: "Truck intercepted", zero: "hallucinated", few: "reflected", cot: "distorted" },
-      { id: "S8", label: "E-way bill discrepancy", zero: "missing", few: "reflected", cot: "reflected" },
-      { id: "S9", label: "Document anomalies", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S10", label: "Nalini Drugs denied ordering", zero: "distorted", few: "reflected", cot: "reflected" },
-      { id: "S11", label: "Organized crime principle", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S12", label: "Recovery not sine qua non", zero: "missing", few: "reflected", cot: "missing" },
-      { id: "S13", label: "Commercial quantity", zero: "distorted", few: "reflected", cot: "distorted" },
-      { id: "S14", label: "Section 37 not satisfied", zero: "missing", few: "reflected", cot: "distorted" },
-      { id: "S15", label: "Bail rejected", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S16", label: "Interim protection cancelled", zero: "missing", few: "reflected", cot: "missing" },
-      { id: "S17", label: "IO directed to investigate", zero: "reflected", few: "reflected", cot: "reflected" },
-      { id: "S18", label: "Section 8(c) exception", zero: "missing", few: "distorted", cot: "missing" },
-      { id: "S19", label: "Rule 67(4)", zero: "missing", few: "missing", cot: "missing" },
-      { id: "S20", label: "GST ≠ NDPS argument", zero: "distorted", few: "reflected", cot: "missing" },
-      { id: "S21", label: "Counsel A M Bora", zero: "missing", few: "missing", cot: "missing" },
-    ],
   },
 ];

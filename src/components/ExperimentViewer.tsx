@@ -5,11 +5,8 @@ import type { Sample } from "@/lib/experiment-data";
 import {
   errors,
   type ErrorCategory,
-  type SubstanceStatus,
   errorLabels,
   errorColors,
-  statusColors,
-  statusLabels,
 } from "@/lib/experiment-errors";
 import {
   highlights,
@@ -259,64 +256,9 @@ function ErrorAnnotations({ sampleIdx, method }: { sampleIdx: number; method: Me
   );
 }
 
-function SubstanceFacts({ sampleIdx }: { sampleIdx: number }) {
-  const [expanded, setExpanded] = useState(false);
-  const sampleErrors = errors[sampleIdx];
-  if (!sampleErrors) return null;
-
-  return (
-    <div className="mt-4 pt-3 border-t border-foreground/10">
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="font-mono text-[0.65rem] uppercase tracking-widest text-foreground/50 hover:text-foreground/80 transition-colors w-full text-left"
-      >
-        {expanded ? "−" : "+"} Source facts ({sampleErrors.substance.length})
-      </button>
-
-      {expanded && (
-        <div className="mt-2 space-y-1">
-          {sampleErrors.substance.map((fact) => (
-            <div key={fact.id} className="flex items-start gap-2 text-xs">
-              <span className="font-mono text-foreground/40 shrink-0 w-6">
-                {fact.id}
-              </span>
-              <span className="text-foreground/70 flex-1 min-w-0">
-                {fact.label}
-              </span>
-              <span className="flex gap-1 shrink-0">
-                {methodKeys.map((m) => (
-                  <span
-                    key={m}
-                    className="w-2 h-2 rounded-full inline-block"
-                    style={{ backgroundColor: statusColors[fact[m]] }}
-                    title={`${methodLabels[m]}: ${statusLabels[fact[m]]}`}
-                  />
-                ))}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 function Legend() {
   return (
     <div className="flex flex-wrap gap-x-5 gap-y-2 text-[0.6rem] font-mono text-foreground/50 mb-6">
-      <span className="uppercase tracking-widest">Status:</span>
-      {(["reflected", "distorted", "missing", "hallucinated"] as SubstanceStatus[]).map(
-        (s) => (
-          <span key={s} className="inline-flex items-center gap-1">
-            <span
-              className="w-2 h-2 rounded-full inline-block"
-              style={{ backgroundColor: statusColors[s] }}
-            />
-            {statusLabels[s]}
-          </span>
-        )
-      )}
-      <span className="text-foreground/20">|</span>
       <span className="uppercase tracking-widest">Errors:</span>
       {errorCategories.map((cat) => (
         <span key={cat} className="inline-flex items-center gap-1">
@@ -390,7 +332,6 @@ export default function ExperimentViewer({ data }: { data: Sample[] }) {
               sample.hiReference
             )}
           </div>
-          <SubstanceFacts sampleIdx={selected} />
         </div>
 
         {/* Output columns with error annotations */}

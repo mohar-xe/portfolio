@@ -21,21 +21,17 @@ export interface SampleHighlights {
 }
 
 export const highlights: SampleHighlights[] = [
-  // ── Sample 1: COVID-19 Reimbursement ──
+  // ── Sample_1 ──
   {
     sampleId: "Sample_1",
     methods: {
       zero: [
         { text: "सकेत हॉस्पिटल", category: "hallucinations" },
         { text: "रासा", category: "translation" },
-        { text: "अज्ञात", category: "wrongFacts" },
         { text: "डिवीजन बेंच", category: "wrongLegal" },
         { text: "व्रित", category: "translation" },
-        { text: "अनुभवी वकील", category: "omissions" },
-        { text: "सरकारी आदेश", category: "terminology" },
       ],
       few: [
-        { text: "सकेत हॉस्पिटल", category: "hallucinations" },
         { text: "एयरटेकर", category: "hallucinations" },
         { text: "अज्ञात", category: "wrongFacts" },
         { text: "अनुभवी वकील", category: "omissions" },
@@ -47,7 +43,6 @@ export const highlights: SampleHighlights[] = [
         { text: "वाइटर", category: "hallucinations" },
         { text: "सैक्युलर", category: "hallucinations" },
         { text: "रिसाव", category: "hallucinations" },
-        { text: "रेस्पॉन्डेंट", category: "terminology" },
         { text: "डिवीजन बेंच", category: "wrongLegal" },
         { text: "रिसाव करने वाले", category: "hallucinations" },
       ],
@@ -61,8 +56,7 @@ export const highlights: SampleHighlights[] = [
       { text: "परिपत्र दिनांक 20.06.2020", methods: ["zero", "few", "cot"] },
     ],
   },
-
-  // ── Sample 2: Industrial Power Connection ──
+  // ── Sample_2 ──
   {
     sampleId: "Sample_2",
     methods: {
@@ -92,18 +86,14 @@ export const highlights: SampleHighlights[] = [
     referenceOmissions: [
       { text: "जस्टिस वसीम सादिक नर्गल", methods: ["zero", "few", "cot"] },
       { text: "क्रोमाइट अयस्क", methods: ["zero", "few", "cot"] },
-      { text: "BSNL बनाम टाटा कम्युनिकेशंस", methods: ["zero", "few", "cot"] },
-      { text: "12 साल", methods: ["zero", "few", "cot"] },
     ],
   },
-
-  // ── Sample 3: Wife's Desire to Work ──
+  // ── Sample_3 ──
   {
     sampleId: "Sample_3",
     methods: {
       zero: [
         { text: "महाराष्ट्र हाईकोर्ट", category: "hallucinations" },
-        { text: "'M' v. 'R'", category: "hallucinations" },
       ],
       few: [
         { text: "महाराष्ट्र हाई कोर्ट", category: "hallucinations" },
@@ -113,14 +103,11 @@ export const highlights: SampleHighlights[] = [
       ],
     },
     referenceOmissions: [
-      { text: "जस्टिस अतुल चंदूरकर", methods: ["zero", "few", "cot"] },
       { text: "जस्टिस उर्मिला जोशी-फाल्के", methods: ["zero", "few", "cot"] },
       { text: "अनुच्छेद 21", methods: ["zero", "few", "cot"] },
-      { text: "प्रजनन अधिकार", methods: ["zero", "few", "cot"] },
     ],
   },
-
-  // ── Sample 4: Nude Video / Section 67A ──
+  // ── Sample_4 ──
   {
     sampleId: "Sample_4",
     methods: {
@@ -128,7 +115,6 @@ export const highlights: SampleHighlights[] = [
         { text: "महान्यादिलत न्यायालय", category: "hallucinations" },
         { text: "Uzair Kazi", category: "hallucinations" },
         { text: "गिरफ्तार किया गया", category: "hallucinations" },
-        { text: "जस्टिस शिंदे", category: "hallucinations" },
       ],
       few: [
         { text: "महाराष्ट्र हाई कोर्ट", category: "hallucinations" },
@@ -141,37 +127,29 @@ export const highlights: SampleHighlights[] = [
     },
     referenceOmissions: [
       { text: "जस्टिस भारती डांगरे", methods: ["zero", "few", "cot"] },
-      { text: "एसआर नजरुल अहमद", methods: ["zero", "few", "cot"] },
       { text: "2017", methods: ["zero", "few", "cot"] },
       { text: "ऑक्सफोर्ड डिक्शनरी", methods: ["zero", "few"] },
     ],
   },
-
-  // ── Sample 5: RAJNIGANDHA Trademark ──
+  // ── Sample_5 ──
   {
     sampleId: "Sample_5",
     methods: {
       zero: [
-        { text: "निष्पादन समझौते", category: "hallucinations" },
-        { text: "दो न्यायाधीश", category: "hallucinations" },
+        { text: "न्यायमूर्ति एन. आर. सुब्रह्मण्यम", category: "hallucinations" },
       ],
       few: [
         { text: "निष्पादन समझौते", category: "hallucinations" },
       ],
       cot: [
         { text: "由被告", category: "hallucinations" },
-        { text: "निष्पादन समझौते", category: "hallucinations" },
       ],
     },
     referenceOmissions: [
       { text: "जस्टिस ज्योति सिंह", methods: ["zero", "few", "cot"] },
-      { text: "ऑर्डर XIII-A", methods: ["zero", "few", "cot"] },
-      { text: "प्रारंभिक हित भ्रम", methods: ["zero", "few", "cot"] },
-      { text: "तिहरी पहचान परीक्षा", methods: ["zero", "few", "cot"] },
     ],
   },
-
-  // ── Sample 6: Divorce — Cruelty & Desertion ──
+  // ── Sample_6 ──
   {
     sampleId: "Sample_6",
     methods: {
@@ -186,7 +164,6 @@ export const highlights: SampleHighlights[] = [
         { text: "हर्पिरीत सिंह", category: "hallucinations" },
         { text: "रविंद्र कौर", category: "hallucinations" },
         { text: "आठ लाख", category: "hallucinations" },
-        { text: "पक्षी", category: "terminology" },
       ],
       cot: [
         { text: "हिमाचल प्रदेश", category: "hallucinations" },
@@ -203,8 +180,7 @@ export const highlights: SampleHighlights[] = [
       { text: "23 लाख", methods: ["few", "cot"] },
     ],
   },
-
-  // ── Sample 7: Successive Anticipatory Bail ──
+  // ── Sample_7 ──
   {
     sampleId: "Sample_7",
     methods: {
@@ -219,7 +195,6 @@ export const highlights: SampleHighlights[] = [
         { text: "हरियाणा हाई कोर्ट", category: "hallucinations" },
         { text: "पूर्व आतंक बails", category: "translation" },
         { text: "भुनेश सिंह", category: "hallucinations" },
-        { text: "वाक्य", category: "terminology" },
       ],
       cot: [
         { text: "हरीयाणा हाईकोर्ट", category: "hallucinations" },
@@ -231,11 +206,9 @@ export const highlights: SampleHighlights[] = [
     referenceOmissions: [
       { text: "जस्टिस विकास बहल", methods: ["zero", "few", "cot"] },
       { text: "बेईमान वादियों", methods: ["zero", "few", "cot"] },
-      { text: "रोशन लाल", methods: ["zero", "few", "cot"] },
     ],
   },
-
-  // ── Sample 8: NDPS Bail / Faulty Sample ──
+  // ── Sample_8 ──
   {
     sampleId: "Sample_8",
     methods: {
@@ -255,33 +228,24 @@ export const highlights: SampleHighlights[] = [
         { text: "पीटी.एन. एगgarwal", category: "hallucinations" },
         { text: "तालाब", category: "hallucinations" },
         { text: "संयुक्त राज्य अमेरिका", category: "hallucinations" },
-        { text: "15लाख", category: "wrongFacts" },
+        { text: "15 लाख", category: "wrongFacts" },
       ],
     },
     referenceOmissions: [
       { text: "जस्टिस जसमीत सिंह", methods: ["zero", "few", "cot"] },
       { text: "लक्ष्मण ठाकुर", methods: ["zero", "few", "cot"] },
       { text: "स्टैंडिंग ऑर्डर 1/88", methods: ["few"] },
-      { text: "26.02.2022", methods: ["zero", "few", "cot"] },
     ],
   },
-
-  // ── Sample 9: Family Court Bias / Transfer ──
+  // ── Sample_9 ──
   {
     sampleId: "Sample_9",
     methods: {
       zero: [
-        { text: "संयुक्त न्याय के सिद्धांत", category: "hallucinations" },
         { text: "अभियुत", category: "hallucinations" },
-        { text: "गार्डशिप्स पीटिशन", category: "terminology" },
-        { text: "विजिटेशन अधिकारों", category: "terminology" },
-        { text: "रिस्पॉन्डेंट", category: "terminology" },
-        { text: "पक्षी", category: "terminology" },
-        { text: "वाक्य", category: "terminology" },
       ],
       few: [
         { text: "संयुक्त न्याय के सिद्धांत", category: "hallucinations" },
-        { text: "बेटे", category: "hallucinations" },
         { text: "गार्डशिप्स पीटिशन", category: "terminology" },
         { text: "विजिटेशन", category: "terminology" },
         { text: "overnight stay", category: "terminology" },
@@ -299,20 +263,16 @@ export const highlights: SampleHighlights[] = [
     },
     referenceOmissions: [
       { text: "जस्टिस दिनेश कुमार शर्मा", methods: ["zero", "few", "cot"] },
-      { text: "अरुंधति कात्जू", methods: ["zero", "few", "cot"] },
-      { text: "18 महीने", methods: ["zero", "cot"] },
-      { text: "किनरी धीर", methods: ["zero", "few", "cot"] },
     ],
   },
-
-  // ── Sample 10: NDPS Bail / Organized Crime ──
+  // ── Sample_10 ──
   {
     sampleId: "Sample_10",
     methods: {
       zero: [
         { text: "गिरवी रखने", category: "hallucinations" },
         { text: "बाहरी न्यायाधीश", category: "hallucinations" },
-        { text: "05 अप्रैल 2022", category: "hallucinations" },
+        { text: "05 अप्रैल, 2022", category: "hallucinations" },
       ],
       few: [
         { text: "असम हाई कोर्ट", category: "hallucinations" },
@@ -327,10 +287,7 @@ export const highlights: SampleHighlights[] = [
       ],
     },
     referenceOmissions: [
-      { text: "जस्टिस संजय कुमार मेहदी", methods: ["zero", "few", "cot"] },
       { text: "गुवाहाटी हाईकोर्ट", methods: ["few", "cot"] },
-      { text: "Rule 67(4)", methods: ["zero", "few", "cot"] },
-      { text: "A M बोरा", methods: ["zero", "few", "cot"] },
     ],
   },
 ];

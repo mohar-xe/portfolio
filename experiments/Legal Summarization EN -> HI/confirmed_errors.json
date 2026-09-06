@@ -9724,6 +9724,350 @@
       "claimedError": "Wrong bail term",
       "verdict": "confirmed",
       "spanFoundInOutput": null
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "zero",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"रासा\" for राशि (amount)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "zero",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"व्रित\" for रिट (writ)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "zero",
+      "category": "wrongLegal",
+      "kind": "annotation_detail",
+      "claimedError": "Division Bench instead of Single Judge",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "few",
+      "category": "hallucinations",
+      "kind": "annotation_detail",
+      "claimedError": "\"एयरटेकर\" for ventilator (nonsensical)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "few",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Bench stated as unknown (अज्ञात)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "few",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"सरकारी आदेश\" for परिपत्र (circular)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "few",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"एडिशनल डिस्ट्रिक्ट जज\" untranslated",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Ventilator term wrong (वाइटर)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Circular mistranslated as सैक्युलर",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Reimbursement mistranslated as रिसाव",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"वाइटर\" for ventilator",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"सैक्युलर\" for circular",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"रिसाव\" for reimbursement",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "Cyrillic script bleed (респॉн्डेंट)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"सैक्युलर\" for परिपत्र/सर्कुलर",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"रिसाव\" for reimbursement/respondents",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_1",
+      "method": "cot",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"डिवीजन बेंच\" for single judge",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "zero",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Wrong court — UP instead of J&K",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "zero",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "\"सार्वजनिक तारीख\" for Government Order",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "zero",
+      "category": "wrongLegal",
+      "kind": "annotation_detail",
+      "claimedError": "Missing retrospective-operation principle",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "zero",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"सार्वजनिक तारीख\" for Government Order",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "zero",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"चार्टर\" for circular",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "zero",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"व्राइट पेटिशन\" for writ petition",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "zero",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"सार्वजनिक तारीख\" for GO",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "zero",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"चार्टर\" for circular",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "few",
+      "category": "hallucinations",
+      "kind": "annotation_detail",
+      "claimedError": "Inverted direction of furnace change",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "few",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Wrong date (20 Oct 2023)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "few",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "\"संपूर्णता से\" for supersession",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "few",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "\"बैन\" untranslated",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "few",
+      "category": "wrongLegal",
+      "kind": "annotation_detail",
+      "claimedError": "Retrospective principle garbled",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "few",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"संपूर्णता से\" for supersession",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "few",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"बैन\" for ban/banned",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Wrong court — UP instead of J&K",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Fabricated petitioner name (Mashruq Ali Khan)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "Fabricated title (Joint Secretary)",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "wrongFacts",
+      "kind": "annotation_detail",
+      "claimedError": "\"पश्चिमोत्तर\" for retrospective",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "wrongLegal",
+      "kind": "annotation_detail",
+      "claimedError": "Retrospective principle garbled",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"पश्चिमोत्तर\" for retrospective",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"विषय धारण\" for entertained",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "translation",
+      "kind": "annotation_detail",
+      "claimedError": "\"व्याख्यान\" for construed",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"पश्चिमोत्तर\" for retrospective effect",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"संयुक्त सचिव\" for Designated Committee",
+      "verdict": "confirmed"
+    },
+    {
+      "sampleId": "Sample_2",
+      "method": "cot",
+      "category": "terminology",
+      "kind": "annotation_detail",
+      "claimedError": "\"विषय धारण\" for entertained",
+      "verdict": "confirmed"
     }
   ]
 }

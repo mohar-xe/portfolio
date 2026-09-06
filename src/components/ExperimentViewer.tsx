@@ -3,16 +3,19 @@
 import { useState, useMemo } from "react";
 import type { Sample } from "@/lib/experiment-data";
 import {
-  errors,
-  type ErrorCategory,
+  getSectionsForSample,
+  type TaggedSection,
+  type AnnotationDetail,
+  type ReferenceOmission,
+} from "@/lib/experiment-data";
+import {
+  parseTaggedText,
   errorLabels,
   errorColors,
-} from "@/lib/experiment-errors";
-import {
-  highlights,
-  type TextHighlight,
-  type ReferenceOmission,
-} from "@/lib/experiment-highlights";
+  errorCategories,
+  type ErrorCategory,
+  type TaggedPart,
+} from "@/lib/tag-parser";
 
 const methodKeys = ["zero", "few", "cot"] as const;
 type MethodKey = (typeof methodKeys)[number];
@@ -23,61 +26,24 @@ const methodLabels: Record<MethodKey, string> = {
   cot: "CoT",
 };
 
-const errorCategories: ErrorCategory[] = [
-  "hallucinations",
-  "omissions",
-  "wrongFacts",
-  "wrongLegal",
-  "translation",
-  "terminology",
-];
+const verdictLabels: Record<string, string> = {
+  confirmed: "confirmed",
+  partially_confirmed: "partial",
+  confirmed_with_rendering_bug: "render bug",
+  debunked: "debunked",
+  debunked_misattributed: "misattributed",
+};
 
-function HighlightedText({
-  text,
-  highlightsList,
-}: {
-  text: string;
-  highlightsList: TextHighlight[];
-}) {
-  const parts = useMemo(() => {
-    if (highlightsList.length === 0) return [{ text, category: null }];
+const verdictColors: Record<string, string> = {
+  confirmed: "#22C55E",
+  partially_confirmed: "#F59E0B",
+  confirmed_with_rendering_bug: "#A855F7",
+  debunked: "#EF4444",
+  debunked_misattributed: "#EF4444",
+};
 
-    const sorted = [...highlightsList].sort(
-      (a, b) => b.text.length - a.text.length
-    );
-
-    const result: { text: string; category: ErrorCategory | null }[] = [];
-    let remaining = text;
-
-    while (remaining.length > 0) {
-      let earliestIdx = Infinity;
-      let earliestHL: TextHighlight | null = null;
-
-      for (const hl of sorted) {
-        const idx = remaining.indexOf(hl.text);
-        if (idx !== -1 && idx < earliestIdx) {
-          earliestIdx = idx;
-          earliestHL = hl;
-        }
-      }
-
-      if (earliestHL && earliestIdx !== Infinity) {
-        if (earliestIdx > 0) {
-          result.push({ text: remaining.slice(0, earliestIdx), category: null });
-        }
-        result.push({
-          text: remaining.slice(earliestIdx, earliestIdx + earliestHL.text.length),
-          category: earliestHL.category,
-        });
-        remaining = remaining.slice(earliestIdx + earliestHL.text.length);
-      } else {
-        result.push({ text: remaining, category: null });
-        break;
-      }
-    }
-
-    return result;
-  }, [text, highlightsList]);
+function TaggedText({ taggedText }: { taggedText: string }) {
+  const parts = useMemo(() => parseTaggedText(taggedText), [taggedText]);
 
   return (
     <>
@@ -103,6 +69,51 @@ function HighlightedText({
   );
 }
 
+function OmissionPart({
+  part,
+  methods,
+}: {
+  part: TaggedPart;
+  methods: ("zero" | "few" | "cot")[] | null;
+}) {
+  if (!methods) return <span>{part.text}</span>;
+  return (
+    <mark
+      className="rounded-sm px-0.5 bg-amber-400/20 border-b-2 border-amber-500"
+      title={`Omitted by: ${methods.map((m) => methodLabels[m]).join(", ")}`}
+    >
+      {part.text}
+    </mark>
+  );
+}
+
+function findOmissionParts(
+  text: string,
+  omissions: ReferenceOmission[]
+): TaggedPart[] {
+  if (omissions.length === 0) return [{ text, category: null }];
+
+  const parts: TaggedPart[] = [];
+  let remaining = text;
+
+  for (const om of omissions) {
+    const idx = remaining.indexOf(om.missingText);
+    if (idx === -1) continue;
+
+    if (idx > 0) {
+      parts.push({ text: remaining.slice(0, idx), category: null });
+    }
+    parts.push({ text: om.missingText, category: "omissions" });
+    remaining = remaining.slice(idx + om.missingText.length);
+  }
+
+  if (remaining.length > 0) {
+    parts.push({ text: remaining, category: null });
+  }
+
+  return parts.length > 0 ? parts : [{ text, category: null }];
+}
+
 function ReferenceText({
   text,
   omissions,
@@ -110,77 +121,62 @@ function ReferenceText({
   text: string;
   omissions: ReferenceOmission[];
 }) {
-  const parts = useMemo(() => {
-    const sorted = [...omissions].sort((a, b) => b.text.length - a.text.length);
-
-    const result: {
-      text: string;
-      methods: ("zero" | "few" | "cot")[] | null;
-    }[] = [];
-    let remaining = text;
-
-    while (remaining.length > 0) {
-      let earliestIdx = Infinity;
-      let earliestOmit: ReferenceOmission | null = null;
-
-      for (const om of sorted) {
-        const idx = remaining.indexOf(om.text);
-        if (idx !== -1 && idx < earliestIdx) {
-          earliestIdx = idx;
-          earliestOmit = om;
-        }
-      }
-
-      if (earliestOmit && earliestIdx !== Infinity) {
-        if (earliestIdx > 0) {
-          result.push({
-            text: remaining.slice(0, earliestIdx),
-            methods: null,
-          });
-        }
-        result.push({
-          text: remaining.slice(
-            earliestIdx,
-            earliestIdx + earliestOmit.text.length
-          ),
-          methods: earliestOmit.methods,
-        });
-        remaining = remaining.slice(
-          earliestIdx + earliestOmit.text.length
-        );
+  const methodsByText = useMemo(() => {
+    const map = new Map<string, ("zero" | "few" | "cot")[]>();
+    for (const om of omissions) {
+      const existing = map.get(om.missingText);
+      const method = om.claimedError.includes("zero")
+        ? "zero"
+        : om.claimedError.includes("few")
+          ? "few"
+          : om.claimedError.includes("cot")
+            ? "cot"
+            : ("zero" as const);
+      if (existing) {
+        if (!existing.includes(method)) existing.push(method);
       } else {
-        result.push({ text: remaining, methods: null });
-        break;
+        map.set(om.missingText, [method]);
       }
     }
+    return map;
+  }, [omissions]);
 
-    return result;
-  }, [text, omissions]);
+  const parts = useMemo(
+    () => findOmissionParts(text, omissions),
+    [text, omissions]
+  );
 
   return (
     <>
-      {parts.map((part, i) =>
-        part.methods ? (
-          <mark
-            key={i}
-            className="rounded-sm px-0.5 bg-amber-400/20 border-b-2 border-amber-500"
-            title={`Omitted by: ${part.methods.map((m) => methodLabels[m]).join(", ")}`}
-          >
-            {part.text}
-          </mark>
-        ) : (
-          <span key={i}>{part.text}</span>
-        )
-      )}
+      {parts.map((part, i) => (
+        <OmissionPart
+          key={i}
+          part={part}
+          methods={
+            part.category ? (methodsByText.get(part.text) ?? ["zero", "few", "cot"]) : null
+          }
+        />
+      ))}
     </>
   );
 }
 
-function ErrorAnnotations({ sampleIdx, method }: { sampleIdx: number; method: MethodKey }) {
+function ErrorAnnotations({
+  details,
+}: {
+  details: AnnotationDetail[];
+}) {
   const [openCats, setOpenCats] = useState<Set<ErrorCategory>>(new Set());
-  const sampleErrors = errors[sampleIdx];
-  if (!sampleErrors) return null;
-  const methodErrors = sampleErrors.methods[method];
+
+  const grouped = useMemo(() => {
+    const map = new Map<ErrorCategory, AnnotationDetail[]>();
+    for (const d of details) {
+      const cat = d.category;
+      if (!map.has(cat)) map.set(cat, []);
+      map.get(cat)!.push(d);
+    }
+    return map;
+  }, [details]);
 
   const toggle = (cat: ErrorCategory) => {
     setOpenCats((prev) => {
@@ -191,10 +187,7 @@ function ErrorAnnotations({ sampleIdx, method }: { sampleIdx: number; method: Me
     });
   };
 
-  const totalErrors = errorCategories.reduce(
-    (sum, cat) => sum + methodErrors[cat].count,
-    0
-  );
+  const totalErrors = details.length;
 
   return (
     <div className="mt-4 pt-3 border-t border-foreground/10">
@@ -204,8 +197,8 @@ function ErrorAnnotations({ sampleIdx, method }: { sampleIdx: number; method: Me
 
       <div className="flex flex-wrap gap-1.5 mt-2">
         {errorCategories.map((cat) => {
-          const count = methodErrors[cat].count;
-          if (count === 0) return null;
+          const items = grouped.get(cat);
+          if (!items || items.length === 0) return null;
           const isOpen = openCats.has(cat);
           return (
             <button
@@ -218,7 +211,7 @@ function ErrorAnnotations({ sampleIdx, method }: { sampleIdx: number; method: Me
                 border: `1px solid ${errorColors[cat]}${isOpen ? "60" : "30"}`,
               }}
             >
-              {isOpen ? "−" : "+"} {errorLabels[cat]}: {count}
+              {isOpen ? "−" : "+"} {errorLabels[cat]}: {items.length}
             </button>
           );
         })}
@@ -227,8 +220,8 @@ function ErrorAnnotations({ sampleIdx, method }: { sampleIdx: number; method: Me
       <div className="mt-2 space-y-3">
         {errorCategories.map((cat) => {
           if (!openCats.has(cat)) return null;
-          const detail = methodErrors[cat];
-          if (detail.details.length === 0) return null;
+          const items = grouped.get(cat);
+          if (!items || items.length === 0) return null;
           return (
             <div key={cat}>
               <p
@@ -238,13 +231,23 @@ function ErrorAnnotations({ sampleIdx, method }: { sampleIdx: number; method: Me
                 {errorLabels[cat]}
               </p>
               <ul className="space-y-0.5">
-                {detail.details.map((d, i) => (
+                {items.map((d, i) => (
                   <li key={i} className="text-xs text-foreground/70 pl-3 relative">
                     <span
                       className="absolute left-0 top-[0.45em] w-1 h-1 rounded-full"
-                      style={{ backgroundColor: errorColors[cat] }}
+                      style={{
+                        backgroundColor: verdictColors[d.verdict] ?? errorColors[cat],
+                      }}
                     />
-                    {d}
+                    <span className="font-mono text-[0.55rem] mr-1 opacity-60">
+                      [{verdictLabels[d.verdict] ?? d.verdict}]
+                    </span>
+                    {d.claimedError}
+                    {d.explanation && (
+                      <span className="text-foreground/40 ml-1">
+                        — {d.explanation}
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -278,7 +281,12 @@ export default function ExperimentViewer({ data }: { data: Sample[] }) {
   const [showHighlights, setShowHighlights] = useState(true);
   const sample = data[selected];
 
-  const sampleHL = highlights[selected];
+  const sections = getSectionsForSample(sample.sampleId);
+
+  const refSection = sections.find((s) => s.method === "hiReference");
+  const zeroSection = sections.find((s) => s.method === "zero");
+  const fewSection = sections.find((s) => s.method === "few");
+  const cotSection = sections.find((s) => s.method === "cot");
 
   return (
     <div className="mt-10">
@@ -323,10 +331,10 @@ export default function ExperimentViewer({ data }: { data: Sample[] }) {
             HI Reference
           </h3>
           <div className="text-sm sm:text-base leading-relaxed text-foreground/90 whitespace-pre-wrap">
-            {showHighlights && sampleHL ? (
+            {showHighlights && refSection ? (
               <ReferenceText
-                text={sample.hiReference}
-                omissions={sampleHL.referenceOmissions}
+                text={refSection.originalText}
+                omissions={refSection.referenceOmissions}
               />
             ) : (
               sample.hiReference
@@ -337,26 +345,25 @@ export default function ExperimentViewer({ data }: { data: Sample[] }) {
         {/* Output columns with error annotations */}
         {(
           [
-            { key: "zeroShot" as const, method: "zero" as MethodKey },
-            { key: "fewShot" as const, method: "few" as MethodKey },
-            { key: "cot" as const, method: "cot" as MethodKey },
+            { key: "zeroShot" as const, method: "zero" as MethodKey, section: zeroSection },
+            { key: "fewShot" as const, method: "few" as MethodKey, section: fewSection },
+            { key: "cot" as const, method: "cot" as MethodKey, section: cotSection },
           ] as const
-        ).map(({ key, method }) => (
+        ).map(({ key, method, section }) => (
           <div key={key} className="flex flex-col">
             <h3 className="font-mono text-xs uppercase tracking-widest text-foreground/50 mb-2 border-b border-foreground/10 pb-2">
               {methodLabels[method]}
             </h3>
             <div className="text-sm sm:text-base leading-relaxed text-foreground/90 whitespace-pre-wrap">
-              {showHighlights && sampleHL ? (
-                <HighlightedText
-                  text={sample[key]}
-                  highlightsList={sampleHL.methods[method]}
-                />
+              {showHighlights && section ? (
+                <TaggedText taggedText={section.taggedText} />
               ) : (
                 sample[key]
               )}
             </div>
-            <ErrorAnnotations sampleIdx={selected} method={method} />
+            {section && (
+              <ErrorAnnotations details={section.annotationDetails} />
+            )}
           </div>
         ))}
       </div>

@@ -4,6 +4,7 @@ import { useState, useMemo } from "react";
 import type { Sample } from "@/lib/experiment-data";
 import {
   getSectionsForSample,
+  getErrorCounts,
   type TaggedSection,
   type AnnotationDetail,
   type ReferenceOmission,
@@ -162,23 +163,20 @@ function ReferenceText({
 }
 
 function ErrorAnnotations({
-  taggedText,
+  sampleId,
+  method,
   details,
 }: {
-  taggedText: string;
+  sampleId: string;
+  method: string;
   details: AnnotationDetail[];
 }) {
   const [openCats, setOpenCats] = useState<Set<ErrorCategory>>(new Set());
 
-  const tagCounts = useMemo(() => {
-    const parts = parseTaggedText(taggedText);
-    const counts = new Map<ErrorCategory, number>();
-    for (const p of parts) {
-      if (!p.category) continue;
-      counts.set(p.category, (counts.get(p.category) ?? 0) + 1);
-    }
-    return counts;
-  }, [taggedText]);
+  const pillCounts = useMemo(
+    () => getErrorCounts(sampleId, method),
+    [sampleId, method]
+  );
 
   const detailsByCat = useMemo(() => {
     const map = new Map<ErrorCategory, AnnotationDetail[]>();
@@ -199,7 +197,7 @@ function ErrorAnnotations({
     });
   };
 
-  const totalErrors = [...tagCounts.values()].reduce((a, b) => a + b, 0);
+  const totalErrors = [...pillCounts.values()].reduce((a, b) => a + b, 0);
 
   return (
     <div className="mt-4 pt-3 border-t border-foreground/10">
@@ -209,7 +207,7 @@ function ErrorAnnotations({
 
       <div className="flex flex-wrap gap-1.5 mt-2">
         {errorCategories.map((cat) => {
-          const count = tagCounts.get(cat) ?? 0;
+          const count = pillCounts.get(cat) ?? 0;
           if (count === 0) return null;
           const isOpen = openCats.has(cat);
           return (
@@ -375,7 +373,8 @@ export default function ExperimentViewer({ data }: { data: Sample[] }) {
             </div>
             {section && (
               <ErrorAnnotations
-                taggedText={section.taggedText}
+                sampleId={sample.sampleId}
+                method={method}
                 details={section.annotationDetails}
               />
             )}

@@ -2,6 +2,7 @@ import type { ErrorCategory } from "./tag-parser";
 
 import taggedFinal from "../../experiments/Legal Summarization EN -> HI/tagged_final.json";
 import samplesExtracted from "../../experiments/Legal Summarization EN -> HI/samples_extracted.json";
+import confirmedErrors from "../../experiments/Legal Summarization EN -> HI/confirmed_errors.json";
 
 export type Verdict =
   | "confirmed"
@@ -78,3 +79,18 @@ export const experiments: Sample[] = Object.entries(samplesExtracted)
     fewShot: data.fewShot,
     cot: data.cot,
   }));
+
+export function getErrorCounts(
+  sampleId: string,
+  method: string
+): Map<ErrorCategory, number> {
+  const counts = new Map<ErrorCategory, number>();
+  for (const e of confirmedErrors.confirmedErrors) {
+    if (e.sampleId !== sampleId || e.method !== method) continue;
+    if (e.verdict === "debunked" || e.verdict === "debunked_misattributed")
+      continue;
+    const cat = e.category as ErrorCategory;
+    counts.set(cat, (counts.get(cat) ?? 0) + 1);
+  }
+  return counts;
+}

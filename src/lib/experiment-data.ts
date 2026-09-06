@@ -94,3 +94,34 @@ export function getErrorCounts(
   }
   return counts;
 }
+
+export interface ConfirmedError {
+  sampleId: string;
+  method: string;
+  category: ErrorCategory;
+  claimedError: string;
+  verdict: string;
+  explanation: string;
+}
+
+export function getErrorDetails(
+  sampleId: string,
+  method: string
+): ConfirmedError[] {
+  return confirmedErrors.confirmedErrors
+    .filter(
+      (e) =>
+        e.sampleId === sampleId &&
+        e.method === method &&
+        e.verdict !== "debunked" &&
+        e.verdict !== "debunked_misattributed"
+    )
+    .map((e) => ({
+      sampleId: e.sampleId,
+      method: e.method,
+      category: e.category as ErrorCategory,
+      claimedError: e.claimedError,
+      verdict: e.verdict,
+      explanation: e.explanation ?? "",
+    }));
+}

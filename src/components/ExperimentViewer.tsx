@@ -5,9 +5,9 @@ import type { Sample } from "@/lib/experiment-data";
 import {
   getSectionsForSample,
   getErrorCounts,
-  type TaggedSection,
-  type AnnotationDetail,
+  getErrorDetails,
   type ReferenceOmission,
+  type ConfirmedError,
 } from "@/lib/experiment-data";
 import {
   parseTaggedText,
@@ -165,11 +165,9 @@ function ReferenceText({
 function ErrorAnnotations({
   sampleId,
   method,
-  details,
 }: {
   sampleId: string;
   method: string;
-  details: AnnotationDetail[];
 }) {
   const [openCats, setOpenCats] = useState<Set<ErrorCategory>>(new Set());
 
@@ -178,15 +176,20 @@ function ErrorAnnotations({
     [sampleId, method]
   );
 
+  const allDetails = useMemo(
+    () => getErrorDetails(sampleId, method),
+    [sampleId, method]
+  );
+
   const detailsByCat = useMemo(() => {
-    const map = new Map<ErrorCategory, AnnotationDetail[]>();
-    for (const d of details) {
+    const map = new Map<ErrorCategory, ConfirmedError[]>();
+    for (const d of allDetails) {
       const cat = d.category;
       if (!map.has(cat)) map.set(cat, []);
       map.get(cat)!.push(d);
     }
     return map;
-  }, [details]);
+  }, [allDetails]);
 
   const toggle = (cat: ErrorCategory) => {
     setOpenCats((prev) => {
@@ -375,7 +378,6 @@ export default function ExperimentViewer({ data }: { data: Sample[] }) {
               <ErrorAnnotations
                 sampleId={sample.sampleId}
                 method={method}
-                details={section.annotationDetails}
               />
             )}
           </div>

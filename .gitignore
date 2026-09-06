@@ -50,5 +50,16 @@ test
 prompt
 
 server.log
-# Skills directory
-/skills/
+
+# experiments (local only, except samples_extracted.json and tagged_final.json)
+experiments/**/Data/
+experiments/**/outputs/
+experiments/**/manual_eval/
+experiments/**/manual_eval_scores.csv
+experiments/**/manual_report.md
+experiments/**/annotations_raw.json
+experiments/**/confirmed_errors.json
+experiments/**/debunked_errors.json
+experiments/**/highlights_raw.json
+experiments/**/verification_index.json
+experiments/**/tagged_final.md

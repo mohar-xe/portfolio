@@ -162,13 +162,25 @@ function ReferenceText({
 }
 
 function ErrorAnnotations({
+  taggedText,
   details,
 }: {
+  taggedText: string;
   details: AnnotationDetail[];
 }) {
   const [openCats, setOpenCats] = useState<Set<ErrorCategory>>(new Set());
 
-  const grouped = useMemo(() => {
+  const tagCounts = useMemo(() => {
+    const parts = parseTaggedText(taggedText);
+    const counts = new Map<ErrorCategory, number>();
+    for (const p of parts) {
+      if (!p.category) continue;
+      counts.set(p.category, (counts.get(p.category) ?? 0) + 1);
+    }
+    return counts;
+  }, [taggedText]);
+
+  const detailsByCat = useMemo(() => {
     const map = new Map<ErrorCategory, AnnotationDetail[]>();
     for (const d of details) {
       const cat = d.category;
@@ -187,7 +199,7 @@ function ErrorAnnotations({
     });
   };
 
-  const totalErrors = details.length;
+  const totalErrors = [...tagCounts.values()].reduce((a, b) => a + b, 0);
 
   return (
     <div className="mt-4 pt-3 border-t border-foreground/10">
@@ -197,8 +209,8 @@ function ErrorAnnotations({
 
       <div className="flex flex-wrap gap-1.5 mt-2">
         {errorCategories.map((cat) => {
-          const items = grouped.get(cat);
-          if (!items || items.length === 0) return null;
+          const count = tagCounts.get(cat) ?? 0;
+          if (count === 0) return null;
           const isOpen = openCats.has(cat);
           return (
             <button
@@ -211,7 +223,7 @@ function ErrorAnnotations({
                 border: `1px solid ${errorColors[cat]}${isOpen ? "60" : "30"}`,
               }}
             >
-              {isOpen ? "−" : "+"} {errorLabels[cat]}: {items.length}
+              {isOpen ? "−" : "+"} {errorLabels[cat]}: {count}
             </button>
           );
         })}
@@ -220,7 +232,7 @@ function ErrorAnnotations({
       <div className="mt-2 space-y-3">
         {errorCategories.map((cat) => {
           if (!openCats.has(cat)) return null;
-          const items = grouped.get(cat);
+          const items = detailsByCat.get(cat);
           if (!items || items.length === 0) return null;
           return (
             <div key={cat}>
@@ -362,7 +374,10 @@ export default function ExperimentViewer({ data }: { data: Sample[] }) {
               )}
             </div>
             {section && (
-              <ErrorAnnotations details={section.annotationDetails} />
+              <ErrorAnnotations
+                taggedText={section.taggedText}
+                details={section.annotationDetails}
+              />
             )}
           </div>
         ))}

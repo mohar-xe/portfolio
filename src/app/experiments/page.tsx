@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
-import { experiments } from "@/lib/experiment-data";
-import ExperimentViewer from "@/components/ExperimentViewer";
+import { experiments } from "@/lib/experiments-registry";
 import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
   title: "experiments | mohar@portfolio",
-  description:
-    "Legal summarization experiments — EN to HI, zero/few/CoT vs reference",
+  description: "AI/ML experiments and evaluations",
 };
+
+const ink =
+  "underline decoration-1 underline-offset-4 transition-colors duration-150 hover:bg-foreground hover:text-background";
 
 export default function ExperimentsPage() {
   return (
@@ -21,12 +22,43 @@ export default function ExperimentsPage() {
           experiments<span className="text-foreground">.</span>
         </h1>
         <p className="text-lg sm:text-xl leading-[1.65] mt-5 text-foreground/80">
-          Legal summarization — English to Hindi. Comparing zero-shot, few-shot,
-          and chain-of-thought prompting against the HI reference on 10 samples
-          from the MILDSum dataset using Qwen3.5-4B (Q4_K_M).
+          Hands-on evaluations, stress tests, and reimplementations of AI
+          systems — taking ideas from papers and turning them into something
+          I can break.
         </p>
 
-        <ExperimentViewer data={experiments} />
+        {experiments.length === 0 ? (
+          <p className="mt-14 text-lg sm:text-xl leading-[1.65] text-foreground/70">
+            no experiments yet — check back soon.
+          </p>
+        ) : (
+          <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {experiments.map((exp) => (
+              <a
+                key={exp.slug}
+                href={`/experiments/${exp.slug}`}
+                className="group block rounded-lg border border-foreground/15 p-5 transition-colors duration-150 hover:border-foreground/40 hover:bg-foreground/[0.03]"
+              >
+                <h2 className="text-[1.15rem] sm:text-[1.2rem] font-bold leading-snug group-hover:underline decoration-1 underline-offset-4">
+                  {exp.title}
+                </h2>
+                <p className="mt-2 text-base leading-[1.65] text-foreground/70">
+                  {exp.description}
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {exp.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="font-mono text-[0.6rem] uppercase tracking-widest px-1.5 py-0.5 rounded border border-foreground/15 text-foreground/50"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
       </main>
 
       <footer className="w-full border-t border-foreground/10 mt-auto pb-24 sm:pb-28">

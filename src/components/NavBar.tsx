@@ -11,12 +11,17 @@ const links = [
   { id: "education", num: "03", name: "education" },
   { id: "opensource", num: "04", name: "open source" },
   { id: "blog", num: "05", name: "blog", page: true },
+  { id: "experiments", num: "06", name: "experiments", page: true },
 ];
 
 export default function NavBar() {
   const pathname = usePathname();
   const [active, setActive] = useState(
-    pathname.startsWith("/blog") ? "blog" : links[0].id
+    pathname.startsWith("/blog")
+      ? "blog"
+      : pathname.startsWith("/experiments")
+        ? "experiments"
+        : links[0].id
   );
 
   useEffect(() => {
@@ -26,7 +31,7 @@ export default function NavBar() {
       const line = window.innerHeight * 0.4;
       let current = links[0].id;
       for (const { id } of links) {
-        if (id === "blog") continue;
+        if (id === "blog" || id === "experiments") continue;
         const el = document.getElementById(id);
         if (el && el.getBoundingClientRect().top <= line) current = id;
       }
@@ -60,7 +65,7 @@ export default function NavBar() {
               </span>
             )}
             <a
-              href={link.page ? "/blog" : `${pathname === "/" ? "" : "/"}#${link.id}`}
+              href={link.page ? `/${link.id}` : `${pathname === "/" ? "" : "/"}#${link.id}`}
               aria-label={link.name}
               aria-current={active === link.id ? "true" : undefined}
               className={`rounded-full px-2 py-1 font-mono text-[0.65rem] uppercase tracking-widest transition-colors duration-150 sm:px-2.5 sm:text-[0.7rem] ${

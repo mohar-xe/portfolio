@@ -372,7 +372,6 @@ export default function AtomizerViewer({ data }: { data: AtomizerData }) {
   const [paragraphIndex, setParagraphIndex] = useState(7);
   const [iteration, setIteration] = useState("current");
   const paragraph = data.paragraphs[paragraphIndex] ?? data.paragraphs[0];
-  const legacy = data.legacy;
 
   return (
     <div className="mt-10">
@@ -390,21 +389,6 @@ export default function AtomizerViewer({ data }: { data: AtomizerData }) {
       <CrossIteration paragraph={paragraph} />
       <Ablation data={data} />
 
-      <section className="mb-12">
-        <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
-          iteration 1, in full
-        </h2>
-        <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-4">
-          The first run was a single paragraph from a different article, using the qualifier
-          schema and a per-fact depth loop that ran to level 3 on its own. None of the six
-          qualifier fields were ever read by code. {legacy.text}
-        </p>
-        <ul>
-          {legacy.facts.map((fact) => (
-            <FactRow key={fact.id} fact={fact} />
-          ))}
-        </ul>
-      </section>
     </div>
   );
 }

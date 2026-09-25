@@ -54,7 +54,6 @@ export interface AtomizerData {
     unresolved: number;
     gaps: number;
   };
-  legacy: { id: number; text: string; facts: AtomizerFact[] };
   iterations: AtomizerIteration[];
   ablation: { label: string; calls: number; delta: number | null; lost: string }[];
   paragraphs: AtomizerParagraph[];

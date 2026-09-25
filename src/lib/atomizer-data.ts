@@ -57,7 +57,6 @@ export interface AtomizerData {
   legacy: { id: number; text: string; facts: AtomizerFact[] };
   iterations: AtomizerIteration[];
   ablation: { label: string; calls: number; delta: number | null; lost: string }[];
-  issues: { title: string; status: string; detail: string }[];
   paragraphs: AtomizerParagraph[];
 }
 

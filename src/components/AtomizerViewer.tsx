@@ -324,31 +324,46 @@ function Ablation({ data }: { data: AtomizerData }) {
   );
 }
 
-function Issues({ data }: { data: AtomizerData }) {
+function SourceParagraphs({ data, selected, onSelect }: {
+  data: AtomizerData;
+  selected: number;
+  onSelect: (index: number) => void;
+}) {
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
-        what is still broken
+        the original paragraphs
       </h2>
       <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-6">
-        The pipeline runs clean and every guard fires, but nothing here has been checked against
-        human labels. These are the reasons I would not trust the output yet.
+        All {data.headline.paragraphs} paragraphs of the article, exactly as scraped. Select one
+        to load it into the stage and architecture comparisons below.
       </p>
-      <div className="space-y-3">
-        {data.issues.map((issue) => (
-          <div key={issue.title} className="rounded-lg border border-foreground/15 p-4">
-            <div className="flex flex-wrap items-center gap-2 mb-2">
-              <span className="font-black text-base">{issue.title}</span>
-              <Pill
-                text={issue.status}
-                color={issue.status === "open" ? verdictRed : verdictGrey}
-              />
-            </div>
-            <p className="text-sm sm:text-base leading-relaxed text-foreground/80">
-              {issue.detail}
-            </p>
-          </div>
-        ))}
+      <div className="space-y-2">
+        {data.paragraphs.map((item, index) => {
+          const active = index === selected;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onSelect(index)}
+              className={`text-left w-full rounded-lg border p-3 transition-colors duration-150 ${
+                active
+                  ? "border-foreground/50 bg-foreground/[0.03]"
+                  : "border-foreground/15 hover:border-foreground/40"
+              }`}
+            >
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
+                <span className="font-mono text-xs text-foreground/50">p{item.id}</span>
+                <span className="font-mono text-[0.65rem] text-foreground/50">
+                  {item.stage1.length} extracted · {item.final.length} final ·{" "}
+                  {item.gaps.length} gap(s) · coverage {item.coverageClosed ? "closed" : "open"}
+                </span>
+              </div>
+              <p className="text-sm sm:text-base leading-relaxed text-foreground/90">
+                {item.text}
+              </p>
+            </button>
+          );
+        })}
       </div>
     </section>
   );
@@ -370,29 +385,7 @@ export default function AtomizerViewer({ data }: { data: AtomizerData }) {
 
       <Iterations data={data} selected={iteration} onSelect={setIteration} />
 
-      <section className="mb-12">
-        <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
-          pick a paragraph
-        </h2>
-        <div className="flex flex-wrap gap-2 mb-4 mt-4">
-          {data.paragraphs.map((item, index) => (
-            <button
-              key={item.id}
-              onClick={() => setParagraphIndex(index)}
-              className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 ${
-                index === paragraphIndex
-                  ? "bg-foreground text-background border-foreground"
-                  : "border-foreground/20 hover:border-foreground/50"
-              }`}
-            >
-              p{item.id}
-            </button>
-          ))}
-        </div>
-        <p className="text-lg sm:text-xl leading-[1.65] text-foreground/90 whitespace-pre-wrap">
-          {paragraph.text}
-        </p>
-      </section>
+      <SourceParagraphs data={data} selected={paragraphIndex} onSelect={setParagraphIndex} />
 
       <StageColumns paragraph={paragraph} />
       <CrossIteration paragraph={paragraph} />
@@ -413,8 +406,6 @@ export default function AtomizerViewer({ data }: { data: AtomizerData }) {
           ))}
         </ul>
       </section>
-
-      <Issues data={data} />
     </div>
   );
 }

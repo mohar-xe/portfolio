@@ -211,33 +211,6 @@
       "lost": "this is the saving a local policy would chase"
     }
   ],
-  "issues": [
-    {
-      "title": "No fact is traceable to the source",
-      "status": "open",
-      "detail": "Removing the evidence field left grounded() - two shared content tokens - as the only automated content filter. It catches every placeholder string tested, and cannot catch a hallucination that shares two tokens. Tightening it to >=3 drops 2 legitimate facts, so the threshold cannot move."
-    },
-    {
-      "title": "The entailment verdict is unvalidated",
-      "status": "open",
-      "detail": "54 of 56 facts came back entailed. No fact in the repo has been checked by a human, so read that number as \"the LLM did not object\" rather than \"verified\". The p2 attribution error passes it: the speaker was a specific bench, the fact says \"The court\"."
-    },
-    {
-      "title": "The coverage checker over-reports framing",
-      "status": "open",
-      "detail": "Both gaps in the current run are report framing rather than legal propositions - one is \"The Court's notes were made on the main proceedings\". The prompt forbids this and the model did it anyway."
-    },
-    {
-      "title": "Nothing is reproducible",
-      "status": "open",
-      "detail": "Temperature is 0 but re-running produces different fact wordings and different counts. Raw model responses are discarded, no artifact records its model or timestamp, and there is no test suite - every guard in the pipeline was, at some point, silently passing bad data."
-    },
-    {
-      "title": "Semantic dedup does not work",
-      "status": "parked",
-      "detail": "Trigram Jaccard plus a static-embedding cosine flagged 11 pairs and 10 were false positives, all of the shape \"same predicate, different decisive term\" - necessary vs legitimate, observation vs order, NCERT vs the Union of India. Cosine scored those 0.95. Parked rather than fixed."
-    }
-  ],
   "paragraphs": [
     {
       "id": 1,

@@ -334,10 +334,25 @@ function SourceParagraphs({ data, selected, onSelect }: {
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
         the original paragraphs
       </h2>
-      <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-6">
-        All {data.headline.paragraphs} paragraphs of the article, exactly as scraped. Select one
-        to load it into the stage and architecture comparisons below.
+      <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-4">
+        All {data.headline.paragraphs} paragraphs of the article, exactly as scraped. The
+        selected one is loaded into the stage and architecture comparisons below.
       </p>
+      <div className="flex flex-wrap gap-2 mb-4">
+        {data.paragraphs.map((item, index) => (
+          <button
+            key={item.id}
+            onClick={() => onSelect(index)}
+            className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 ${
+              index === selected
+                ? "bg-foreground text-background border-foreground"
+                : "border-foreground/20 hover:border-foreground/50"
+            }`}
+          >
+            p{item.id}
+          </button>
+        ))}
+      </div>
       <div className="space-y-2">
         {data.paragraphs.map((item, index) => {
           const active = index === selected;

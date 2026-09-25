@@ -250,8 +250,8 @@ function CrossIteration({ paragraph }: { paragraph: AtomizerParagraph }) {
         same paragraph, two architectures
       </h2>
       <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-6">
-        Left is the per-fact run, where every split failed and compound facts were left
-        unresolved. Right is the current batched run, with the evidence field removed.{" "}
+        Left is the per-fact run, one LLM call per fact, with an evidence quote on every fact.
+        Right is the current batched run, with the evidence field dropped.{" "}
         {shared} of {union} level-1 claims are textually identical between them; the rest were
         reworded or added.
       </p>

@@ -329,14 +329,15 @@ function SourceParagraphs({ data, selected, onSelect }: {
   selected: number;
   onSelect: (index: number) => void;
 }) {
+  const current = data.paragraphs[selected] ?? data.paragraphs[0];
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
-        the original paragraphs
+        the original paragraph
       </h2>
       <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-4">
-        All {data.headline.paragraphs} paragraphs of the article, exactly as scraped. The
-        selected one is loaded into the stage and architecture comparisons below.
+        Paragraph {current.id} of {data.headline.paragraphs}, exactly as scraped. Pick another
+        to load its stage and architecture comparisons below.
       </p>
       <div className="flex flex-wrap gap-2 mb-4">
         {data.paragraphs.map((item, index) => (
@@ -353,32 +354,15 @@ function SourceParagraphs({ data, selected, onSelect }: {
           </button>
         ))}
       </div>
-      <div className="space-y-2">
-        {data.paragraphs.map((item, index) => {
-          const active = index === selected;
-          return (
-            <button
-              key={item.id}
-              onClick={() => onSelect(index)}
-              className={`text-left w-full rounded-lg border p-3 transition-colors duration-150 ${
-                active
-                  ? "border-foreground/50 bg-foreground/[0.03]"
-                  : "border-foreground/15 hover:border-foreground/40"
-              }`}
-            >
-              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
-                <span className="font-mono text-xs text-foreground/50">p{item.id}</span>
-                <span className="font-mono text-[0.65rem] text-foreground/50">
-                  {item.stage1.length} extracted · {item.final.length} final ·{" "}
-                  {item.gaps.length} gap(s) · coverage {item.coverageClosed ? "closed" : "open"}
-                </span>
-              </div>
-              <p className="text-sm sm:text-base leading-relaxed text-foreground/90">
-                {item.text}
-              </p>
-            </button>
-          );
-        })}
+      <div className="rounded-lg border border-foreground/50 bg-foreground/[0.03] p-3">
+        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-1">
+          <span className="font-mono text-xs text-foreground/50">p{current.id}</span>
+          <span className="font-mono text-[0.65rem] text-foreground/50">
+            {current.stage1.length} extracted · {current.final.length} final ·{" "}
+            {current.gaps.length} gap(s) · coverage {current.coverageClosed ? "closed" : "open"}
+          </span>
+        </div>
+        <p className="text-sm sm:text-base leading-relaxed text-foreground/90">{current.text}</p>
       </div>
     </section>
   );

@@ -6,7 +6,7 @@ import NavBar from "@/components/NavBar";
 export const metadata: Metadata = {
   title: "legal proposition atomizer | mohar@portfolio",
   description:
-    "Turning legal-news paragraphs into atomic legal propositions — three LLM stages, 92 to 39 calls, and the failure modes I found by reading the output",
+    "Turning legal-news paragraphs into atomic legal propositions — three LLM stages, 39 calls, and a manual check of every fact the model produced",
 };
 
 const ink =

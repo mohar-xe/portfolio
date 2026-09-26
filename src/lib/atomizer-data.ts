@@ -1,6 +1,8 @@
 import atomizerData from "../../experiments/Legal Proposition Atomizer/atomizer_data.json";
+import manualEvalData from "../../experiments/Legal Proposition Atomizer/manual_eval.json";
 
 export type AtomicVerdict = boolean | null;
+export type ManualVerdict = "correct" | "incorrect";
 
 export interface AtomizerFact {
   id: string | null;
@@ -16,6 +18,8 @@ export interface AtomizerFact {
   origin?: string | null;
   unresolved?: boolean;
   sourceIndex?: number;
+  manualVerdict?: ManualVerdict;
+  manualFlags?: string[];
 }
 
 export interface AtomizerParagraph {
@@ -26,22 +30,7 @@ export interface AtomizerParagraph {
   gaps: { missing_fact: string }[];
   gapsFilled: number;
   coverageClosed: boolean;
-  perFactRun: { stage1: AtomizerFact[]; final: AtomizerFact[] };
-}
-
-export interface AtomizerIteration {
-  id: string;
-  label: string;
-  model: string;
-  schema: string;
-  paragraphs: number;
-  calls: number | null;
-  facts: number;
-  deeper: number;
-  unresolved: number;
-  gaps: number;
-  artifacts: string;
-  note: string;
+  tags?: string[];
 }
 
 export interface AtomizerData {
@@ -54,9 +43,62 @@ export interface AtomizerData {
     unresolved: number;
     gaps: number;
   };
-  iterations: AtomizerIteration[];
   ablation: { label: string; calls: number; delta: number | null; lost: string }[];
   paragraphs: AtomizerParagraph[];
 }
 
-export const atomizer = atomizerData as AtomizerData;
+interface ManualEvalFile {
+  runs: Record<string, { label: string; verdicts: Record<string, ManualVerdict> }>;
+  factFlags?: Record<string, string[]>;
+  paragraphTags?: Record<string, string[]>;
+}
+
+const manualEval = manualEvalData as ManualEvalFile;
+const verdicts = manualEval.runs.current?.verdicts ?? {};
+const factFlags = manualEval.factFlags ?? {};
+const paragraphTags = manualEval.paragraphTags ?? {};
+
+function applyVerdicts(facts: AtomizerFact[]): AtomizerFact[] {
+  return facts.map((fact) => {
+    if (!fact.id) return fact;
+    const manualVerdict = fact.id in verdicts ? verdicts[fact.id] : undefined;
+    const flags = factFlags[fact.id];
+    if (manualVerdict === undefined && !flags) return fact;
+    return {
+      ...fact,
+      ...(manualVerdict ? { manualVerdict } : {}),
+      ...(flags ? { manualFlags: flags } : {}),
+    };
+  });
+}
+
+const raw = atomizerData as AtomizerData;
+
+export const atomizer: AtomizerData = {
+  article: raw.article,
+  headline: raw.headline,
+  ablation: raw.ablation,
+  paragraphs: raw.paragraphs.map((paragraph) => {
+    const tags = paragraphTags[`p${paragraph.id}`];
+    return {
+      id: paragraph.id,
+      text: paragraph.text,
+      stage1: applyVerdicts(paragraph.stage1),
+      final: applyVerdicts(paragraph.final),
+      gaps: paragraph.gaps,
+      gapsFilled: paragraph.gapsFilled,
+      coverageClosed: paragraph.coverageClosed,
+      ...(tags ? { tags } : {}),
+    };
+  }),
+};
+
+export function manualEvalTotals() {
+  let correct = 0;
+  let incorrect = 0;
+  for (const verdict of Object.values(verdicts)) {
+    if (verdict === "correct") correct += 1;
+    else incorrect += 1;
+  }
+  return { correct, incorrect, total: correct + incorrect };
+}

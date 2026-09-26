@@ -19,6 +19,8 @@
         "p6-l1-f3": "correct",
         "p6-l1-f4": "correct",
         "p6-l1-f5": "correct",
+        "p6-l2-f1": "correct",
+        "p6-l2-f2": "correct",
         "p7-l1-f1": "correct",
         "p7-l1-f2": "correct",
         "p7-l1-f3": "correct",
@@ -63,8 +65,8 @@
   "factFlags": {
     "p4-l1-f5": ["inferred"],
     "p4-l2-f2": ["redundant", "duplicate of p4-l1-f3"],
-    "p6-l2-f1": ["redundant", "false positive", "coverage gap"],
-    "p6-l2-f2": ["redundant", "false positive", "coverage gap"]
+    "p6-l2-f1": [],
+    "p6-l2-f2": []
   },
   "paragraphTags": {
     "p8": ["extremely fine facts"]

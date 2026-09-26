@@ -82,14 +82,22 @@ function FactRow({
   );
 }
 
-function treeFacts(facts: AtomizerFact[]) {
+function treeOrder(facts: AtomizerFact[]) {
   const children = new Map<string | null, AtomizerFact[]>();
   for (const fact of facts) {
     const key = fact.parentId ?? null;
     if (!children.has(key)) children.set(key, []);
     children.get(key)!.push(fact);
   }
-  return children;
+  const ordered: { fact: AtomizerFact; depth: number }[] = [];
+  const walk = (parentId: string | null, depth: number) => {
+    for (const fact of children.get(parentId) ?? []) {
+      ordered.push({ fact, depth });
+      walk(fact.id, depth + 1);
+    }
+  };
+  walk(null, 0);
+  return ordered;
 }
 
 function manualTally(facts: AtomizerFact[]) {
@@ -130,7 +138,7 @@ function MetricStrip({ data }: { data: AtomizerData }) {
 }
 
 function StageColumns({ paragraph }: { paragraph: AtomizerParagraph }) {
-  const children = treeFacts(paragraph.final);
+  const finalFacts = treeOrder(paragraph.final);
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
@@ -158,27 +166,20 @@ function StageColumns({ paragraph }: { paragraph: AtomizerParagraph }) {
             stage 2 · atomicity + split ({paragraph.final.length})
           </h3>
           <ul>
-            {(children.get(null) ?? []).map((fact) => (
-              <FactRow key={fact.id ?? fact.fact} fact={fact} />
+            {finalFacts.map(({ fact, depth }) => (
+              <FactRow key={fact.id ?? fact.fact} fact={fact} depth={depth} />
             ))}
-            {(children.get(null) ?? []).map((parent) =>
-              (children.get(parent.id ?? null) ?? []).map((child) => (
-                <FactRow key={child.id ?? child.fact} fact={child} depth={1} />
-              )),
-            )}
           </ul>
         </div>
 
         <div className="flex flex-col">
           <h3 className="font-mono text-xs uppercase tracking-widest text-foreground/50 mb-2 border-b border-foreground/10 pb-2">
-            stage 3 · support + coverage
+            stage 3 · support + coverage ({paragraph.final.length})
           </h3>
           <ul>
-            {paragraph.final
-              .filter((fact) => fact.depth === 1)
-              .map((fact) => (
-                <FactRow key={fact.id ?? fact.fact} fact={fact} showEntailed />
-              ))}
+            {finalFacts.map(({ fact, depth }) => (
+              <FactRow key={fact.id ?? fact.fact} fact={fact} depth={depth} showEntailed />
+            ))}
           </ul>
           <div className="mt-3 pt-3 border-t border-foreground/10">
             <p className="font-mono text-[0.65rem] uppercase tracking-widest text-foreground/50 mb-1">

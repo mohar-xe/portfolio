@@ -132,6 +132,8 @@
         "p2-l2-f4": ["redundant", "duplicate of p2-l2-f1 p2-l2-f2 p2-l2-f3"],
         "p4-l2-f2": ["redundant", "duplicate of p4-l1-f4"],
         "p4-l2-f1": ["redundant", "duplicate of p4-l1-f5"],
+        "p4-l1-f5": ["redundant", "composed of p4-l1-f4 and p4-l2-f1, both already present"],
+        "p4-l1-f7": ["redundant", "duplicate of p4-l1-f4"],
         "p9-l1-f7": ["redundant", "duplicate of p9-l1-f6"],
         "p9-l2-f1": ["redundant", "duplicate of p9-l1-f6"],
         "p9-l3-f1": ["redundant", "duplicate of p9-l1-f6"],

@@ -29,8 +29,7 @@ const PIPELINE: Record<RunId, string> = {
     B --> C["merged round<br/>atomicity + support + coverage"]
     C --> D{"minted<br/>anything?"}
     D -- "yes, up to 3 rounds" --> C
-    D -- no --> E["finalize<br/>judge what the last round made"]
-    E --> F["fact tree<br/>ids, depth, verdicts"]`,
+    D -- no --> E["fact tree<br/>ids, depth, verdicts"]`,
 };
 
 function atomicMark(value: boolean | null | undefined) {
@@ -352,19 +351,12 @@ function SourceParagraphs({ run, runId, other, selected, onSelect }: {
   const counterpart = other ? (other.paragraphs[selected] ?? other.paragraphs[0]) : null;
   const diff = counterpart ? claimDiff(current, counterpart) : null;
   const tally = manualTally(current.final);
-  const delta = diff ? current.final.length - counterpart!.final.length : 0;
   const otherName = runId === "merged" ? RUN_META.threeStage.name : RUN_META.merged.name;
   return (
     <section className="mb-12">
-      <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
+      <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-4">
         the original paragraph
       </h2>
-      <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-4">
-        Paragraph {current.id} of {run.headline.paragraphs}, exactly as scraped. The text below is
-        the shared input both runs read, so it does not change when you toggle — what changes is
-        what each pipeline made of it. The count on each pill is how many of that
-        paragraph&apos;s facts I have checked by hand.
-      </p>
       <div className="flex flex-wrap gap-2 mb-4">
         {run.paragraphs.map((item, index) => {
           const itemTally = manualTally(item.final);

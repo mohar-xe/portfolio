@@ -57,8 +57,14 @@ export interface AtomizerData extends AtomizerRun {
   mergedRun?: AtomizerRun;
 }
 
+interface ManualEvalRun {
+  label: string;
+  verdicts: Record<string, ManualVerdict>;
+  flags?: Record<string, string[]>;
+}
+
 interface ManualEvalFile {
-  runs: Record<string, { label: string; verdicts: Record<string, ManualVerdict> }>;
+  runs: Record<string, ManualEvalRun>;
   factFlags?: Record<string, string[]>;
   paragraphTags?: Record<string, string[]>;
 }
@@ -75,44 +81,58 @@ function claimKey(text: string): string {
 }
 
 const manualEval = manualEvalData as ManualEvalFile;
-const verdicts = manualEval.runs.current?.verdicts ?? {};
-const factFlags = manualEval.factFlags ?? {};
+const threeStageLabels = manualEval.runs.current;
+const mergedLabels = manualEval.runs.merged;
 const paragraphTags = manualEval.paragraphTags ?? {};
 
 /**
- * manual_eval.json keys its 56 verdicts by the three-stage fact id. The merged run
- * renumbers every fact, so those ids only resolve there by claim text: 46 of 56
- * verdicts match a merged claim.
+ * manual_eval.json holds one entry per run. `runs.current` is the three-stage run, keyed by its
+ * own fact ids. `runs.merged` is the stage23 run, keyed by the ids in data/merged, which is what
+ * a hand pass over the merged run fills in.
  *
- * The 10 that do not are rewordings, not missing claims. One of them, p2-l1-f2,
- * changed meaning - the merged run corrected the actor from "the court" to "the
- * bench" - so a changed claim deliberately inherits no verdict. Anything unlabelled
- * is counted in the UI rather than assumed correct.
+ * The two runs renumber the same claims, so the three-stage labels are also indexed by claim text
+ * and used as a fallback: 46 of 56 match a merged claim. Precedence for a fact is
+ *
+ *   its own id  ->  the carried-over label  ->  unlabelled
+ *
+ * A label keyed to the run's own id always wins, so a hand pass over the merged run overrides
+ * anything carried over. A reworded claim is never treated as checked because a differently
+ * worded claim was: the 10 that do not match are rewordings, and one of them changed meaning -
+ * p2-l1-f2, where the merged run corrects "the court stated" to "the bench stated" - which is
+ * exactly why they fall through to unlabelled and get counted in the UI.
  */
-function buildVerdictByClaim(threeStageFacts: AtomizerFact[]): Map<string, ManualVerdict> {
+function buildCarried(threeStageFacts: AtomizerFact[]): {
+  verdicts: Map<string, ManualVerdict>;
+  flags: Map<string, string[]>;
+} {
   const keyById = new Map<string, string>();
   for (const fact of threeStageFacts) {
     if (fact.id) keyById.set(fact.id, claimKey(fact.fact));
   }
-  const byClaim = new Map<string, ManualVerdict>();
-  for (const [id, verdict] of Object.entries(verdicts)) {
+  const verdictsByClaim = new Map<string, ManualVerdict>();
+  const flagsByClaim = new Map<string, string[]>();
+  for (const [id, verdict] of Object.entries(threeStageLabels?.verdicts ?? {})) {
     const key = keyById.get(id);
-    if (key) byClaim.set(key, verdict);
+    if (key) verdictsByClaim.set(key, verdict);
   }
-  return byClaim;
+  for (const [id, flags] of Object.entries(manualEval.factFlags ?? {})) {
+    const key = keyById.get(id);
+    if (key && flags.length > 0) flagsByClaim.set(key, flags);
+  }
+  return { verdicts: verdictsByClaim, flags: flagsByClaim };
 }
 
 function applyVerdicts(
   facts: AtomizerFact[],
-  byClaim: Map<string, ManualVerdict>,
+  labels: { verdicts: Record<string, ManualVerdict>; flags: Record<string, string[]> },
+  carried: { verdicts: Map<string, ManualVerdict>; flags: Map<string, string[]> },
 ): AtomizerFact[] {
   return facts.map((fact) => {
-    const byId = fact.id ? verdicts[fact.id] : undefined;
-    const manualVerdict = byId ?? byClaim.get(claimKey(fact.fact));
-    // flags are keyed by three-stage id too; they map by claim, but the prose of
-    // "duplicate of p4-l1-f3" names an id that means something else in the merged run
-    const flags = fact.id ? factFlags[fact.id] : undefined;
-    if (manualVerdict === undefined && !flags) return fact;
+    const key = claimKey(fact.fact);
+    const manualVerdict =
+      (fact.id ? labels.verdicts[fact.id] : undefined) ?? carried.verdicts.get(key);
+    const flags = (fact.id ? labels.flags[fact.id] : undefined) ?? carried.flags.get(key);
+    if (manualVerdict === undefined && (!flags || flags.length === 0)) return fact;
     return {
       ...fact,
       ...(manualVerdict ? { manualVerdict } : {}),
@@ -123,25 +143,35 @@ function applyVerdicts(
 
 const raw = atomizerData as AtomizerData;
 
-function decorateRun(run: AtomizerRun, byClaim: Map<string, ManualVerdict>): AtomizerRun {
+function decorateRun(
+  run: AtomizerRun,
+  labels: { verdicts: Record<string, ManualVerdict>; flags: Record<string, string[]> },
+  carried: { verdicts: Map<string, ManualVerdict>; flags: Map<string, string[]> },
+): AtomizerRun {
   return {
     ...run,
     paragraphs: run.paragraphs.map((paragraph) => {
       const tags = paragraphTags[`p${paragraph.id}`];
       return {
         ...paragraph,
-        stage1: applyVerdicts(paragraph.stage1, byClaim),
-        final: applyVerdicts(paragraph.final, byClaim),
+        stage1: applyVerdicts(paragraph.stage1, labels, carried),
+        final: applyVerdicts(paragraph.final, labels, carried),
         ...(tags ? { tags } : {}),
       };
     }),
   };
 }
 
-const byClaim = buildVerdictByClaim(raw.paragraphs.flatMap((p) => p.final));
+const carried = buildCarried(raw.paragraphs.flatMap((p) => p.final));
 
-const threeStage = decorateRun(raw, byClaim);
-const merged = raw.mergedRun ? decorateRun(raw.mergedRun, byClaim) : null;
+const threeStage = decorateRun(
+  raw,
+  { verdicts: threeStageLabels?.verdicts ?? {}, flags: manualEval.factFlags ?? {} },
+  carried,
+);
+const merged = raw.mergedRun
+  ? decorateRun(raw.mergedRun, { verdicts: mergedLabels?.verdicts ?? {}, flags: mergedLabels?.flags ?? {} }, carried)
+  : null;
 
 /** The three-stage run, unchanged in shape, for anything already importing this. */
 export const atomizer: AtomizerData = { ...threeStage, article: raw.article };

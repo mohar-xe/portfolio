@@ -60,6 +60,11 @@
         "p4-l2-f2": "correct",
         "p4-l1-f5": "correct"
       }
+    },
+    "merged": {
+      "label": "merged loop (stage23)",
+      "verdicts": {},
+      "flags": {}
     }
   },
   "factFlags": {

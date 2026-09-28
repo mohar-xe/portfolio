@@ -3,9 +3,9 @@ import AtomizerViewer from "@/components/AtomizerViewer";
 import NavBar from "@/components/NavBar";
 
 export const metadata: Metadata = {
-  title: "legal proposition atomizer | mohar@portfolio",
+  title: "paragraphs to atomic facts | mohar@portfolio",
   description:
-    "Turning legal-news paragraphs into atomic legal propositions — a per-paragraph batching pipeline and a merged check/split/fill loop, with a manual check of every fact the model produced",
+    "Turning LiveLaw legal-news paragraphs into atomic legal propositions — a three-stage pipeline, a merged check/split/fill loop, and a stage-1-only version that does the whole job in one call, each with a manual check of every fact the model produced",
 };
 
 const ink =
@@ -26,14 +26,15 @@ export default function LegalAtomizerPage() {
         </p>
 
         <h1 className="text-[2.5rem] sm:text-[3rem] md:text-[3.5rem] font-black leading-[1.1] tracking-[-0.01em]">
-          legal proposition atomizer<span className="text-foreground">.</span>
+          paragraphs to atomic facts<span className="text-foreground">.</span>
         </h1>
         <p className="text-lg sm:text-xl leading-[1.65] mt-5 text-foreground/80">
           Splitting LiveLaw legal-news paragraphs into atomic, standalone legal propositions.
-          Two configurations, toggled below: a three-stage pipeline, and a merged stage that
+          Three configurations, toggled below: a three-stage pipeline; a merged stage that
           answers atomicity, support and coverage in one call and repeats until it stops making
-          new facts. Both with mechanical guards no model can bypass. Built to find out where a
-          decomposition pipeline actually breaks.
+          new facts; and a stage-1-only version that moves the split into the extraction prompt
+          and does the whole job in one call per paragraph. The first two with mechanical guards
+          no model can bypass. Built to find out where a decomposition pipeline actually breaks.
         </p>
 
         <AtomizerViewer />

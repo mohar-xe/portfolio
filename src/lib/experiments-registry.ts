@@ -15,9 +15,9 @@ export const experiments: Experiment[] = [
   },
   {
     slug: "legal-atomizer",
-    title: "Legal Proposition Atomizer",
+    title: "Paragraphs to Atomic Facts",
     description:
-      "Splitting legal-news paragraphs into atomic legal propositions with a three-stage LLM pipeline — 39 calls for 12 paragraphs, and a fact-by-fact manual check of what the model got wrong.",
+      "Splitting legal-news paragraphs into atomic legal propositions — a three-stage LLM pipeline, a merged check/split/fill loop, and a stage-1-only version that does it in one call, each with a fact-by-fact manual check of what the model got wrong.",
     tags: ["Legal NLP", "gemma-4-31b", "Pipeline", "Ablation"],
   },
 ];

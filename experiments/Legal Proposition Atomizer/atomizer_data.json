@@ -2818,7 +2818,7 @@
   "mergedRun": {
     "headline": {
       "paragraphs": 12,
-      "callsPerRun": 21,
+      "callsPerRun": 35,
       "facts": 69,
       "deeperFacts": 17,
       "unresolved": 1,
@@ -2828,14 +2828,14 @@
     "ablation": [
       {
         "label": "current pipeline",
-        "calls": 21,
+        "calls": 35,
         "delta": null,
         "lost": "-"
       },
       {
         "label": "stop after the first round",
-        "calls": 12,
-        "delta": -9,
+        "calls": 24,
+        "delta": -11,
         "lost": "every split and gap-fill made after round one, and the closing judgement of the 6 facts minted in the final round"
       }
     ],

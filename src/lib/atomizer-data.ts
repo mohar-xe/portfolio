@@ -55,6 +55,8 @@ export interface AtomizerData extends AtomizerRun {
   article: { title: string; url: string };
   /** added alongside the three-stage payload, which is emitted unchanged */
   mergedRun?: AtomizerRun;
+  /** v7: stage 1 alone, no downstream stage to show */
+  stage1Run?: AtomizerRun;
 }
 
 interface ManualEvalRun {
@@ -172,13 +174,23 @@ const threeStage = decorateRun(
 const merged = raw.mergedRun
   ? decorateRun(raw.mergedRun, { verdicts: mergedLabels?.verdicts ?? {}, flags: mergedLabels?.flags ?? {} }, carried)
   : null;
+// v7 has no hand labels of its own. It still inherits `carried`, which matches on claim
+// text, so a v7 fact matching a three-stage fact picks that verdict up.
+const stage1Only = raw.stage1Run
+  ? decorateRun(raw.stage1Run, { verdicts: {}, flags: manualEval.factFlags ?? {} }, carried)
+  : null;
 
 /** The three-stage run, unchanged in shape, for anything already importing this. */
 export const atomizer: AtomizerData = { ...threeStage, article: raw.article };
 
-export const runs: { threeStage: AtomizerRun; merged: AtomizerRun | null } = {
+export const runs: {
+  threeStage: AtomizerRun;
+  merged: AtomizerRun | null;
+  stage1: AtomizerRun | null;
+} = {
   threeStage,
   merged,
+  stage1: stage1Only,
 };
 
 /**

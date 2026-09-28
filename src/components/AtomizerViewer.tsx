@@ -16,7 +16,7 @@ const verdictAmber = "#F59E0B";
 const verdictRed = "#EF4444";
 const verdictGrey = "#6B7280";
 
-type RunId = "threeStage" | "merged";
+type RunId = "threeStage" | "merged" | "stage1";
 
 const PIPELINE: Record<RunId, string> = {
   threeStage: `flowchart LR
@@ -30,6 +30,9 @@ const PIPELINE: Record<RunId, string> = {
     C --> D{"minted<br/>anything?"}
     D -- "yes, up to 3 rounds" --> C
     D -- no --> E["fact tree<br/>ids, depth, verdicts"]`,
+  stage1: `flowchart LR
+    A["paragraph<br/>+ article title (context)"] --> B["stage 1<br/>extract and atomize"]
+    B --> C["fact list<br/>no ids, no verdicts"]`,
 };
 
 function atomicMark(value: boolean | null | undefined) {
@@ -173,6 +176,10 @@ const RUN_META: Record<RunId, { name: string; blurb: string }> = {
     name: "v6 · merged loop",
     blurb: "one call per round answers all three questions, repeated until it stops making new facts.",
   },
+  stage1: {
+    name: "v7 · stage 1 only",
+    blurb: "the split moved into the extraction prompt, so one call per paragraph does everything. Nothing is judged.",
+  },
 };
 
 function RunToggle({ runId, onChange }: { runId: RunId; onChange: (id: RunId) => void }) {
@@ -188,7 +195,9 @@ function RunToggle({ runId, onChange }: { runId: RunId; onChange: (id: RunId) =>
             <button
               key={id}
               onClick={() => onChange(id)}
-              disabled={id === "merged" && !RUNS.merged}
+              disabled={
+                (id === "merged" && !RUNS.merged) || (id === "stage1" && !RUNS.stage1)
+              }
               aria-pressed={runId === id}
               className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed ${
                 runId === id
@@ -213,6 +222,31 @@ function RunToggle({ runId, onChange }: { runId: RunId; onChange: (id: RunId) =>
 function StageColumns({ paragraph, runId }: { paragraph: AtomizerParagraph; runId: RunId }) {
   const finalFacts = treeOrder(paragraph.final);
   const merged = runId === "merged";
+  if (runId === "stage1") {
+    return (
+      <section className="mb-12">
+        <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
+          stage 1, one paragraph
+        </h2>
+        <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-6">
+          One call. The paragraph goes in, the model decomposes it and nothing else happens to the
+          facts — no atomicity judge, no support check, no coverage pass, no gap fill. There is no
+          grounding filter either: all {paragraph.final.length} of these came out of the model
+          unfiltered, and none has been judged by anything.
+        </p>
+        <div className="flex flex-col">
+          <h3 className="font-mono text-xs uppercase tracking-widest text-foreground/50 mb-2 border-b border-foreground/10 pb-2">
+            stage 1 · extract and atomize ({paragraph.final.length})
+          </h3>
+          <ul>
+            {paragraph.final.map((fact) => (
+              <FactRow key={fact.id ?? fact.fact} fact={fact} />
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
@@ -300,6 +334,11 @@ function Ablation({ run, runId }: { run: AtomizerRun; runId: RunId }) {
             merged pipeline has only been run once, so only the first-round cut is measurable —
             isolating the split or the coverage check would need separate runs.
           </>
+        ) : runId === "stage1" ? (
+          <>
+            One call per paragraph is the floor: extraction is generative, so there is nothing left
+            to ablate. The {run.headline.callsPerRun} calls are the pipeline.
+          </>
         ) : (
           <>
             What each stage costs, and what breaks if it is removed. Deltas are arithmetic on the
@@ -351,7 +390,8 @@ function SourceParagraphs({ run, runId, other, selected, onSelect }: {
   const counterpart = other ? (other.paragraphs[selected] ?? other.paragraphs[0]) : null;
   const diff = counterpart ? claimDiff(current, counterpart) : null;
   const tally = manualTally(current.final);
-  const otherName = runId === "merged" ? RUN_META.threeStage.name : RUN_META.merged.name;
+  const otherName =
+    runId === "merged" ? RUN_META.threeStage.name : RUN_META.merged.name;
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-4">
@@ -444,7 +484,12 @@ function SourceParagraphs({ run, runId, other, selected, onSelect }: {
 export default function AtomizerViewer() {
   const [paragraphIndex, setParagraphIndex] = useState(7);
   const [runId, setRunId] = useState<RunId>("threeStage");
-  const run = runId === "merged" && RUNS.merged ? RUNS.merged : RUNS.threeStage;
+  const run =
+    runId === "merged" && RUNS.merged
+      ? RUNS.merged
+      : runId === "stage1" && RUNS.stage1
+        ? RUNS.stage1
+        : RUNS.threeStage;
   const paragraph = run.paragraphs[paragraphIndex] ?? run.paragraphs[0];
   const manual = manualEvalTotals(run.paragraphs.flatMap((p) => p.final));
 

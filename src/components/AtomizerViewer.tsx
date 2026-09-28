@@ -370,9 +370,6 @@ function SourceParagraphs({ run, runId, other, selected, onSelect }: {
           const itemTally = manualTally(item.final);
           const counterpartItem = other ? (other.paragraphs[index] ?? item) : null;
           const itemDiff = counterpartItem ? claimDiff(item, counterpartItem) : null;
-          const pillDelta = counterpartItem ? item.final.length - counterpartItem.final.length : 0;
-          const claimsDiffer =
-            itemDiff !== null && (itemDiff.leftOnly > 0 || itemDiff.rightOnly > 0);
           return (
             <button
               key={item.id}
@@ -380,9 +377,9 @@ function SourceParagraphs({ run, runId, other, selected, onSelect }: {
               title={
                 item.tags
                   ? item.tags.join(", ")
-                  : itemDiff && claimsDiffer
-                    ? `${itemDiff.leftOnly} claim(s) here not in the other run, ${itemDiff.rightOnly} the other way`
-                    : "same claims in both runs"
+                  : itemDiff && (itemDiff.leftOnly > 0 || itemDiff.rightOnly > 0)
+                    ? `${item.final.length} facts, ${itemDiff.leftOnly} not in the other run, ${itemDiff.rightOnly} the other way`
+                    : `${item.final.length} facts, same claims in both runs`
               }
               className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 ${
                 index === selected
@@ -392,15 +389,8 @@ function SourceParagraphs({ run, runId, other, selected, onSelect }: {
             >
               p{item.id}
               {item.tags && <span style={{ color: verdictAmber }}> ✱</span>}
-              {pillDelta !== 0 && (
-                <span style={{ color: verdictAmber }}>
-                  {" "}
-                  {pillDelta > 0 ? `+${pillDelta}` : pillDelta}
-                </span>
-              )}
-              {pillDelta === 0 && claimsDiffer && (
-                <span style={{ color: verdictAmber, opacity: 0.55 }}> ~</span>
-              )}
+              {" "}
+              {item.final.length}
               {itemTally.judged > 0 && (
                 <span style={itemTally.incorrect > 0 ? { color: verdictRed } : undefined}>
                   {" "}

@@ -9,7 +9,7 @@ import type {
   AtomizerRun,
   ManualVerdict,
 } from "@/lib/atomizer-data";
-import { manualEvalTotals, runs as RUNS } from "@/lib/atomizer-data";
+import { claimDiff, manualEvalTotals, runs as RUNS } from "@/lib/atomizer-data";
 
 const verdictGreen = "#22C55E";
 const verdictAmber = "#F59E0B";
@@ -165,32 +165,48 @@ function MetricStrip({ run, runId }: { run: AtomizerRun; runId: RunId }) {
   );
 }
 
+const RUN_META: Record<RunId, { name: string; blurb: string }> = {
+  threeStage: {
+    name: "v5 · three stages",
+    blurb: "extract, then atomicity + split, then support + coverage. Three calls per paragraph.",
+  },
+  merged: {
+    name: "v6 · merged loop",
+    blurb: "one call per round answers all three questions, repeated until it stops making new facts.",
+  },
+};
+
 function RunToggle({ runId, onChange }: { runId: RunId; onChange: (id: RunId) => void }) {
-  const options: { id: RunId; label: string }[] = [
-    { id: "threeStage", label: "v5 · three stages" },
-    { id: "merged", label: "v6 · merged loop" },
-  ];
+  const options = (Object.keys(RUN_META) as RunId[]);
   return (
-    <div className="flex flex-wrap items-center gap-3 mb-8">
-      <span className="font-mono text-xs uppercase tracking-widest text-foreground/50">
-        pipeline
-      </span>
-      <div className="flex flex-wrap gap-2">
-        {options.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => onChange(option.id)}
-            disabled={option.id === "merged" && !RUNS.merged}
-            className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed ${
-              runId === option.id
-                ? "bg-foreground text-background border-foreground"
-                : "border-foreground/20 hover:border-foreground/50"
-            }`}
-          >
-            {option.label}
-          </button>
-        ))}
+    <div className="mb-10">
+      <div className="flex flex-wrap items-center gap-3 mb-3">
+        <span className="font-mono text-xs uppercase tracking-widest text-foreground/50">
+          pipeline
+        </span>
+        <div className="flex flex-wrap gap-2">
+          {options.map((id) => (
+            <button
+              key={id}
+              onClick={() => onChange(id)}
+              disabled={id === "merged" && !RUNS.merged}
+              aria-pressed={runId === id}
+              className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed ${
+                runId === id
+                  ? "bg-foreground text-background border-foreground"
+                  : "border-foreground/20 hover:border-foreground/50"
+              }`}
+            >
+              {RUN_META[id].name}
+            </button>
+          ))}
+        </div>
       </div>
+      <p className="font-mono text-sm text-foreground/70">
+        <span className="font-black text-foreground">now showing {RUN_META[runId].name}</span>
+        {" — "}
+        {RUN_META[runId].blurb}
+      </p>
     </div>
   );
 }
@@ -325,32 +341,49 @@ function Ablation({ run, runId }: { run: AtomizerRun; runId: RunId }) {
   );
 }
 
-function SourceParagraphs({ run, runId, selected, onSelect }: {
+function SourceParagraphs({ run, runId, other, selected, onSelect }: {
   run: AtomizerRun;
   runId: RunId;
+  other: AtomizerRun | null;
   selected: number;
   onSelect: (index: number) => void;
 }) {
   const current = run.paragraphs[selected] ?? run.paragraphs[0];
+  const counterpart = other ? (other.paragraphs[selected] ?? other.paragraphs[0]) : null;
+  const diff = counterpart ? claimDiff(current, counterpart) : null;
   const tally = manualTally(current.final);
+  const delta = diff ? current.final.length - counterpart!.final.length : 0;
+  const otherName = runId === "merged" ? RUN_META.threeStage.name : RUN_META.merged.name;
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
         the original paragraph
       </h2>
       <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-4">
-        Paragraph {current.id} of {run.headline.paragraphs}, exactly as scraped. Pick another
-        to load {runId === "merged" ? "the merged loop" : "its three stages"} below. The count on
-        each pill is how many of that paragraph&apos;s facts I have checked by hand.
+        Paragraph {current.id} of {run.headline.paragraphs}, exactly as scraped. The text below is
+        the shared input both runs read, so it does not change when you toggle — what changes is
+        what each pipeline made of it. The count on each pill is how many of that
+        paragraph&apos;s facts I have checked by hand.
       </p>
       <div className="flex flex-wrap gap-2 mb-4">
         {run.paragraphs.map((item, index) => {
           const itemTally = manualTally(item.final);
+          const counterpartItem = other ? (other.paragraphs[index] ?? item) : null;
+          const itemDiff = counterpartItem ? claimDiff(item, counterpartItem) : null;
+          const pillDelta = counterpartItem ? item.final.length - counterpartItem.final.length : 0;
+          const claimsDiffer =
+            itemDiff !== null && (itemDiff.leftOnly > 0 || itemDiff.rightOnly > 0);
           return (
             <button
               key={item.id}
               onClick={() => onSelect(index)}
-              title={item.tags?.join(", ")}
+              title={
+                item.tags
+                  ? item.tags.join(", ")
+                  : itemDiff && claimsDiffer
+                    ? `${itemDiff.leftOnly} claim(s) here not in the other run, ${itemDiff.rightOnly} the other way`
+                    : "same claims in both runs"
+              }
               className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 ${
                 index === selected
                   ? "bg-foreground text-background border-foreground"
@@ -359,6 +392,15 @@ function SourceParagraphs({ run, runId, selected, onSelect }: {
             >
               p{item.id}
               {item.tags && <span style={{ color: verdictAmber }}> ✱</span>}
+              {pillDelta !== 0 && (
+                <span style={{ color: verdictAmber }}>
+                  {" "}
+                  {pillDelta > 0 ? `+${pillDelta}` : pillDelta}
+                </span>
+              )}
+              {pillDelta === 0 && claimsDiffer && (
+                <span style={{ color: verdictAmber, opacity: 0.55 }}> ~</span>
+              )}
               {itemTally.judged > 0 && (
                 <span style={itemTally.incorrect > 0 ? { color: verdictRed } : undefined}>
                   {" "}
@@ -382,6 +424,36 @@ function SourceParagraphs({ run, runId, selected, onSelect }: {
           ))}
         </div>
         <p className="text-sm sm:text-base leading-relaxed text-foreground/90">{current.text}</p>
+        {counterpart && diff && (
+          <p className="font-mono text-[0.7rem] text-foreground/60 mt-3 pt-3 border-t border-foreground/10">
+            <span className="font-black text-foreground">{RUN_META[runId].name}</span> made{" "}
+            <span className="font-black text-foreground">{current.final.length}</span> facts here
+            {diff.leftOnly > 0 || diff.rightOnly > 0 ? (
+              <>
+                {" · "}
+                {diff.leftOnly > 0 && (
+                  <>
+                    <span className="font-black" style={{ color: verdictAmber }}>
+                      {diff.leftOnly}
+                    </span>{" "}
+                    here not in {otherName}
+                  </>
+                )}
+                {diff.leftOnly > 0 && diff.rightOnly > 0 && ", "}
+                {diff.rightOnly > 0 && (
+                  <>
+                    <span className="font-black" style={{ color: verdictAmber }}>
+                      {diff.rightOnly}
+                    </span>{" "}
+                    in {otherName} not here
+                  </>
+                )}
+              </>
+            ) : (
+              <> — identical claim set to {otherName}</>
+            )}
+          </p>
+        )}
       </div>
     </section>
   );
@@ -421,6 +493,7 @@ export default function AtomizerViewer() {
       <SourceParagraphs
         run={run}
         runId={runId}
+        other={runId === "merged" ? RUNS.threeStage : RUNS.merged}
         selected={paragraphIndex}
         onSelect={setParagraphIndex}
       />

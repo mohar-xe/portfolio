@@ -185,8 +185,7 @@ export const runs: { threeStage: AtomizerRun; merged: AtomizerRun | null } = {
  * Derived from the facts actually on screen, not from a module constant, so the
  * count cannot describe a different run than the one being displayed.
  */
-export function manualEvalTotals(facts: AtomizerFact[]) {
-  let correct = 0;
+export function manualEvalTotals(facts: AtomizerFact[]) {  let correct = 0;
   let incorrect = 0;
   for (const fact of facts) {
     if (fact.manualVerdict === "correct") correct += 1;
@@ -194,4 +193,21 @@ export function manualEvalTotals(facts: AtomizerFact[]) {
   }
   const judged = correct + incorrect;
   return { correct, incorrect, total: judged, unlabelled: facts.length - judged };
+}
+
+/**
+ * Compares two runs' claims for one paragraph by claim key, so the UI can say which
+ * are genuinely different rather than inferring it from the count. Several paragraphs
+ * have the same number of facts in both runs: p7, p8, p11 and p12 are identical claim
+ * sets, while p1 and p5 differ only in wording. A count-only comparison calls all six
+ * "the same" and is wrong about two of them.
+ */
+export function claimDiff(left: AtomizerParagraph, right: AtomizerParagraph) {
+  const leftKeys = new Set(left.final.map((fact) => claimKey(fact.fact)));
+  const rightKeys = new Set(right.final.map((fact) => claimKey(fact.fact)));
+  let shared = 0;
+  for (const key of leftKeys) {
+    if (rightKeys.has(key)) shared += 1;
+  }
+  return { leftOnly: leftKeys.size - shared, rightOnly: rightKeys.size - shared, shared };
 }

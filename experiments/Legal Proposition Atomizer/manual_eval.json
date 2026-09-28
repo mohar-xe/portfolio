@@ -129,27 +129,120 @@
         "p12-l1-f1": "correct"
       },
       "flags": {
-        "p2-l2-f4": ["redundant", "duplicate of p2-l2-f1 p2-l2-f2 p2-l2-f3"],
-        "p4-l2-f2": ["redundant", "duplicate of p4-l1-f4"],
-        "p4-l2-f1": ["redundant", "duplicate of p4-l1-f5"],
-        "p4-l1-f5": ["redundant", "composed of p4-l1-f4 and p4-l2-f1, both already present"],
-        "p4-l1-f7": ["redundant", "duplicate of p4-l1-f4"],
-        "p9-l1-f7": ["redundant", "duplicate of p9-l1-f6"],
-        "p9-l2-f1": ["redundant", "duplicate of p9-l1-f6"],
-        "p9-l3-f1": ["redundant", "duplicate of p9-l1-f6"],
-        "p9-l3-f2": ["redundant", "duplicate of p9-l1-f6"],
-        "p9-l3-f3": ["redundant", "duplicate of p9-l1-f6"],
-        "p9-l3-f4": ["redundant", "duplicate of p9-l1-f6"]
+        "p2-l2-f4": [
+          "redundant",
+          "duplicate of p2-l2-f1 p2-l2-f2 p2-l2-f3"
+        ],
+        "p4-l2-f2": [
+          "redundant",
+          "duplicate of p4-l1-f4"
+        ],
+        "p4-l2-f1": [
+          "redundant",
+          "duplicate of p4-l1-f5"
+        ],
+        "p4-l1-f5": [
+          "redundant",
+          "composed of p4-l1-f4 and p4-l2-f1, both already present"
+        ],
+        "p4-l1-f7": [
+          "redundant",
+          "duplicate of p4-l1-f4"
+        ],
+        "p9-l1-f7": [
+          "redundant",
+          "duplicate of p9-l1-f6"
+        ],
+        "p9-l2-f1": [
+          "redundant",
+          "duplicate of p9-l1-f6"
+        ],
+        "p9-l3-f1": [
+          "redundant",
+          "duplicate of p9-l1-f6"
+        ],
+        "p9-l3-f2": [
+          "redundant",
+          "duplicate of p9-l1-f6"
+        ],
+        "p9-l3-f3": [
+          "redundant",
+          "duplicate of p9-l1-f6"
+        ],
+        "p9-l3-f4": [
+          "redundant",
+          "duplicate of p9-l1-f6"
+        ]
+      }
+    },
+    "stage1": {
+      "label": "stage 1 only (v7)",
+      "verdicts": {
+        "p1-l1-f1": "correct",
+        "p1-l1-f2": "correct",
+        "p1-l1-f3": "correct",
+        "p1-l1-f4": "correct",
+        "p2-l1-f1": "correct",
+        "p2-l1-f2": "correct",
+        "p2-l1-f3": "correct",
+        "p3-l1-f1": "correct",
+        "p4-l1-f1": "correct",
+        "p4-l1-f2": "correct",
+        "p4-l1-f3": "correct",
+        "p5-l1-f1": "correct",
+        "p5-l1-f2": "correct",
+        "p5-l1-f3": "correct",
+        "p6-l1-f1": "correct",
+        "p6-l1-f2": "correct",
+        "p7-l1-f1": "correct",
+        "p7-l1-f2": "correct",
+        "p8-l1-f1": "correct",
+        "p8-l1-f2": "correct",
+        "p8-l1-f3": "correct",
+        "p8-l1-f4": "correct",
+        "p8-l1-f5": "correct",
+        "p8-l1-f6": "correct",
+        "p8-l1-f7": "correct",
+        "p8-l1-f8": "correct",
+        "p8-l1-f9": "correct",
+        "p8-l1-f10": "correct",
+        "p8-l1-f11": "correct",
+        "p8-l1-f12": "correct",
+        "p9-l1-f1": "correct",
+        "p9-l1-f2": "correct",
+        "p9-l1-f3": "correct",
+        "p9-l1-f4": "correct",
+        "p9-l1-f5": "correct",
+        "p9-l1-f6": "correct",
+        "p10-l1-f1": "correct",
+        "p10-l1-f2": "correct",
+        "p11-l1-f1": "correct",
+        "p11-l1-f2": "correct",
+        "p11-l1-f3": "correct",
+        "p11-l1-f4": "correct",
+        "p12-l1-f1": "correct"
+      },
+      "flags": {
+        "p4-l1-f3": [
+          "redundant"
+        ]
       }
     }
   },
   "factFlags": {
-    "p4-l1-f5": ["inferred"],
-    "p4-l2-f2": ["redundant", "duplicate of p4-l1-f3"],
+    "p4-l1-f5": [
+      "inferred"
+    ],
+    "p4-l2-f2": [
+      "redundant",
+      "duplicate of p4-l1-f3"
+    ],
     "p6-l2-f1": [],
     "p6-l2-f2": []
   },
   "paragraphTags": {
-    "p8": ["extremely fine facts"]
+    "p8": [
+      "extremely fine facts"
+    ]
   }
 }

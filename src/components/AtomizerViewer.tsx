@@ -228,19 +228,13 @@ function StageColumns({ paragraph, runId }: { paragraph: AtomizerParagraph; runI
         <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
           stage 1, one paragraph
         </h2>
-        <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-6">
-          One call. The paragraph goes in, the model decomposes it and nothing else happens to the
-          facts — no atomicity judge, no support check, no coverage pass, no gap fill. There is no
-          grounding filter either: all {paragraph.final.length} of these came out of the model
-          unfiltered, and none has been judged by anything.
-        </p>
         <div className="flex flex-col">
           <h3 className="font-mono text-xs uppercase tracking-widest text-foreground/50 mb-2 border-b border-foreground/10 pb-2">
             stage 1 · extract and atomize ({paragraph.final.length})
           </h3>
           <ul>
             {paragraph.final.map((fact) => (
-              <FactRow key={fact.id ?? fact.fact} fact={fact} />
+              <FactRow key={fact.id ?? fact.fact} fact={fact} showEntailed />
             ))}
           </ul>
         </div>

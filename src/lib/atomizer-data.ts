@@ -85,6 +85,7 @@ function claimKey(text: string): string {
 const manualEval = manualEvalData as ManualEvalFile;
 const threeStageLabels = manualEval.runs.current;
 const mergedLabels = manualEval.runs.merged;
+const stage1Labels = manualEval.runs.stage1;
 const paragraphTags = manualEval.paragraphTags ?? {};
 
 /**
@@ -174,10 +175,15 @@ const threeStage = decorateRun(
 const merged = raw.mergedRun
   ? decorateRun(raw.mergedRun, { verdicts: mergedLabels?.verdicts ?? {}, flags: mergedLabels?.flags ?? {} }, carried)
   : null;
-// v7 has no hand labels of its own. It still inherits `carried`, which matches on claim
-// text, so a v7 fact matching a three-stage fact picks that verdict up.
+// v7 carries its own hand pass in manual_eval.json. flags is per-run, not the
+// global factFlags, so p4-l1-f3's "redundant" does not leak onto the other runs'
+// fact with the same id.
 const stage1Only = raw.stage1Run
-  ? decorateRun(raw.stage1Run, { verdicts: {}, flags: manualEval.factFlags ?? {} }, carried)
+  ? decorateRun(
+      raw.stage1Run,
+      { verdicts: stage1Labels?.verdicts ?? {}, flags: stage1Labels?.flags ?? {} },
+      carried,
+    )
   : null;
 
 /** The three-stage run, unchanged in shape, for anything already importing this. */

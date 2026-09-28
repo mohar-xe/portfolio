@@ -89,12 +89,12 @@
       "schema": "fact",
       "paragraphs": 12,
       "calls": 12,
-      "facts": 41,
+      "facts": 43,
       "deeper": 0,
       "unresolved": 0,
       "gaps": 0,
       "artifacts": "all 12 paragraphs",
-      "note": "Stages 2 and 3 were de-wired and the split moved into the extraction prompt, so one call per paragraph does the whole job. 12 calls against v6's 33. Nothing is judged and nothing is grounded: whatever the model returned is written out, so 41 unverified facts against v6's 69 - 6 of which the loop never judged either."
+      "note": "Stages 2 and 3 were de-wired and the split moved into the extraction prompt, so one call per paragraph does the whole job. 12 calls against v6's 33. Nothing is judged and nothing is grounded: whatever the model returned is written out, so 43 unverified facts against v6's 69 - 6 of which the loop never judged either. Two prompt rules were added to close measured defects: 13, for paragraphs that lost a clause outright, and 10, for a fact that restated a sentence it had already split."
     }
   ],
   "ablation": [
@@ -4705,7 +4705,7 @@
     "headline": {
       "paragraphs": 12,
       "callsPerRun": 12,
-      "facts": 41,
+      "facts": 43,
       "deeperFacts": 0,
       "unresolved": 0,
       "gaps": 0
@@ -4746,7 +4746,7 @@
           },
           {
             "id": "p1-l1-f2",
-            "fact": "The Supreme Court recently observed that fair, informed and constructive critique of judicial functioning is a legitimate feature of a vibrant constitutional democracy.",
+            "fact": "The Supreme Court recently observed that fair critique of judicial functioning is a legitimate and necessary feature of a vibrant constitutional democracy.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -4761,7 +4761,7 @@
           },
           {
             "id": "p1-l1-f3",
-            "fact": "The Supreme Court recently observed that fair, informed and constructive critique of judicial functioning is a necessary feature of a vibrant constitutional democracy.",
+            "fact": "The Supreme Court recently observed that informed critique of judicial functioning is a legitimate and necessary feature of a vibrant constitutional democracy.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -4773,6 +4773,21 @@
             "origin": null,
             "unresolved": false,
             "sourceIndex": 3
+          },
+          {
+            "id": "p1-l1-f4",
+            "fact": "The Supreme Court recently observed that constructive critique of judicial functioning is a legitimate and necessary feature of a vibrant constitutional democracy.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false,
+            "sourceIndex": 4
           }
         ],
         "final": [
@@ -4792,7 +4807,7 @@
           },
           {
             "id": "p1-l1-f2",
-            "fact": "The Supreme Court recently observed that fair, informed and constructive critique of judicial functioning is a legitimate feature of a vibrant constitutional democracy.",
+            "fact": "The Supreme Court recently observed that fair critique of judicial functioning is a legitimate and necessary feature of a vibrant constitutional democracy.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -4806,7 +4821,21 @@
           },
           {
             "id": "p1-l1-f3",
-            "fact": "The Supreme Court recently observed that fair, informed and constructive critique of judicial functioning is a necessary feature of a vibrant constitutional democracy.",
+            "fact": "The Supreme Court recently observed that informed critique of judicial functioning is a legitimate and necessary feature of a vibrant constitutional democracy.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p1-l1-f4",
+            "fact": "The Supreme Court recently observed that constructive critique of judicial functioning is a legitimate and necessary feature of a vibrant constitutional democracy.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -5250,12 +5279,41 @@
             "origin": null,
             "unresolved": false,
             "sourceIndex": 1
+          },
+          {
+            "id": "p7-l1-f2",
+            "fact": "The Committee collaborated with the National Judicial Academy, Bhopal and the reconstituted National Syllabus and Teaching Learning Material Committee to submit the revised text on the role and functioning of the Judiciary.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false,
+            "sourceIndex": 2
           }
         ],
         "final": [
           {
             "id": "p7-l1-f1",
             "fact": "The Committee submitted a revised text on the role and functioning of the Judiciary.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p7-l1-f2",
+            "fact": "The Committee collaborated with the National Judicial Academy, Bhopal and the reconstituted National Syllabus and Teaching Learning Material Committee to submit the revised text on the role and functioning of the Judiciary.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -5429,7 +5487,7 @@
           },
           {
             "id": "p8-l1-f11",
-            "fact": "The revised chapter did not glorify the institution of the Judiciary.",
+            "fact": "The revised chapter did not glorify the institution.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -5444,7 +5502,7 @@
           },
           {
             "id": "p8-l1-f12",
-            "fact": "The revised chapter did not unfairly disparage the institution of the Judiciary.",
+            "fact": "The revised chapter did not unfairly disparage the institution.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -5601,7 +5659,7 @@
           },
           {
             "id": "p8-l1-f11",
-            "fact": "The revised chapter did not glorify the institution of the Judiciary.",
+            "fact": "The revised chapter did not glorify the institution.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -5615,7 +5673,7 @@
           },
           {
             "id": "p8-l1-f12",
-            "fact": "The revised chapter did not unfairly disparage the institution of the Judiciary.",
+            "fact": "The revised chapter did not unfairly disparage the institution.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -5714,7 +5772,7 @@
           },
           {
             "id": "p9-l1-f6",
-            "fact": "The Court held that the object underlying the suo motu proceedings has been substantially achieved in view of the unconditional apologies tendered by the NCERT Director and the Secretary, Department of School Education and Literacy, the recall of the offending publication, the reconstitution of the NSTC and the completion of the Expert Committee's review.",
+            "fact": "The Court held that the object underlying the suo motu proceedings has been substantially achieved.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -5801,7 +5859,7 @@
           },
           {
             "id": "p9-l1-f6",
-            "fact": "The Court held that the object underlying the suo motu proceedings has been substantially achieved in view of the unconditional apologies tendered by the NCERT Director and the Secretary, Department of School Education and Literacy, the recall of the offending publication, the reconstitution of the NSTC and the completion of the Expert Committee's review.",
+            "fact": "The Court held that the object underlying the suo motu proceedings has been substantially achieved.",
             "depth": 1,
             "parentId": null,
             "atomic": null,

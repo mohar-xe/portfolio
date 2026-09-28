@@ -3,19 +3,35 @@
 import { useState } from "react";
 
 import Mermaid from "@/components/Mermaid";
-import type { AtomizerData, AtomizerFact, AtomizerParagraph, ManualVerdict } from "@/lib/atomizer-data";
-import { manualEvalTotals } from "@/lib/atomizer-data";
+import type {
+  AtomizerFact,
+  AtomizerParagraph,
+  AtomizerRun,
+  ManualVerdict,
+} from "@/lib/atomizer-data";
+import { manualEvalTotals, runs as RUNS } from "@/lib/atomizer-data";
 
 const verdictGreen = "#22C55E";
 const verdictAmber = "#F59E0B";
 const verdictRed = "#EF4444";
 const verdictGrey = "#6B7280";
 
-const PIPELINE = `flowchart LR
+type RunId = "threeStage" | "merged";
+
+const PIPELINE: Record<RunId, string> = {
+  threeStage: `flowchart LR
     A["paragraph<br/>+ article title"] --> B["stage 1<br/>extract facts"]
     B --> C["stage 2<br/>atomicity + split"]
     C --> D["stage 3<br/>support + coverage"]
-    D --> E["fact tree<br/>ids, depth, verdicts"]`;
+    D --> E["fact tree<br/>ids, depth, verdicts"]`,
+  merged: `flowchart LR
+    A["paragraph<br/>+ article title"] --> B["stage 1<br/>extract facts"]
+    B --> C["merged round<br/>atomicity + support + coverage"]
+    C --> D{"minted<br/>anything?"}
+    D -- "yes, up to 3 rounds" --> C
+    D -- no --> E["finalize<br/>judge what the last round made"]
+    E --> F["fact tree<br/>ids, depth, verdicts"]`,
+};
 
 function atomicMark(value: boolean | null | undefined) {
   if (value === true) return { label: "atomic", color: verdictGreen };
@@ -113,41 +129,96 @@ function manualTally(facts: AtomizerFact[]) {
   return { correct, incorrect, judged: correct + incorrect };
 }
 
-function MetricStrip({ data }: { data: AtomizerData }) {
-  const manual = manualEvalTotals();
+function MetricStrip({ run, runId }: { run: AtomizerRun; runId: RunId }) {
+  const manual = manualEvalTotals(run.paragraphs.flatMap((p) => p.final));
   const items: [string, string | number][] = [
-    ["paragraphs", data.headline.paragraphs],
-    ["llm calls", data.headline.callsPerRun],
-    ["facts", data.headline.facts],
-    ["depth 2+", data.headline.deeperFacts],
-    ["unresolved", data.headline.unresolved],
-    ["gaps", data.headline.gaps],
+    ["paragraphs", run.headline.paragraphs],
+    ["llm calls", run.headline.callsPerRun],
+    ["facts", run.headline.facts],
+    ["depth 2+", run.headline.deeperFacts],
+    ["unresolved", run.headline.unresolved],
+    ["gaps", run.headline.gaps],
     ["manually verified", manual.total],
     ["manual errors", manual.incorrect],
+    ["not yet checked", manual.unlabelled],
+    ...(runId === "merged" && run.headline.unverified !== undefined
+      ? ([["never judged by the model", run.headline.unverified]] as [string, number][])
+      : []),
   ];
   return (
     <div className="font-mono text-sm sm:text-base text-foreground/80 mb-10">
       {items.map(([label, value], index) => (
         <span key={label}>
           {index > 0 && <span className="text-foreground/40"> / </span>}
-          <span className="font-black text-foreground">{value}</span> {label}
+          <span
+            className="font-black text-foreground"
+            style={label === "never judged by the model" && (value as number) > 0
+              ? { color: verdictAmber }
+              : undefined}
+          >
+            {value}
+          </span>{" "}
+          {label}
         </span>
       ))}
     </div>
   );
 }
 
-function StageColumns({ paragraph }: { paragraph: AtomizerParagraph }) {
+function RunToggle({ runId, onChange }: { runId: RunId; onChange: (id: RunId) => void }) {
+  const options: { id: RunId; label: string }[] = [
+    { id: "threeStage", label: "v5 · three stages" },
+    { id: "merged", label: "v6 · merged loop" },
+  ];
+  return (
+    <div className="flex flex-wrap items-center gap-3 mb-8">
+      <span className="font-mono text-xs uppercase tracking-widest text-foreground/50">
+        pipeline
+      </span>
+      <div className="flex flex-wrap gap-2">
+        {options.map((option) => (
+          <button
+            key={option.id}
+            onClick={() => onChange(option.id)}
+            disabled={option.id === "merged" && !RUNS.merged}
+            className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed ${
+              runId === option.id
+                ? "bg-foreground text-background border-foreground"
+                : "border-foreground/20 hover:border-foreground/50"
+            }`}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function StageColumns({ paragraph, runId }: { paragraph: AtomizerParagraph; runId: RunId }) {
   const finalFacts = treeOrder(paragraph.final);
+  const merged = runId === "merged";
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
-        the three stages, one paragraph
+        {merged ? "the merged loop, one paragraph" : "the three stages, one paragraph"}
       </h2>
       <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-6">
-        One call per stage per paragraph, so 36 of the 39 calls; the rest go to paragraphs that
-        fail the coverage check. Stage 2 nests children under the claim they came from; stage 3
-        adds a support verdict and the coverage result.
+        {merged ? (
+          <>
+            One call per round answers all three questions at once, and repeats while it keeps
+            making new facts — up to three rounds, then a closing pass that judges whatever the
+            last round made. This paragraph settled in{" "}
+            <span className="font-mono">{paragraph.iterations ?? 1}</span>{" "}
+            {paragraph.iterations === 1 ? "round" : "rounds"}.
+          </>
+        ) : (
+          <>
+            One call per stage per paragraph, so 36 of the 39 calls; the rest go to paragraphs that
+            fail the coverage check. Stage 2 nests children under the claim they came from; stage 3
+            adds a support verdict and the coverage result.
+          </>
+        )}
       </p>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="flex flex-col">
@@ -163,7 +234,7 @@ function StageColumns({ paragraph }: { paragraph: AtomizerParagraph }) {
 
         <div className="flex flex-col">
           <h3 className="font-mono text-xs uppercase tracking-widest text-foreground/50 mb-2 border-b border-foreground/10 pb-2">
-            stage 2 · atomicity + split ({paragraph.final.length})
+            {merged ? "merged · atomicity" : "stage 2 · atomicity + split"} ({paragraph.final.length})
           </h3>
           <ul>
             {finalFacts.map(({ fact, depth }) => (
@@ -174,7 +245,7 @@ function StageColumns({ paragraph }: { paragraph: AtomizerParagraph }) {
 
         <div className="flex flex-col">
           <h3 className="font-mono text-xs uppercase tracking-widest text-foreground/50 mb-2 border-b border-foreground/10 pb-2">
-            stage 3 · support + coverage ({paragraph.final.length})
+            {merged ? "merged · support" : "stage 3 · support + coverage"} ({paragraph.final.length})
           </h3>
           <ul>
             {finalFacts.map(({ fact, depth }) => (
@@ -201,15 +272,25 @@ function StageColumns({ paragraph }: { paragraph: AtomizerParagraph }) {
   );
 }
 
-function Ablation({ data }: { data: AtomizerData }) {
+function Ablation({ run, runId }: { run: AtomizerRun; runId: RunId }) {
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
         call ablation
       </h2>
       <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-6">
-        What each stage costs, and what breaks if it is removed. Deltas are arithmetic on the
-        measured 39-call run, not new runs.
+        {runId === "merged" ? (
+          <>
+            Arithmetic on the measured {run.headline.callsPerRun}-call run, not new runs. The
+            merged pipeline has only been run once, so only the first-round cut is measurable —
+            isolating the split or the coverage check would need separate runs.
+          </>
+        ) : (
+          <>
+            What each stage costs, and what breaks if it is removed. Deltas are arithmetic on the
+            measured {run.headline.callsPerRun}-call run, not new runs.
+          </>
+        )}
       </p>
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse font-mono text-sm sm:text-base">
@@ -222,7 +303,7 @@ function Ablation({ data }: { data: AtomizerData }) {
             </tr>
           </thead>
           <tbody>
-            {data.ablation.map((row) => (
+            {run.ablation.map((row) => (
               <tr key={row.label}>
                 <td className="border-b border-foreground/10 px-2 py-1 align-top">{row.label}</td>
                 <td className="border-b border-foreground/10 px-2 py-1 align-top">{row.calls}</td>
@@ -244,12 +325,13 @@ function Ablation({ data }: { data: AtomizerData }) {
   );
 }
 
-function SourceParagraphs({ data, selected, onSelect }: {
-  data: AtomizerData;
+function SourceParagraphs({ run, runId, selected, onSelect }: {
+  run: AtomizerRun;
+  runId: RunId;
   selected: number;
   onSelect: (index: number) => void;
 }) {
-  const current = data.paragraphs[selected] ?? data.paragraphs[0];
+  const current = run.paragraphs[selected] ?? run.paragraphs[0];
   const tally = manualTally(current.final);
   return (
     <section className="mb-12">
@@ -257,12 +339,12 @@ function SourceParagraphs({ data, selected, onSelect }: {
         the original paragraph
       </h2>
       <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-4">
-        Paragraph {current.id} of {data.headline.paragraphs}, exactly as scraped. Pick another
-        to load its three stages below. The count on each pill is how many of that
-        paragraph&apos;s facts I have checked by hand.
+        Paragraph {current.id} of {run.headline.paragraphs}, exactly as scraped. Pick another
+        to load {runId === "merged" ? "the merged loop" : "its three stages"} below. The count on
+        each pill is how many of that paragraph&apos;s facts I have checked by hand.
       </p>
       <div className="flex flex-wrap gap-2 mb-4">
-        {data.paragraphs.map((item, index) => {
+        {run.paragraphs.map((item, index) => {
           const itemTally = manualTally(item.final);
           return (
             <button
@@ -305,31 +387,46 @@ function SourceParagraphs({ data, selected, onSelect }: {
   );
 }
 
-export default function AtomizerViewer({ data }: { data: AtomizerData }) {
+export default function AtomizerViewer() {
   const [paragraphIndex, setParagraphIndex] = useState(7);
-  const paragraph = data.paragraphs[paragraphIndex] ?? data.paragraphs[0];
-  const manual = manualEvalTotals();
+  const [runId, setRunId] = useState<RunId>("threeStage");
+  const run = runId === "merged" && RUNS.merged ? RUNS.merged : RUNS.threeStage;
+  const paragraph = run.paragraphs[paragraphIndex] ?? run.paragraphs[0];
+  const manual = manualEvalTotals(run.paragraphs.flatMap((p) => p.final));
 
   return (
     <div className="mt-10">
-      <MetricStrip data={data} />
+      <RunToggle runId={runId} onChange={setRunId} />
+      <MetricStrip run={run} runId={runId} />
       <p className="text-base leading-relaxed text-foreground/70 mb-10 max-w-[70ch]">
         The <span className="font-mono text-[0.7rem] text-foreground/90">manual: correct</span>{" "}
         and <span className="font-mono text-[0.7rem] text-foreground/90">manual: incorrect</span>{" "}
         tags are my own reading of each fact against its source paragraph, not a model verdict.{" "}
         <span className="font-mono text-[0.7rem] text-foreground/90">inferred</span> marks a fact
-        I accept but the paragraph never states outright. {manual.total} of {data.headline.facts}{" "}
-        facts checked so far, {manual.incorrect} of them wrong.
+        I accept but the paragraph never states outright. {manual.total} of{" "}
+        {run.headline.facts} facts checked so far, {manual.incorrect} of them wrong
+        {manual.unlabelled > 0 && (
+          <>
+            ,{" "}
+            <span style={{ color: verdictAmber }}>{manual.unlabelled}</span> not yet checked
+          </>
+        )}
+        .
       </p>
 
       <div className="mb-12">
-        <Mermaid chart={PIPELINE} />
+        <Mermaid chart={PIPELINE[runId]} />
       </div>
 
-      <SourceParagraphs data={data} selected={paragraphIndex} onSelect={setParagraphIndex} />
+      <SourceParagraphs
+        run={run}
+        runId={runId}
+        selected={paragraphIndex}
+        onSelect={setParagraphIndex}
+      />
 
-      <StageColumns paragraph={paragraph} />
-      <Ablation data={data} />
+      <StageColumns paragraph={paragraph} runId={runId} />
+      <Ablation run={run} runId={runId} />
     </div>
   );
 }

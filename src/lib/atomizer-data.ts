@@ -57,6 +57,8 @@ export interface AtomizerData extends AtomizerRun {
   mergedRun?: AtomizerRun;
   /** v7: stage 1 alone, no downstream stage to show */
   stage1Run?: AtomizerRun;
+  /** v8: an AMR graph per paragraph, no LLM anywhere */
+  amrRun?: AtomizerRun;
 }
 
 interface ManualEvalRun {
@@ -86,6 +88,7 @@ const manualEval = manualEvalData as ManualEvalFile;
 const threeStageLabels = manualEval.runs.current;
 const mergedLabels = manualEval.runs.merged;
 const stage1Labels = manualEval.runs.stage1;
+const amrLabels = manualEval.runs.amr;
 const paragraphTags = manualEval.paragraphTags ?? {};
 
 /**
@@ -185,6 +188,19 @@ const stage1Only = raw.stage1Run
       carried,
     )
   : null;
+/**
+ * v8. The AMR arm emits text the other runs never produced, so `carried` is empty
+ * rather than shared: a verdict on a differently-worded v5 claim is not a verdict
+ * on this sentence, and the run is published precisely because none of these facts
+ * have been read yet. The check it needs is its own.
+ */
+const amrGraph = raw.amrRun
+  ? decorateRun(
+      raw.amrRun,
+      { verdicts: amrLabels?.verdicts ?? {}, flags: amrLabels?.flags ?? {} },
+      { verdicts: new Map(), flags: new Map() },
+    )
+  : null;
 
 /** The three-stage run, unchanged in shape, for anything already importing this. */
 export const atomizer: AtomizerData = { ...threeStage, article: raw.article };
@@ -193,10 +209,12 @@ export const runs: {
   threeStage: AtomizerRun;
   merged: AtomizerRun | null;
   stage1: AtomizerRun | null;
+  amr: AtomizerRun | null;
 } = {
   threeStage,
   merged,
   stage1: stage1Only,
+  amr: amrGraph,
 };
 
 /**

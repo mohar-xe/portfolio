@@ -95,6 +95,20 @@
       "gaps": 0,
       "artifacts": "all 12 paragraphs",
       "note": "Stages 2 and 3 were de-wired and the split moved into the extraction prompt, so one call per paragraph does the whole job. 12 calls against v6's 33. Nothing is judged and nothing is grounded: whatever the model returned is written out, so 43 unverified facts against v6's 69 - 6 of which the loop never judged either. Two prompt rules were added to close measured defects: 13, for paragraphs that lost a clause outright, and 10, for a fact that restated a sentence it had already split."
+    },
+    {
+      "id": "amr",
+      "label": "v8 AMR graph",
+      "model": "amrlib xfm_bart_base + T5 generator",
+      "schema": "AMR graph -> fact",
+      "paragraphs": 12,
+      "calls": 0,
+      "facts": 22,
+      "deeper": 0,
+      "unresolved": 0,
+      "gaps": 0,
+      "artifacts": "all 12 paragraphs",
+      "note": "No LLM at all. Each paragraph is parsed into an AMR graph, the propositions are the graph's predicate nodes, and a trained graph-to-text model writes them out. Structure is better than any prompt can guarantee: a coordination can never arrive inside one fact, nothing is derived from the article title, a case title yields nothing, and a modal or negation is an edge that reaches the text. Coverage is worse - 22 facts against 43 - and the parser invents proper nouns, turning NSTC into 'National Student Committee'. Nothing here is hand-checked yet, which is the number that decides it."
     }
   ],
   "ablation": [
@@ -6115,6 +6129,784 @@
         "gapsFilled": 0,
         "coverageClosed": false,
         "iterations": 1
+      }
+    ]
+  },
+  "amrRun": {
+    "headline": {
+      "paragraphs": 12,
+      "callsPerRun": 0,
+      "facts": 22,
+      "deeperFacts": 0,
+      "unresolved": 0,
+      "gaps": 0
+    },
+    "ablation": [
+      {
+        "label": "current pipeline",
+        "calls": 0,
+        "delta": null,
+        "lost": "-"
+      },
+      {
+        "label": "swap the trained writer for a rule table",
+        "calls": 0,
+        "delta": 0,
+        "lost": "same graphs, same 22 propositions, and unreadable sentences - which is why the generator is the arm worth labelling"
+      },
+      {
+        "label": "remove the parse",
+        "calls": 0,
+        "delta": 0,
+        "lost": "everything - there is no representation to fall back on, and the prompt-based pipeline is the 12 calls in v7"
+      }
+    ],
+    "paragraphs": [
+      {
+        "id": 1,
+        "text": "The Supreme Court recently observed that the Judiciary as an institution is open to criticism and fair, informed and constructive critique of judicial functioning is a legitimate and necessary feature of a vibrant constitutional democracy.",
+        "stage1": [
+          {
+            "id": "p1-l1-f1",
+            "fact": "Supreme Court observed that the institution judiciary is open to criticism.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p1-l1-f2",
+            "fact": "Supreme Court observed that critique of the function of the judicial institution is a feature of constitutional democracy.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p1-l1-f1",
+            "fact": "Supreme Court observed that the institution judiciary is open to criticism.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p1-l1-f2",
+            "fact": "Supreme Court observed that critique of the function of the judicial institution is a feature of constitutional democracy.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 2,
+        "text": "A bench of Chief Justice of India Surya Kant, Justice Joymalya Bagchi and Justice V. Mohana, however, said such criticism must be voiced through an appropriate forum and a fair, rational mechanism. Unverified criticism should not be included in a school curriculum meant for children, the Court said.",
+        "stage1": [
+          {
+            "id": "p2-l1-f1",
+            "fact": "But the bench said such criticism must be voiced through forums and mechanisms.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p2-l1-f2",
+            "fact": "The court said the criticism should not have been included in the school curriculum.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p2-l1-f1",
+            "fact": "But the bench said such criticism must be voiced through forums and mechanisms.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p2-l1-f2",
+            "fact": "The court said the criticism should not have been included in the school curriculum.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 3,
+        "text": "The Court also clarified that an earlier observation concerning three academics involved in preparing the curriculum was not a finding by the Court.",
+        "stage1": [
+          {
+            "id": "p3-l1-f1",
+            "fact": "The court also clarified that it did not find that it had observed three academics before.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p3-l1-f1",
+            "fact": "The court also clarified that it did not find that it had observed three academics before.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 4,
+        "text": "The clarification was made on an application seeking clarification of the Court's May 22, 2026 order. That paragraph had recorded Solicitor General Tushar Mehta's submission that the curriculum prepared by the applicants had not been brought before the Committee at all levels and, therefore, could not be termed a collective decision.",
+        "stage1": [
+          {
+            "id": "p4-l1-f1",
+            "fact": "Clarify the application.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p4-l1-f2",
+            "fact": "That paragraph records Tushar Mehta's submission that the curriculum was not brought before the committee at all levels.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p4-l1-f1",
+            "fact": "Clarify the application.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p4-l1-f2",
+            "fact": "That paragraph records Tushar Mehta's submission that the curriculum was not brought before the committee at all levels.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 5,
+        "text": "The Court clarified that this was “merely a statement recorded by this Court” and did not constitute an observation or order of the Court.",
+        "stage1": [
+          {
+            "id": "p5-l1-f1",
+            "fact": "The court clarified that it merely stated this and that this does not constitute observation or order.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p5-l1-f1",
+            "fact": "The court clarified that it merely stated this and that this does not constitute observation or order.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 6,
+        "text": "On the main proceedings, the Court noted that the Expert Committee comprising former Supreme Court Judge Justice Indu Malhotra, former Attorney General K.K. Venugopal and Professor Prakash Singh had completed its review of the Chapter and other material brought before it.",
+        "stage1": [
+          {
+            "id": "p6-l1-f1",
+            "fact": "The Court noted that the Expert Committee had completed its review of chapters and other materials during the main proceedings.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p6-l1-f1",
+            "fact": "The Court noted that the Expert Committee had completed its review of chapters and other materials during the main proceedings.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 7,
+        "text": "The Committee, in collaboration with the National Judicial Academy, Bhopal and the reconstituted National Syllabus and Teaching Learning Material Committee, submitted a revised text on the role and functioning of the Judiciary.",
+        "stage1": [
+          {
+            "id": "p7-l1-f1",
+            "fact": "The committee submitted a text on the role and function of the judiciary.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p7-l1-f1",
+            "fact": "The committee submitted a text on the role and function of the judiciary.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 8,
+        "text": "The Court noted that the revised chapter had been approved, circulated to students and was in classroom use. After perusing it, the Court opined that it presented an objective, factually accurate and balanced account of the Judiciary, setting out its constitutional role and safeguards of independence and accountability without either glorifying or unfairly disparaging the institution.",
+        "stage1": [
+          {
+            "id": "p8-l1-f1",
+            "fact": "Court noted that the chapter was approved.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p8-l1-f2",
+            "fact": "Court noted that the chapter circulated among people.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p8-l1-f3",
+            "fact": "Court noted that Chapters are used in classrooms.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p8-l1-f4",
+            "fact": "After perusing it, the Court opined that it presented objective and factually accurate accounts of the judiciary, setting out its constitutional role and safeguarding independence and accountability without glorifying or disparaging it.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p8-l1-f1",
+            "fact": "Court noted that the chapter was approved.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p8-l1-f2",
+            "fact": "Court noted that the chapter circulated among people.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p8-l1-f3",
+            "fact": "Court noted that Chapters are used in classrooms.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p8-l1-f4",
+            "fact": "After perusing it, the Court opined that it presented objective and factually accurate accounts of the judiciary, setting out its constitutional role and safeguarding independence and accountability without glorifying or disparaging it.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 9,
+        "text": "In view of the unconditional apologies tendered by the NCERT Director and the Secretary, Department of School Education and Literacy, the recall of the offending publication, the reconstitution of the NSTC and the completion of the Expert Committee's review, the Court held that the object underlying the suo motu proceedings has been substantially achieved.",
+        "stage1": [
+          {
+            "id": "p9-l1-f1",
+            "fact": "People and people tend to apologize.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p9-l1-f2",
+            "fact": "Recall the publication.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p9-l1-f3",
+            "fact": "The NSC was reconstituted.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p9-l1-f1",
+            "fact": "People and people tend to apologize.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p9-l1-f2",
+            "fact": "Recall the publication.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p9-l1-f3",
+            "fact": "The NSC was reconstituted.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 10,
+        "text": "The show-cause notices issued to the Secretary and the NCERT Director were discharged. The Court directed the Union of India, NCERT and concerned authorities to remain bound by their assurances regarding the content and vetting of educational material relating to public institutions, including the Judiciary, in future editions and curricula.",
+        "stage1": [
+          {
+            "id": "p10-l1-f1",
+            "fact": "Notice of show cause discharged.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p10-l1-f2",
+            "fact": "The Court directed that the Union of India, NCERT and authorities remain bound by assurances of educational content and vetting of materials.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p10-l1-f1",
+            "fact": "Notice of show cause discharged.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p10-l1-f2",
+            "fact": "The Court directed that the Union of India, NCERT and authorities remain bound by assurances of educational content and vetting of materials.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 11,
+        "text": "The Court also appreciated the work of the Expert Committee and the reconstituted NSTC in reviewing the curriculum. The suo motu writ petition was ultimately disposed of and closed.",
+        "stage1": [
+          {
+            "id": "p11-l1-f1",
+            "fact": "The court also appreciated the work of the Expert Committee and the National Student Committee in reviewing the curriculum.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p11-l1-f2",
+            "fact": "The petition for a writ of U.S. Motu is being disposed of.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p11-l1-f3",
+            "fact": "The petition for a writ against the U.S. Motu has been closed.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "final": [
+          {
+            "id": "p11-l1-f1",
+            "fact": "The court also appreciated the work of the Expert Committee and the National Student Committee in reviewing the curriculum.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p11-l1-f2",
+            "fact": "The petition for a writ of U.S. Motu is being disposed of.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p11-l1-f3",
+            "fact": "The petition for a writ against the U.S. Motu has been closed.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          }
+        ],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
+      },
+      {
+        "id": 12,
+        "text": "Case Title – In Re: Social Science Textbook for Grade–8 (Part-2) Published by NCERT and Ancillary Issues",
+        "stage1": [],
+        "final": [],
+        "gaps": [],
+        "gapsFilled": 0,
+        "coverageClosed": false
       }
     ]
   }

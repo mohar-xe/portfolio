@@ -16,7 +16,7 @@ const verdictAmber = "#F59E0B";
 const verdictRed = "#EF4444";
 const verdictGrey = "#6B7280";
 
-type RunId = "threeStage" | "merged" | "stage1";
+type RunId = "threeStage" | "merged" | "stage1" | "amr";
 
 const PIPELINE: Record<RunId, string> = {
   threeStage: `flowchart LR
@@ -33,6 +33,13 @@ const PIPELINE: Record<RunId, string> = {
   stage1: `flowchart LR
     A["paragraph<br/>+ article title (context)"] --> B["stage 1<br/>extract and atomize"]
     B --> C["fact list<br/>no ids, no verdicts"]`,
+  amr: `flowchart LR
+    A["paragraph<br/>only, never the title"] --> B["AMR parse<br/>one graph, CPU"]
+    B --> C{"predicate<br/>node?"}
+    C -- "one per proposition" --> D["write it out<br/>trained generator, CPU"]
+    C -- "a coordination?" --> E["one fact<br/>per conjunct"]
+    E --> D
+    D --> F["fact list<br/>no model verdicts"]`,
 };
 
 function atomicMark(value: boolean | null | undefined) {
@@ -180,6 +187,10 @@ const RUN_META: Record<RunId, { name: string; blurb: string }> = {
     name: "v7 · stage 1 only",
     blurb: "the split moved into the extraction prompt, so one call per paragraph does everything. Nothing is judged.",
   },
+  amr: {
+    name: "v8 · AMR graph",
+    blurb: "no LLM at all: the paragraph is parsed into a graph, each predicate node is one fact, and a CPU model writes it out.",
+  },
 };
 
 function RunToggle({ runId, onChange }: { runId: RunId; onChange: (id: RunId) => void }) {
@@ -196,7 +207,9 @@ function RunToggle({ runId, onChange }: { runId: RunId; onChange: (id: RunId) =>
               key={id}
               onClick={() => onChange(id)}
               disabled={
-                (id === "merged" && !RUNS.merged) || (id === "stage1" && !RUNS.stage1)
+                (id === "merged" && !RUNS.merged) ||
+                (id === "stage1" && !RUNS.stage1) ||
+                (id === "amr" && !RUNS.amr)
               }
               aria-pressed={runId === id}
               className={`font-mono text-xs sm:text-sm px-3 py-1.5 rounded-full border transition-colors duration-150 disabled:opacity-30 disabled:cursor-not-allowed ${
@@ -222,6 +235,33 @@ function RunToggle({ runId, onChange }: { runId: RunId; onChange: (id: RunId) =>
 function StageColumns({ paragraph, runId }: { paragraph: AtomizerParagraph; runId: RunId }) {
   const finalFacts = treeOrder(paragraph.final);
   const merged = runId === "merged";
+  if (runId === "amr") {
+    return (
+      <section className="mb-12">
+        <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-1">
+          the graph, one paragraph
+        </h2>
+        <p className="text-lg sm:text-xl leading-[1.65] text-foreground/80 mb-6">
+          One predicate node of the graph is one fact, so there is no second column to show —
+          nothing downstream ever edits a fact here. A coordination in the source is an{" "}
+          <span className="font-mono text-[0.8rem]">and</span> node, and its members become
+          separate facts, which is the guarantee no prompt can make about free text. What a graph
+          cannot do is notice its own mistakes: a parse that drops a predicate loses the fact
+          silently, and one that misreads a name invents it.
+        </p>
+        <div className="flex flex-col">
+          <h3 className="font-mono text-xs uppercase tracking-widest text-foreground/50 mb-2 border-b border-foreground/10 pb-2">
+            propositions ({paragraph.final.length})
+          </h3>
+          <ul>
+            {paragraph.final.map((fact) => (
+              <FactRow key={fact.id ?? fact.fact} fact={fact} showEntailed />
+            ))}
+          </ul>
+        </div>
+      </section>
+    );
+  }
   if (runId === "stage1") {
     return (
       <section className="mb-12">
@@ -333,6 +373,13 @@ function Ablation({ run, runId }: { run: AtomizerRun; runId: RunId }) {
             One call per paragraph is the floor: extraction is generative, so there is nothing left
             to ablate. The {run.headline.callsPerRun} calls are the pipeline.
           </>
+        ) : runId === "amr" ? (
+          <>
+            There is nothing to ablate by call count — every row here is 0, because nothing calls an
+            LLM. What can be swapped is the writer, and doing so is what this run measures: the same
+            graphs read out by a verb table instead of a trained model give the same 22 propositions
+            in unreadable sentences. The parser is the other half, and it is not cheap to replace.
+          </>
         ) : (
           <>
             What each stage costs, and what breaks if it is removed. Deltas are arithmetic on the
@@ -385,7 +432,11 @@ function SourceParagraphs({ run, runId, other, selected, onSelect }: {
   const diff = counterpart ? claimDiff(current, counterpart) : null;
   const tally = manualTally(current.final);
   const otherName =
-    runId === "merged" ? RUN_META.threeStage.name : RUN_META.merged.name;
+    runId === "merged"
+      ? RUN_META.threeStage.name
+      : runId === "amr"
+        ? RUN_META.stage1.name
+        : RUN_META.merged.name;
   return (
     <section className="mb-12">
       <h2 className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mb-4">
@@ -483,9 +534,20 @@ export default function AtomizerViewer() {
       ? RUNS.merged
       : runId === "stage1" && RUNS.stage1
         ? RUNS.stage1
-        : RUNS.threeStage;
+        : runId === "amr" && RUNS.amr
+          ? RUNS.amr
+          : RUNS.threeStage;
   const paragraph = run.paragraphs[paragraphIndex] ?? run.paragraphs[0];
   const manual = manualEvalTotals(run.paragraphs.flatMap((p) => p.final));
+  /** The AMR run is the one comparison the graph can lose, so it is diffed against the live LLM. */
+  const counterpart =
+    runId === "merged"
+      ? RUNS.threeStage
+      : runId === "amr"
+        ? RUNS.stage1
+        : runId === "stage1"
+          ? RUNS.threeStage
+          : RUNS.merged;
 
   return (
     <div className="mt-10">
@@ -514,7 +576,7 @@ export default function AtomizerViewer() {
       <SourceParagraphs
         run={run}
         runId={runId}
-        other={runId === "merged" ? RUNS.threeStage : RUNS.merged}
+        other={counterpart}
         selected={paragraphIndex}
         onSelect={setParagraphIndex}
       />

@@ -227,6 +227,10 @@
           "redundant"
         ]
       }
+    },
+    "amr": {
+      "label": "AMR graph (v8, amrlib xfm_bart_base + T5 generator)",
+      "verdicts": {}
     }
   },
   "factFlags": {

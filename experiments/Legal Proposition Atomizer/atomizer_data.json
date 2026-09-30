@@ -101,14 +101,14 @@
       "label": "v8 AMR graph",
       "model": "amrlib xfm_bart_base + T5 generator",
       "schema": "AMR graph -> fact",
-      "paragraphs": 12,
+      "paragraphs": 11,
       "calls": 0,
-      "facts": 22,
+      "facts": 23,
       "deeper": 0,
       "unresolved": 0,
       "gaps": 0,
-      "artifacts": "all 12 paragraphs",
-      "note": "No LLM at all. Each paragraph is parsed into an AMR graph, the propositions are the graph's predicate nodes, and a trained graph-to-text model writes them out. Structure is better than any prompt can guarantee: a coordination can never arrive inside one fact, nothing is derived from the article title, a case title yields nothing, and a modal or negation is an edge that reaches the text. Coverage is worse - 22 facts against 43 - and the parser invents proper nouns, turning NSTC into 'National Student Committee'. Nothing here is hand-checked yet, which is the number that decides it."
+      "artifacts": "11 of 12 paragraphs, the case title excluded",
+      "note": "No LLM at all. Each paragraph is parsed into an AMR graph, the propositions are the graph's predicate nodes, and a trained graph-to-text model writes them out. Structure is better than any prompt can guarantee: a coordination can never arrive inside one fact, nothing is derived from the article title, a case title yields nothing, and a modal or negation is an edge that reaches the text. Coverage is worse - 23 facts against 43 - and the parser invents proper nouns, turning NSTC into 'National Student Committee'. Nothing here is hand-checked yet, which is the number that decides it."
     }
   ],
   "ablation": [
@@ -6134,9 +6134,9 @@
   },
   "amrRun": {
     "headline": {
-      "paragraphs": 12,
+      "paragraphs": 11,
       "callsPerRun": 0,
-      "facts": 22,
+      "facts": 23,
       "deeperFacts": 0,
       "unresolved": 0,
       "gaps": 0
@@ -6152,7 +6152,7 @@
         "label": "swap the trained writer for a rule table",
         "calls": 0,
         "delta": 0,
-        "lost": "same graphs, same 22 propositions, and unreadable sentences - which is why the generator is the arm worth labelling"
+        "lost": "same graphs, same propositions, and unreadable sentences - which is why the generator is the arm worth labelling"
       },
       {
         "label": "remove the parse",
@@ -6408,7 +6408,21 @@
         "stage1": [
           {
             "id": "p5-l1-f1",
-            "fact": "The court clarified that it merely stated this and that this does not constitute observation or order.",
+            "fact": "The court clarified that the court merely stated this.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p5-l1-f2",
+            "fact": "The court clarified that this does not constitute judicial observation or order.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -6424,7 +6438,21 @@
         "final": [
           {
             "id": "p5-l1-f1",
-            "fact": "The court clarified that it merely stated this and that this does not constitute observation or order.",
+            "fact": "The court clarified that the court merely stated this.",
+            "depth": 1,
+            "parentId": null,
+            "atomic": null,
+            "atomicConfidence": null,
+            "atomicReason": null,
+            "entailed": null,
+            "entailmentConfidence": null,
+            "entailmentReason": null,
+            "origin": null,
+            "unresolved": false
+          },
+          {
+            "id": "p5-l1-f2",
+            "fact": "The court clarified that this does not constitute judicial observation or order.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -6525,7 +6553,7 @@
         "stage1": [
           {
             "id": "p8-l1-f1",
-            "fact": "Court noted that the chapter was approved.",
+            "fact": "The court noted that the chapter was approved.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -6539,7 +6567,7 @@
           },
           {
             "id": "p8-l1-f2",
-            "fact": "Court noted that the chapter circulated among people.",
+            "fact": "The court noted that the chapter circulated among people.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -6553,7 +6581,7 @@
           },
           {
             "id": "p8-l1-f3",
-            "fact": "Court noted that Chapters are used in classrooms.",
+            "fact": "The court noted that Chapters are used in classrooms.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -6583,7 +6611,7 @@
         "final": [
           {
             "id": "p8-l1-f1",
-            "fact": "Court noted that the chapter was approved.",
+            "fact": "The court noted that the chapter was approved.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -6597,7 +6625,7 @@
           },
           {
             "id": "p8-l1-f2",
-            "fact": "Court noted that the chapter circulated among people.",
+            "fact": "The court noted that the chapter circulated among people.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -6611,7 +6639,7 @@
           },
           {
             "id": "p8-l1-f3",
-            "fact": "Court noted that Chapters are used in classrooms.",
+            "fact": "The court noted that Chapters are used in classrooms.",
             "depth": 1,
             "parentId": null,
             "atomic": null,
@@ -6895,15 +6923,6 @@
             "unresolved": false
           }
         ],
-        "gaps": [],
-        "gapsFilled": 0,
-        "coverageClosed": false
-      },
-      {
-        "id": 12,
-        "text": "Case Title – In Re: Social Science Textbook for Grade–8 (Part-2) Published by NCERT and Ancillary Issues",
-        "stage1": [],
-        "final": [],
         "gaps": [],
         "gapsFilled": 0,
         "coverageClosed": false

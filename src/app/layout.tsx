@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "mohar@portfolio",
-  description: "Portfolio of Mohar.",
+  title: "Mohar Das — AI Engineer & Researcher",
+  description:
+    "Mohar Das builds and investigates AI systems: LLM reasoning, retrieval, knowledge representation, agent infrastructure and reliable AI.",
   icons: {
     icon: "/logo.svg",
   },

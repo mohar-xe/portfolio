@@ -18,6 +18,34 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    title: "Stampede",
+    description:
+      "Open-source control plane for AI coding-agent fleets. A Go control plane owns an append-only session log, the job queue, usage/cost tracking and approval-gated shipping; a TypeScript harness runs the plan → edit → test → iterate loop; every task gets its own isolated E2B sandbox. REST + SSE between dashboard and control plane, and the whole stack deploys on free tiers with no credit card.",
+    tags: ["Go", "TypeScript", "SSE", "E2B", "Sandboxing"],
+    badge: "FEATURED",
+    links: [
+      {
+        label: "View Project",
+        href: "https://github.com/mohar-xe/stampede",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "Refinery",
+    description:
+      "Verified agent trajectories in, a small distilled model out: the trace → SFT → student flywheel built end to end on a legal entailment task. Outcome verification filters runs before they become training data, one eval harness scores teacher, student and heuristic side by side, and the cost/quality frontier is emitted by the pipeline instead of hand-filled.",
+    tags: ["Python", "Distillation", "LoRA", "Agent Traces", "Evals"],
+    badge: "FEATURED",
+    links: [
+      {
+        label: "View Project",
+        href: "https://github.com/mohar-xe/Refinery",
+        external: true,
+      },
+    ],
+  },
+  {
     title: "Inference Router",
     description:
       "Production-grade LLM inference router in Go, sitting between apps and OpenAI-compatible/Anthropic backends. Adaptive routing (EWMA latency / weighted / priority), sliding-window circuit breaking with a zero-allocation hot path (4.8 ns/op), health-gated failover with backoff, multi-dimension token-bucket rate limiting, TTL response caching, SSE streaming that never hangs, config hot-reload preserving breaker state, and dependency-free Prometheus metrics — ~5k stdlib lines, one external dependency (yaml.v3).",
@@ -41,11 +69,6 @@ export const projects: Project[] = [
       {
         label: "View Project",
         href: "https://github.com/mohar-xe/Hybrid-RAG",
-        external: true,
-      },
-      {
-        label: "Live Demo",
-        href: "https://hybrid-rag-6fnb.onrender.com",
         external: true,
       },
     ],
@@ -104,14 +127,53 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "PunyPunk",
+    title: "SONAA",
     description:
-      "Scripts to train PunyPunk and bestow great capabilities from larger models.",
-    tags: ["Python", "Distillation", "Fine-tuning"],
+      "AMR for legal text: research notes, a graph-channel ablation, and a gold-AMR generation pipeline driven by Qwen3.8-27B — meaning representation as an intermediate structure for downstream legal reasoning instead of raw prose.",
+    tags: ["Python", "AMR", "Qwen", "Graph ML", "Legal NLP"],
     links: [
       {
         label: "View Project",
-        href: "https://github.com/mohar-xe/PunyPunk",
+        href: "https://github.com/mohar-xe/SONAA",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "p2facts — Legal Proposition Atomizer",
+    description:
+      "Turns legal-news paragraphs into atomic, grounded propositions. The live pipeline is deliberately stage 1 only: extraction, guard tests that don't need an API, and an end-to-end trace documenting every prompt. No entailment, coverage or gap-fill pass ships yet, and the known failures are written down rather than hidden.",
+    tags: ["Python", "LLM Extraction", "Legal NLP", "Evaluation"],
+    links: [
+      {
+        label: "View Project",
+        href: "https://github.com/mohar-xe/p2facts",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "Sequential Matching — Vouchsafe Hackathon",
+    description:
+      "Team Enigmatic Cats, Vouchsafe Sequential Matching Hackathon. Recovered the generative law behind the supplied simulator, decomposed the funnel, and found that only 1.24% of pairs are even legal, a third of people can never be matched, and the provided baseline already sits at 89% of the achievable ceiling. Nine stdlib-only scripts reproduce every number.",
+    tags: ["Python", "Research", "Matching", "Optimization"],
+    links: [
+      {
+        label: "Research + Code",
+        href: "https://github.com/mohar-xe/sequential-matching-hackathon",
+        external: true,
+      },
+    ],
+  },
+  {
+    title: "Symbolic Validation of Agent Tool Calls",
+    description:
+      "Survey and argument on where agent tool-call validation actually fails. Schema validation is effectively solved by constrained decoding; the live gap is authorization and confinement — is this call permitted, for this principal, on this object, in this state — which is fully decidable and almost never implemented.",
+    tags: ["Research", "Formal Methods", "Agents", "MCP"],
+    links: [
+      {
+        label: "Read the Notes",
+        href: "https://github.com/mohar-xe/symbolic-validation",
         external: true,
       },
     ],
@@ -190,14 +252,36 @@ export interface OpenItem {
 
 export const openSource = {
   metrics: [
-    { label: "Pull Requests", value: "2" },
-    { label: "Issues Opened", value: "3" },
-    { label: "Repos", value: "24" },
-    { label: "Followers", value: "11" },
+    { label: "Pull Requests", value: "13" },
+    { label: "Issues Opened", value: "6" },
+    { label: "Repos", value: "36" },
+    { label: "Followers", value: "18" },
   ] as { label: string; value: string }[],
   prsUrl: "https://github.com/pulls?q=is%3Apr+author%3Amohar-xe",
   issuesUrl: "https://github.com/issues?q=is%3Aissue+author%3Amohar-xe",
   prs: [
+    {
+      repo: "S-Oviya/Lergerly-",
+      title: "feat: 23 Indian languages multilingual support",
+      url: "https://github.com/S-Oviya/Lergerly-/pull/2",
+    },
+    {
+      repo: "S-Oviya/Lergerly-",
+      title: "feat: WhatsApp voice pipeline (STT → Bedrock → ledger)",
+      url: "https://github.com/S-Oviya/Lergerly-/pull/1",
+    },
+    {
+      repo: "VMHETAR/voice-recognition-labeling",
+      title:
+        "Fix emotion classifier stuck on happy, calibrate on real recordings, add m4a support",
+      url: "https://github.com/VMHETAR/voice-recognition-labeling/pull/4",
+    },
+    {
+      repo: "VMHETAR/voice-recognition-labeling",
+      title:
+        "Replace print() with logging, add env-var config, harden error handling",
+      url: "https://github.com/VMHETAR/voice-recognition-labeling/pull/3",
+    },
     {
       repo: "khoj-ai/khoj",
       title: "Fix GPT-5 temperature incompatibility in all 4 API paths",
@@ -211,6 +295,11 @@ export const openSource = {
     },
   ] as OpenItem[],
   issues: [
+    {
+      repo: "The-Boring-Education/The-Boring-Agents",
+      title: "Sessions in temp/ accumulate forever — no TTL or purge path",
+      url: "https://github.com/The-Boring-Education/The-Boring-Agents/issues/58",
+    },
     {
       repo: "kubeflow/sdk",
       title:

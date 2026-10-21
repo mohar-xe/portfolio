@@ -150,10 +150,10 @@ export const experiences: Experience[] = [
     description:
       "Research internship with Assistant Professor Dr. Suman Kundu on legal NLP — dataset construction, fact extraction, and meaning representation.",
     points: [
-      "Built a 15k-paragraph, 200k-sentence legal corpus with large-scale cleaning, used as the data-generation base for the project.",
-      "Designed a multistage pipeline that converts court text into atomic facts, with NLI-based entailment checks verifying each fact against its source.",
-      "Merged two verification stages into a single round: 92 → 33 LLM calls (64% fewer) on a 12-paragraph sample, with higher accuracy in manual evaluation.",
-      "Built an AMR-based variant of the pipeline and benchmarked both versions with human and synthetic evaluation; now ablating a 113M FactGraph detector against Qwen3.5-9B.",
+      "Cut LLM calls 92 → 33 (64% fewer) per 12-paragraph run by merging two verification stages into one round — manual review showed accuracy going up, not down.",
+      "Built the 15k-paragraph / 200k-sentence legal corpus behind it, then the multistage pipeline that turns court text into atomic facts, each one NLI-checked against its source before it ships.",
+      "Added an AMR-based variant to test whether graph structure carries signal flat facts miss, and benchmarked both with human and synthetic evaluation.",
+      "Now ablating a 113M FactGraph detector against Qwen3.5-9B on 46 hand-written cases: how much of the LLM's accuracy can a small specialised model keep?",
     ],
   },
   {

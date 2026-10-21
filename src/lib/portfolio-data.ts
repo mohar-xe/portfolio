@@ -214,36 +214,14 @@ export interface OpenItem {
 
 export const openSource = {
   metrics: [
-    { label: "Pull Requests", value: "13" },
-    { label: "Issues Opened", value: "6" },
-    { label: "Repos", value: "36" },
+    { label: "Pull Requests", value: "4" },
+    { label: "Issues Opened", value: "3" },
+    { label: "Projects", value: "4" },
     { label: "Followers", value: "18" },
   ] as { label: string; value: string }[],
   prsUrl: "https://github.com/pulls?q=is%3Apr+author%3Amohar-xe",
   issuesUrl: "https://github.com/issues?q=is%3Aissue+author%3Amohar-xe",
   prs: [
-    {
-      repo: "S-Oviya/Lergerly-",
-      title: "feat: 23 Indian languages multilingual support",
-      url: "https://github.com/S-Oviya/Lergerly-/pull/2",
-    },
-    {
-      repo: "S-Oviya/Lergerly-",
-      title: "feat: WhatsApp voice pipeline (STT → Bedrock → ledger)",
-      url: "https://github.com/S-Oviya/Lergerly-/pull/1",
-    },
-    {
-      repo: "VMHETAR/voice-recognition-labeling",
-      title:
-        "Fix emotion classifier stuck on happy, calibrate on real recordings, add m4a support",
-      url: "https://github.com/VMHETAR/voice-recognition-labeling/pull/4",
-    },
-    {
-      repo: "VMHETAR/voice-recognition-labeling",
-      title:
-        "Replace print() with logging, add env-var config, harden error handling",
-      url: "https://github.com/VMHETAR/voice-recognition-labeling/pull/3",
-    },
     {
       repo: "khoj-ai/khoj",
       title: "Fix GPT-5 temperature incompatibility in all 4 API paths",
@@ -258,11 +236,6 @@ export const openSource = {
   ] as OpenItem[],
   issues: [
     {
-      repo: "The-Boring-Education/The-Boring-Agents",
-      title: "Sessions in temp/ accumulate forever — no TTL or purge path",
-      url: "https://github.com/The-Boring-Education/The-Boring-Agents/issues/58",
-    },
-    {
       repo: "kubeflow/sdk",
       title:
         "LoraConfig/TorchTuneConfig accept invalid PEFT hyperparameters, and valid 0/[] values are silently dropped",
@@ -276,6 +249,43 @@ export const openSource = {
     },
   ] as OpenItem[],
 };
+
+/* ------------------------------------------------------------------ */
+/*  Contributor programme                                             */
+/* ------------------------------------------------------------------ */
+
+export interface Program {
+  name: string;
+  url: string;
+  description: string;
+  items: OpenItem[];
+}
+
+export const programs: Program[] = [
+  {
+    name: "The Boring Education — Contributor Program",
+    url: "https://github.com/The-Boring-Education",
+    description:
+      "Open-source tech education for Bharat — 13 public repositories across a learning web app, APIs and an agent framework. Contributing to the Shiksha agent workstream: an agent that emits a valid Course Bundle, plus a purge path for completed sessions that were accumulating in temp/ forever.",
+    items: [
+      {
+        repo: "The-Boring-Agents #56",
+        title: "feat(shiksha): course generation agent emitting a valid Course Bundle",
+        url: "https://github.com/The-Boring-Education/The-Boring-Agents/pull/56",
+      },
+      {
+        repo: "The-Boring-Agents #59",
+        title: "feat(sessions): bulk purge for completed sessions older than N days",
+        url: "https://github.com/The-Boring-Education/The-Boring-Agents/pull/59",
+      },
+      {
+        repo: "The-Boring-Agents #58",
+        title: "bug: sessions in temp/ accumulate forever — no TTL or purge path",
+        url: "https://github.com/The-Boring-Education/The-Boring-Agents/issues/58",
+      },
+    ],
+  },
+];
 
 /* ------------------------------------------------------------------ */
 /*  Contact                                                            */

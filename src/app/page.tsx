@@ -7,6 +7,7 @@ import {
 } from "@/lib/portfolio-data";
 import NavBar from "@/components/NavBar";
 import ContactLinks from "@/components/ContactLinks";
+import ProjectSlider from "@/components/ProjectSlider";
 import { posts } from "@/lib/blog-data";
 
 /* Shared ink-link treatment: underline that inverts on hover */
@@ -69,44 +70,7 @@ export default function Home() {
         <h2 id="projects" className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mt-16 sm:mt-24">
           01. projects
         </h2>
-        <div className="mt-8 grid grid-cols-1 gap-4">
-          {projects.map((project) => (
-            <a
-              key={project.title}
-              href={project.links[0].href}
-              target="_blank"
-              rel="noreferrer"
-              className="group block rounded-lg border border-foreground/15 p-5 transition-colors duration-150 hover:border-foreground/40 hover:bg-foreground/[0.03]"
-            >
-              <div className="flex flex-wrap items-baseline gap-x-2">
-                <h3 className="text-[1.15rem] sm:text-[1.2rem] font-bold leading-snug group-hover:underline decoration-1 underline-offset-4">
-                  {project.title}
-                </h3>
-                {project.badge && (
-                  <span className="font-mono text-[0.6rem] uppercase tracking-widest px-1.5 py-0.5 rounded border border-foreground/15 text-foreground/50">
-                    {project.badge.toLowerCase()}
-                  </span>
-                )}
-              </div>
-              <p className="mt-2 text-base leading-[1.65] text-foreground/70">
-                {project.description}
-              </p>
-              <div className="mt-3 flex flex-wrap gap-1.5">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-mono text-[0.6rem] uppercase tracking-widest px-1.5 py-0.5 rounded border border-foreground/15 text-foreground/50"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <p className="mt-3 font-mono text-sm text-foreground/50">
-                ↗ {project.links[0].label.toLowerCase()}
-              </p>
-            </a>
-          ))}
-        </div>
+        <ProjectSlider projects={projects} />
         {/* 02. Experience */}
         <h2 id="experience" className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mt-16 sm:mt-24">
           02. experience

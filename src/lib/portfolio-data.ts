@@ -148,12 +148,12 @@ export const experiences: Experience[] = [
     location: "Chennai, India",
     period: "Oct 2026 – Present",
     description:
-      "Research internship with Assistant Professor Dr. Suman Kundu on meaning representation for legal reasoning — whether AMR graphs carry the structure a legal claim verifier actually needs.",
+      "Research internship with Assistant Professor Dr. Suman Kundu on meaning representation for legal reasoning.",
     points: [
-      "Built the evaluation harness behind SONAA: 15 LiveLaw judgments (64 sentences) with 46 hand-written atomic claims and 23 single-edit corruptions (role swap, polarity flip, quantifier flip, number change, agent swap) designed so that string matching cannot detect them.",
-      "Ran a channel ablation that keeps the graph intact and removes one structural channel at a time: concepts alone separate 0/23 corruption pairs, the full graph separates 16/23 — roles carry most of the signal, quantifiers and reentrancy carry none.",
-      "Positioned the graph against a fact-graph baseline (0.565) and a direct Qwen3.5-9B baseline (0.935); the graph beats the fact graph but not the LLM, which reframes the result as channel attribution rather than a new benchmark number.",
-      "Audited the off-the-shelf AMR parser landscape for legal prose — out-of-domain Smatch drops of 38–45% relative, concentrated in named entities, negation and reentrancy — and traced the residual system failures to parser errors on legal vocabulary rather than scoring.",
+      "Built the SONAA evaluation harness: 15 LiveLaw judgments, 46 hand-written atomic claims, 23 single-edit corruptions that string matching cannot detect.",
+      "Channel ablation: concepts alone separate 0/23 corruption pairs, the full graph 16/23 — roles carry the signal, quantifiers and reentrancy none.",
+      "Benchmarked against fact-graph (0.565) and Qwen3.5-9B (0.935) baselines; the graph beats the fact graph but not the LLM.",
+      "Audited AMR parsers on legal prose: 38–45% relative Smatch drop, concentrated in entities, negation and reentrancy.",
     ],
   },
   {
@@ -162,14 +162,12 @@ export const experiences: Experience[] = [
     location: "Remote",
     period: "Jul 2026 – Present",
     description:
-      "Research and develop proprietary neuro-symbolic AI architectures for advanced reasoning systems.",
+      "Neuro-symbolic AI for reasoning systems, with a focus on compact, edge-deployable models.",
     points: [
-      "Investigated recent research in neuro-symbolic AI, compact language models, and edge AI, translating findings into experimental directions for the team's proprietary architecture.",
-      "Prototyped and evaluated research-driven techniques for resource-constrained language models, designing experiments and evaluation protocols to assess architectural trade-offs for edge deployment.",
-      "Productionized a voice-recognition prototype by implementing leveled logging across 7 modules, environment-driven configuration, and hardened SQLite storage with WAL mode and context managers for CI/headless compatibility and concurrent access.",
-      "Reworked heuristic emotion classification and acoustic feature estimation, improving observed real-world accuracy from 64% to 89% through recalibrated arousal/valence gates and revised pitch and speaking-rate algorithms.",
-      "Engineered a multi-format audio ingestion pipeline supporting WAV, FLAC, OGG, and M4A at 16 kHz mono, alongside an 8-scenario synthetic test harness and CLI packaging.",
-      "Collaborated with the founder and core research team on literature review, architecture exploration, hypothesis development, and research-driven engineering decisions.",
+      "Researched neuro-symbolic architectures and compact models for edge reasoning; drove literature review, experiment design and evaluation with the founder and core team.",
+      "Productionized a voice-recognition prototype: leveled logging across 7 modules, env-driven config, and SQLite WAL storage for CI and concurrent access.",
+      "Reworked emotion classification and acoustic feature estimation from 64% to 89% observed accuracy via recalibrated arousal/valence gates and revised pitch and rate algorithms.",
+      "Built multi-format audio ingestion (WAV/FLAC/OGG/M4A at 16 kHz mono), an 8-scenario synthetic harness and CLI packaging.",
     ],
   },
 ];

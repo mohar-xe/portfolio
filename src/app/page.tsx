@@ -82,11 +82,11 @@ export default function Home() {
         <h2 id="experience" className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mt-16 sm:mt-24">
           02. experience
         </h2>
-        <div className="mt-8 space-y-4">
+        <div className="mt-8 space-y-3">
           {experiences.map((exp) => (
             <article
               key={exp.company}
-              className="rounded-lg border border-foreground/15 p-5 transition-colors duration-150 hover:border-foreground/40"
+              className="rounded-lg border border-foreground/15 p-4 transition-colors duration-150 hover:border-foreground/40"
             >
               <h3 className="text-[1.1rem] sm:text-[1.15rem] font-bold leading-snug">
                 {exp.title}
@@ -96,10 +96,10 @@ export default function Home() {
                 {exp.period} <span className="text-foreground/40">⏵</span>{" "}
                 {exp.location}
               </p>
-              <p className="mt-3 text-[0.95rem] leading-[1.6] text-foreground/70">
+              <p className="mt-2 text-sm leading-[1.55] text-foreground/70">
                 {exp.description}
               </p>
-              <ul className="mt-3 list-disc space-y-1.5 pl-5 text-[0.95rem] leading-[1.6] text-foreground/70 marker:text-foreground/30">
+              <ul className="mt-2 list-disc space-y-1 pl-4 text-sm leading-[1.55] text-foreground/70 marker:text-foreground/30">
                 {exp.points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}

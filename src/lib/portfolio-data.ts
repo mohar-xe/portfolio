@@ -114,19 +114,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "SONAA — AMR for Legal Claim Verification",
-    description:
-      "Research from my IIT Madras internship under Dr. Suman Kundu. Off-the-shelf AMR parsers are trained on newswire and degrade 38–45% relative on legal prose, so the question was which graph channels still carry signal. Ablating one channel at a time: concepts alone separate 0/23 single-edit corruption pairs, the full graph separates 16/23 — roles matter most, quantifiers and reentrancy not at all. Pairs with a gold-AMR generation pipeline driven by Qwen3.8-27B.",
-    tags: ["Python", "AMR", "Qwen", "Graph ML", "Legal NLP"],
-    links: [
-      {
-        label: "View Project",
-        href: "https://github.com/mohar-xe/SONAA",
-        external: true,
-      },
-    ],
-  },
-  {
     title: "Sequential Matching — Vouchsafe Hackathon",
     description:
       "Team Enigmatic Cats, Vouchsafe Sequential Matching Hackathon. Recovered the generative law behind the supplied simulator, decomposed the funnel, and found that only 1.24% of pairs are even legal, a third of people can never be matched, and the provided baseline already sits at 89% of the achievable ceiling. Nine stdlib-only scripts reproduce every number.",

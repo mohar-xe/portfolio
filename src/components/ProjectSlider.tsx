@@ -66,7 +66,7 @@ export default function ProjectSlider({ projects }: { projects: Project[] }) {
         role="region"
         aria-label="Projects"
         tabIndex={0}
-        className="no-scrollbar full-bleed-track mt-2 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1"
+        className="no-scrollbar project-track mt-2 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1"
       >
         {projects.map((project) => (
           <a
@@ -75,7 +75,7 @@ export default function ProjectSlider({ projects }: { projects: Project[] }) {
             href={project.links[0].href}
             target="_blank"
             rel="noreferrer"
-            className="group flex w-[85%] shrink-0 snap-start flex-col rounded-lg border border-foreground/15 p-5 transition-colors duration-150 hover:border-foreground/40 hover:bg-foreground/[0.03] sm:w-[24rem]"
+            className="group flex w-[var(--card-w)] shrink-0 snap-center flex-col rounded-lg border border-foreground/15 p-5 transition-colors duration-150 hover:border-foreground/40 hover:bg-foreground/[0.03]"
           >
             <div className="flex flex-wrap items-baseline gap-x-2">
               <h3 className="text-[1.05rem] sm:text-[1.1rem] font-bold leading-snug group-hover:underline decoration-1 underline-offset-4">

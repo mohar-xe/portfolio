@@ -41,24 +41,13 @@
   }
 
   /*
-   * Full-viewport track that still starts its first card on the text column.
-   * 680px is the page column; the gutters mirror px-5 / sm:px-8 / md:px-10.
-   * scroll-padding keeps scroll-snap aligned to the same inset.
+   * Card carousel: symmetric side padding is half the leftover space, so the
+   * first card is already centred at scrollLeft 0 and the last one centres at
+   * max scroll. --card-w is the single source of truth for card width.
    */
-  .full-bleed-track {
-    --track-inset: max(1.25rem, calc((100% - 680px) / 2 + 1.25rem));
-    padding-inline: var(--track-inset);
-    scroll-padding-inline: var(--track-inset);
-  }
-  @media (min-width: 640px) {
-    .full-bleed-track {
-      --track-inset: max(2rem, calc((100% - 680px) / 2 + 2rem));
-    }
-  }
-  @media (min-width: 768px) {
-    .full-bleed-track {
-      --track-inset: max(2.5rem, calc((100% - 680px) / 2 + 2.5rem));
-    }
+  .project-track {
+    --card-w: min(85vw, 24rem);
+    padding-inline: max(1.25rem, calc((100% - var(--card-w)) / 2));
   }
 }
 

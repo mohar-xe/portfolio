@@ -17,7 +17,8 @@ const ink =
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      <main className="flex-1 max-w-[680px] w-full mx-auto px-5 sm:px-8 md:px-10 py-16 sm:py-20 md:py-24">
+      <main className="flex-1 w-full py-16 sm:py-20 md:py-24">
+        <div className="max-w-[680px] w-full mx-auto px-5 sm:px-8 md:px-10">
         {/* Terminal Header */}
         <p
           id="top"
@@ -70,7 +71,12 @@ export default function Home() {
         <h2 id="projects" className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mt-16 sm:mt-24">
           01. projects
         </h2>
+        </div>
+
+        {/* Full-bleed: the slider spans the viewport, everything else stays in the column */}
         <ProjectSlider projects={projects} />
+
+        <div className="max-w-[680px] w-full mx-auto px-5 sm:px-8 md:px-10">
         {/* 02. Experience */}
         <h2 id="experience" className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mt-16 sm:mt-24">
           02. experience
@@ -174,6 +180,7 @@ export default function Home() {
             </li>
           ))}
         </ul>
+        </div>
       </main>
 
       {/* Footer */}

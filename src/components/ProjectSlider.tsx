@@ -39,7 +39,7 @@ export default function ProjectSlider({ projects }: { projects: Project[] }) {
 
   return (
     <div className="mt-6">
-      <div className="flex items-center justify-end gap-1.5">
+      <div className="mx-auto flex max-w-[680px] items-center justify-end gap-1.5 px-5 sm:px-8 md:px-10">
         <button
           type="button"
           onClick={() => step(-1)}
@@ -66,7 +66,7 @@ export default function ProjectSlider({ projects }: { projects: Project[] }) {
         role="region"
         aria-label="Projects"
         tabIndex={0}
-        className="no-scrollbar -mx-5 mt-2 flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-px-5 px-5 pb-1 sm:-mx-8 sm:scroll-px-8 sm:px-8 md:-mx-10 md:scroll-px-10 md:px-10"
+        className="no-scrollbar full-bleed-track mt-2 flex snap-x snap-mandatory gap-4 overflow-x-auto pb-1"
       >
         {projects.map((project) => (
           <a

@@ -146,7 +146,7 @@ export const experiences: Experience[] = [
     title: "Research Intern",
     company: "Indian Institute of Technology Madras",
     location: "Chennai, India",
-    period: "Oct 2026 – Present",
+    period: "Sep 2026 – Present",
     description:
       "Research internship with Assistant Professor Dr. Suman Kundu on legal NLP — dataset construction, fact extraction, and meaning representation.",
     points: [
@@ -160,7 +160,7 @@ export const experiences: Experience[] = [
     title: "AI/ML Research Intern",
     company: "Azmth Lab Private Limited",
     location: "Remote",
-    period: "Jul 2026 – Present",
+    period: "Jul 2026 – Sep 2026",
     description:
       "Neuro-symbolic AI for reasoning systems, with a focus on compact, edge-deployable models.",
     points: [

@@ -127,9 +127,9 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "SONAA",
+    title: "SONAA — AMR for Legal Claim Verification",
     description:
-      "AMR for legal text: research notes, a graph-channel ablation, and a gold-AMR generation pipeline driven by Qwen3.8-27B — meaning representation as an intermediate structure for downstream legal reasoning instead of raw prose.",
+      "Research from my IIT Madras internship under Dr. Suman Kundu. Off-the-shelf AMR parsers are trained on newswire and degrade 38–45% relative on legal prose, so the question was which graph channels still carry signal. Ablating one channel at a time: concepts alone separate 0/23 single-edit corruption pairs, the full graph separates 16/23 — roles matter most, quantifiers and reentrancy not at all. Pairs with a gold-AMR generation pipeline driven by Qwen3.8-27B.",
     tags: ["Python", "AMR", "Qwen", "Graph ML", "Legal NLP"],
     links: [
       {
@@ -194,6 +194,20 @@ export interface Experience {
 }
 
 export const experiences: Experience[] = [
+  {
+    title: "Research Intern — AMR for Legal Reasoning",
+    company: "Indian Institute of Technology Madras",
+    location: "Chennai, India",
+    period: "Oct 2026 – Present",
+    description:
+      "Research internship with Assistant Professor Dr. Suman Kundu on meaning representation for legal reasoning — whether AMR graphs carry the structure a legal claim verifier actually needs.",
+    points: [
+      "Built the evaluation harness behind SONAA: 15 LiveLaw judgments (64 sentences) with 46 hand-written atomic claims and 23 single-edit corruptions (role swap, polarity flip, quantifier flip, number change, agent swap) designed so that string matching cannot detect them.",
+      "Ran a channel ablation that keeps the graph intact and removes one structural channel at a time: concepts alone separate 0/23 corruption pairs, the full graph separates 16/23 — roles carry most of the signal, quantifiers and reentrancy carry none.",
+      "Positioned the graph against a fact-graph baseline (0.565) and a direct Qwen3.5-9B baseline (0.935); the graph beats the fact graph but not the LLM, which reframes the result as channel attribution rather than a new benchmark number.",
+      "Audited the off-the-shelf AMR parser landscape for legal prose — out-of-domain Smatch drops of 38–45% relative, concentrated in named entities, negation and reentrancy — and traced the residual system failures to parser errors on legal vocabulary rather than scoring.",
+    ],
+  },
   {
     title: "AI/ML Research Intern",
     company: "Azmth Lab Private Limited",

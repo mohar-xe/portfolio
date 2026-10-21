@@ -143,17 +143,17 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
-    title: "Research Intern — AMR for Legal Reasoning",
+    title: "Research Intern",
     company: "Indian Institute of Technology Madras",
     location: "Chennai, India",
     period: "Oct 2026 – Present",
     description:
-      "Research internship with Assistant Professor Dr. Suman Kundu on meaning representation for legal reasoning.",
+      "Research internship with Assistant Professor Dr. Suman Kundu on legal NLP — dataset construction, fact extraction, and meaning representation.",
     points: [
-      "Built the SONAA evaluation harness: 15 LiveLaw judgments, 46 hand-written atomic claims, 23 single-edit corruptions that string matching cannot detect.",
-      "Channel ablation: concepts alone separate 0/23 corruption pairs, the full graph 16/23 — roles carry the signal, quantifiers and reentrancy none.",
-      "Benchmarked against fact-graph (0.565) and Qwen3.5-9B (0.935) baselines; the graph beats the fact graph but not the LLM.",
-      "Audited AMR parsers on legal prose: 38–45% relative Smatch drop, concentrated in entities, negation and reentrancy.",
+      "Built a 15k-paragraph, 200k-sentence legal corpus with large-scale cleaning, used as the data-generation base for the project.",
+      "Designed a multistage pipeline that converts court text into atomic facts, with NLI-based entailment checks verifying each fact against its source.",
+      "Merged two verification stages into a single round: 92 → 33 LLM calls (64% fewer) on a 12-paragraph sample, with higher accuracy in manual evaluation.",
+      "Built an AMR-based variant of the pipeline and benchmarked both versions with human and synthetic evaluation; now ablating a 113M FactGraph detector against Qwen3.5-9B.",
     ],
   },
   {

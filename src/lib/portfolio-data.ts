@@ -114,19 +114,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "KAN Symbolic Regression",
-    description:
-      "Rediscover physics equations from noisy data with a from-scratch Kolmogorov–Arnold Network (KAN).",
-    tags: ["Python", "KAN", "Symbolic Regression"],
-    links: [
-      {
-        label: "View Project",
-        href: "https://github.com/mohar-xe/KAN-Symbolic",
-        external: true,
-      },
-    ],
-  },
-  {
     title: "SONAA — AMR for Legal Claim Verification",
     description:
       "Research from my IIT Madras internship under Dr. Suman Kundu. Off-the-shelf AMR parsers are trained on newswire and degrade 38–45% relative on legal prose, so the question was which graph channels still carry signal. Ablating one channel at a time: concepts alone separate 0/23 single-edit corruption pairs, the full graph separates 16/23 — roles matter most, quantifiers and reentrancy not at all. Pairs with a gold-AMR generation pipeline driven by Qwen3.8-27B.",
@@ -140,19 +127,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    title: "p2facts — Legal Proposition Atomizer",
-    description:
-      "Turns legal-news paragraphs into atomic, grounded propositions. The live pipeline is deliberately stage 1 only: extraction, guard tests that don't need an API, and an end-to-end trace documenting every prompt. No entailment, coverage or gap-fill pass ships yet, and the known failures are written down rather than hidden.",
-    tags: ["Python", "LLM Extraction", "Legal NLP", "Evaluation"],
-    links: [
-      {
-        label: "View Project",
-        href: "https://github.com/mohar-xe/p2facts",
-        external: true,
-      },
-    ],
-  },
-  {
     title: "Sequential Matching — Vouchsafe Hackathon",
     description:
       "Team Enigmatic Cats, Vouchsafe Sequential Matching Hackathon. Recovered the generative law behind the supplied simulator, decomposed the funnel, and found that only 1.24% of pairs are even legal, a third of people can never be matched, and the provided baseline already sits at 89% of the achievable ceiling. Nine stdlib-only scripts reproduce every number.",
@@ -161,19 +135,6 @@ export const projects: Project[] = [
       {
         label: "Research + Code",
         href: "https://github.com/mohar-xe/sequential-matching-hackathon",
-        external: true,
-      },
-    ],
-  },
-  {
-    title: "Symbolic Validation of Agent Tool Calls",
-    description:
-      "Survey and argument on where agent tool-call validation actually fails. Schema validation is effectively solved by constrained decoding; the live gap is authorization and confinement — is this call permitted, for this principal, on this object, in this state — which is fully decidable and almost never implemented.",
-    tags: ["Research", "Formal Methods", "Agents", "MCP"],
-    links: [
-      {
-        label: "Read the Notes",
-        href: "https://github.com/mohar-xe/symbolic-validation",
         external: true,
       },
     ],

@@ -69,41 +69,44 @@ export default function Home() {
         <h2 id="projects" className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mt-16 sm:mt-24">
           01. projects
         </h2>
-        {projects.map((project, i) => (
-          <article className="mt-8 first:mt-10" key={project.title}>
-            <div className="flex flex-wrap items-baseline gap-x-2">
-              <h3 className="text-[1.2rem] sm:text-[1.3rem] font-bold leading-snug">
-                {project.title}
-              </h3>
-              {project.badge && (
-                <span className="font-mono text-[0.7rem] uppercase tracking-widest text-foreground/50">
-                  ⏵ {project.badge.toLowerCase()}
-                </span>
-              )}
-            </div>
-            <p className="mt-2 text-lg sm:text-xl leading-[1.65] text-foreground/90">
-              {project.description}
-            </p>
-            <p className="mt-3 font-mono text-sm sm:text-base text-foreground/60">
-              {project.tags.join(" / ")}
-            </p>
-            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
-              {project.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={ink}
-                >
-                  {link.external ? "↗ " : ""}
-                  {link.label.toLowerCase()}
-                </a>
-              ))}
-            </div>
-          </article>
-        ))}
-
+        <div className="mt-8 grid grid-cols-1 gap-4">
+          {projects.map((project) => (
+            <a
+              key={project.title}
+              href={project.links[0].href}
+              target="_blank"
+              rel="noreferrer"
+              className="group block rounded-lg border border-foreground/15 p-5 transition-colors duration-150 hover:border-foreground/40 hover:bg-foreground/[0.03]"
+            >
+              <div className="flex flex-wrap items-baseline gap-x-2">
+                <h3 className="text-[1.15rem] sm:text-[1.2rem] font-bold leading-snug group-hover:underline decoration-1 underline-offset-4">
+                  {project.title}
+                </h3>
+                {project.badge && (
+                  <span className="font-mono text-[0.6rem] uppercase tracking-widest px-1.5 py-0.5 rounded border border-foreground/15 text-foreground/50">
+                    {project.badge.toLowerCase()}
+                  </span>
+                )}
+              </div>
+              <p className="mt-2 text-base leading-[1.65] text-foreground/70">
+                {project.description}
+              </p>
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {project.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-mono text-[0.6rem] uppercase tracking-widest px-1.5 py-0.5 rounded border border-foreground/15 text-foreground/50"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+              <p className="mt-3 font-mono text-sm text-foreground/50">
+                ↗ {project.links[0].label.toLowerCase()}
+              </p>
+            </a>
+          ))}
+        </div>
         {/* 02. Experience */}
         <h2 id="experience" className="text-[1.6rem] sm:text-[1.75rem] md:text-[2rem] font-black leading-tight mt-16 sm:mt-24">
           02. experience
